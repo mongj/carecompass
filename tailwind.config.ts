@@ -12,6 +12,9 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      backgroundImage: {
+        'textured-gradient': "url('/img/gradient.png')",
+      }
     },
   },
   plugins: [],
