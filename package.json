@@ -16,15 +16,19 @@
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@opengovsg/design-system-react": "^1.24.0",
+    "@uidotdev/usehooks": "^2.4.1",
+    "ahooks": "^3.8.1",
     "framer-motion": "^11.5.4",
     "next": "14.2.11",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/uuid": "^10.0.0",
     "eslint": "^8",
     "eslint-config-next": "14.2.11",
     "eslint-config-prettier": "^9.1.0",
