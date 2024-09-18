@@ -19,7 +19,7 @@ export default function ChatIntro() {
         <h3 className="text-5xl">Care<b>Compass</b></h3>
       </div>
       <div className="flex gap-4 mb-4">
-        {prompts.map((prompt) => <PromptButton prompt={prompt} />)}
+        {prompts.map((prompt, index) => <PromptButton key={index} prompt={prompt} />)}
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import { BotResponse, Message } from "@/types/chat";
-import { Avatar, Button, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure } from "@chakra-ui/react";
+import { Avatar, Button, ModalContent, ModalOverlay, useDisclosure } from "@chakra-ui/react";
 import { Modal } from "@chakra-ui/react";
 
 export default function ChatMessage({ message }: { message: Message }) {
@@ -23,17 +23,17 @@ export default function ChatMessage({ message }: { message: Message }) {
 function ResponseMessage({ res }: { res: BotResponse }) {
   return (
     <div className="flex flex-col gap-4">
-      {res.content && res.content.map((block) => {
+      {res.content && res.content.map((block, index) => {
         if (!block.content) {
           return null;
         }
         if (block.type === "text") {
-          return <span>{block.content}</span>
+          return <span key={index}>{block.content}</span>
         } else {
           return (
-            <div className="flex gap-2 overflow-auto">
-              {block.content.map((uiBlock) => (
-                <ClickableCard header={uiBlock.header} content={uiBlock.content} />
+            <div key={index} className="flex gap-2 overflow-auto">
+              {block.content.map((uiBlock, index) => (
+                <ClickableCard key={index} header={uiBlock.header} content={uiBlock.content} />
               ))}
             </div>);
         }

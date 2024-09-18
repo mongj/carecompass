@@ -1,8 +1,7 @@
 'use client';
 
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { useContext } from "react";
-import { ChatContext, useChatContext } from "@/app/chat/context";
+import { useChatContext } from "@/app/chat/context";
 
 export default function ChatHistory({ router }: { router: AppRouterInstance}) {
   const { chats } = useChatContext();
