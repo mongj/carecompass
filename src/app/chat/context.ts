@@ -1,9 +1,9 @@
 import { Thread } from "@/types/chat";
-import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useState } from "react";
+import { createContext, Dispatch, SetStateAction, useContext } from "react";
 
 interface ChatContextType {
   chats: Thread[];
-  setChats: (chats: Thread[]) => void;
+  setChats: Dispatch<SetStateAction<Thread[]>>;
 }
 
 export const ChatContext = createContext<ChatContextType | undefined>(undefined);

@@ -22,7 +22,7 @@ export default function ChatLayout({ children }: Readonly<{
 
   return (
     <ChatContext.Provider value={{ chats, setChats }}>
-      <div className="flex h-screen">
+      <div className="flex h-screen max-h-screen">
         <section className="w-64 min-w-64 bg-textured-gradient bg-cover px-4 py-8 shadow-md">
           <div className="flex flex-col place-items-center gap-8">
             <Image src="/img/logo.svg" alt="Logo" width={64} height={64} />
@@ -33,7 +33,7 @@ export default function ChatLayout({ children }: Readonly<{
             <ChatHistory router={router} />
           </div>
         </section>
-        <main className="flex w-full flex-col place-content-between p-8 gap-4 bg-gray-100">
+        <main className="max-h-screen overflow-hidden flex w-full flex-col place-content-between p-8 gap-4 bg-gray-100">
           <section className="flex h-full w-full place-content-center place-items-center">
             {children}
           </section>
