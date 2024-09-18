@@ -8,7 +8,7 @@ import { parse } from "partial-json";
 
 const prompts = [
   "How do I effectively communicate with someone who has dementia?",
-  "How do I cope with caregiver burnout and find support",
+  "What are all the things that I have to know regarding dementia care?",
 ];
 
 export default function ChatIntro() {
