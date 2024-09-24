@@ -16,7 +16,7 @@ export default function Chat({ params }: { params: { chatId: string }}) {
   }
 
   return currentChat && (
-    <section className="flex flex-col gap-4 w-full h-[calc(100vh-124px)] place-content-start overflow-y-auto">
+    <section className="flex flex-col gap-4 w-full h-[calc(100dvh-184px)] place-content-start overflow-y-auto">
       {currentChat.messages.map((message) => (
         <ChatMessage key={message.id} message={message} />
       ))}

@@ -162,8 +162,8 @@ export default function Search({ currentChatId } : { currentChatId?: string }) {
   }
 
   return (
-    <form className="flex w-full gap-2" onSubmit={handleSubmit}>
-      <Input placeholder="Ask me something" value={prompt} onChange={handleInput}/>
+    <form className="flex w-full gap-2 my-6" onSubmit={handleSubmit}>
+      <Input placeholder="Message" value={prompt} onChange={handleInput} />
       <IconButton icon={<SearchIcon />} aria-label={"Search"} type="submit" />
     </form>
   );

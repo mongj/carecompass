@@ -7,19 +7,22 @@ import { useRouter } from "next/navigation";
 import { parse } from "partial-json";
 
 const prompts = [
-  "How do I effectively communicate with someone who has dementia?",
-  "What are all the things that I have to know regarding dementia care?",
+  "🏥 What caregiving options do I have?",
+  "💵 What support might I be eligible for?",
 ];
 
 export default function ChatIntro() {
   return (
     <div className="flex flex-col h-full w-full place-items-center place-content-between">
-      <div className="flex flex-col place-items-center h-full place-content-center">
-        <span className="text-3xl">Meet</span>
-        <h3 className="text-5xl">Care<b>Compass</b></h3>
+      <div className="flex flex-col place-items-center h-full place-content-center text-center">
+        <span className="text-lg md:text-3xl font-bold">Welcome, Justin</span>
+        <span className="text-sm">We are a care recommender that provides you recommendations based on your caregiving needs.</span>
       </div>
-      <div className="flex gap-4 mb-4">
-        {prompts.map((prompt, index) => <PromptButton key={index} prompt={prompt} />)}
+      <div className="flex flex-col gap-2 w-full">
+        <span className="font-bold">How can I help you today?</span>
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
+          {prompts.map((prompt, index) => <PromptButton key={index} prompt={prompt} />)}
+        </div>
       </div>
     </div>
   );
@@ -150,7 +153,7 @@ function PromptButton({ prompt }: { prompt: string }) {
   }
   
   return (
-    <button onClick={handlePrompt} className="bg-white px-4 py-2 border rounded-md hover:bg-gray-50 ease-in duration-100">
+    <button onClick={handlePrompt} className="bg-white px-4 py-2 min-h-6 border rounded-md hover:bg-gray-50 ease-in duration-100 leading-tight">
       <span className="text-sm">{prompt}</span>
     </button>
   );

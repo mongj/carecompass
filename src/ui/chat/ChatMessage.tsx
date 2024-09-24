@@ -4,15 +4,15 @@ import { Modal } from "@chakra-ui/react";
 
 export default function ChatMessage({ message }: { message: Message }) {
   return (
-    <div className="flex place-items-start gap-4">
+    <div className="flex place-items-start gap-2 md:gap-4">
       {
         message.role === "bot" ? 
-          <Avatar className="mt-2" src="/img/logo.svg" /> : 
-          <Avatar className="mt-2" colorScheme="sub" />
+          <Avatar className="mt-2 sticky" src="/img/logo.svg" size="xs" /> : 
+          <Avatar className="mt-2 sticky" colorScheme="sub" size="xs" />
       }
-      <div className="w-[calc(100%-56px)] flex flex-col bg-white p-4 border rounded-lg">
+      <div className="w-[calc(100%-40px)] md:w-[calc(100%-48px)] flex flex-col bg-white p-4 border rounded-lg">
         {typeof message.content === 'string' ? 
-          <span>{message.content}</span>
+          <span className="text-sm sm:text-base leading-tight">{message.content}</span>
           : <ResponseMessage res={message.content} />
         }
       </div>
@@ -28,10 +28,10 @@ function ResponseMessage({ res }: { res: BotResponse }) {
           return null;
         }
         if (block.type === "text") {
-          return <span key={index}>{block.content}</span>
+          return <span key={index} className="text-sm sm:text-base leading-tight">{block.content}</span>
         } else {
           return (
-            <div key={index} className="flex gap-2 overflow-auto">
+            <div key={index} className="flex flex-col md:flex-row gap-2 overflow-auto">
               {block.content.map((uiBlock, index) => (
                 <ClickableCard key={index} header={uiBlock.header} content={uiBlock.content} />
               ))}
@@ -46,9 +46,9 @@ function ClickableCard({ header, content }: { header: string, content?: string }
   const { isOpen, onOpen, onClose } = useDisclosure()
   return (
     <>
-      <div onClick={onOpen} className="flex flex-col gap-2 bg-white border rounded-md p-4 max-h-80 min-w-72 shadow-sm cursor-pointer hover:bg-gray-100 ease-in duration-100">
+      <div onClick={onOpen} className="flex flex-col gap-2 bg-white border rounded-md p-4 max-h-36 sm:max-h-80 min-w-56 sm:min-w-72 shadow-sm cursor-pointer hover:bg-gray-100 ease-in duration-100">
         <h3 className="font-semibold text-lg leading-tight">{header}</h3>
-        <span className="text-gray-600 text-sm overflow-hidden text-ellipsis">{content}</span>
+        <span className="text-gray-600 text-sm overflow-hidden text-ellipsis leading-tight line-clamp-3 md:line-clamp-6">{content}</span>
       </div>
 
       <Modal isOpen={isOpen} onClose={onClose}>
