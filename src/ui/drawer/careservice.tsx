@@ -72,9 +72,9 @@ export default function CareServiceRecommender() {
   }
 
   return (
-      <div className='w-full h-full px-8 pb-8 overflow-auto'>
-        {data.length > 0 ? sections[currentIndex](incrementIndex, data, searchParams) : <p>Loading...</p>}
-      </div>
+    <div className='w-full h-full px-8 pb-8 overflow-auto place-content-center'>
+      {data.length > 0 ? sections[currentIndex](incrementIndex, data, searchParams) : <p>Loading...</p>}
+    </div>
   )
 }
 
@@ -197,23 +197,41 @@ function DaycarePricePreference(incrementIndex: () => void, data: DDCData[], sea
 }
 
 function DaycareRecommendations(incrementIndex: () => void, data: DDCData[], searchParams: ReadonlyURLSearchParams) {
+  const router = useRouter()
   const recommendations = data.slice(0, 3);
 
-  const search = searchParams.get('centre');
-  const selectedCentres = data.filter(c => c.friendlyId === search);
+  const centreId = searchParams.get('centre');
+  const display = searchParams.get('show');
+  const selectedCentres = data.filter(c => c.friendlyId === centreId);
 
-  return !search || selectedCentres.length === 0 ? (
+  function handleShowAll() {
+    router.push('?show=all')
+  }
+
+  function handleShowRecommendations() {
+    router.push('?show=recommendations')
+  }
+
+  return selectedCentres.length > 0 ? (
+    <DaycareCentreDetails {...selectedCentres[0]} />
+  ) : display === "all" ? (
+    <section className="flex flex-col gap-4">
+      <Button variant="link" leftIcon={<BxChevronLeft fontSize="1.5rem" />} marginRight="auto" onClick={handleShowRecommendations}>Back</Button>
+      <span className="leading-tight">List of all dementia daycare centres:</span>
+      <div className="flex flex-col gap-4">
+        {data.map((centre, index) => <DaycareRecommendationCard key={index} centre={centre} />)}
+      </div>
+    </section>
+  ) : (
     <section className="flex flex-col gap-4">
       <h1 className="text-xl font-semibold">Daycare Services</h1>
       <span className="leading-tight">Thank you! Based on your inputs, I recommend the following:</span>
       <div className="flex flex-col gap-4">
-        {recommendations.map((data, index) => <DaycareRecommendationCard key={index} centre={data} />)}
+        {recommendations.map((centre, index) => <DaycareRecommendationCard key={index} centre={centre} />)}
       </div>
       <Button>Save search</Button>
-      <Button variant="outline">Show me the full list of centres</Button>
+      <Button variant="outline" onClick={handleShowAll}>Show me the full list of centres</Button>
     </section>
-  ) : (
-    <DaycareCentreDetails {...selectedCentres[0]} />
   )
 }
 
@@ -244,7 +262,7 @@ function DaycareRecommendationCard({ centre }: { centre: DDCData }) {
 function DaycareCentreDetails(data: DDCData) {
   const router = useRouter()
   function handleClick() {
-    router.push("/chat")
+    router.back()
   }
 
   return (
