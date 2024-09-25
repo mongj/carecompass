@@ -160,7 +160,7 @@ function DaycarePreferenceOverview(stepper: Stepper, data: DDCData[], param: Par
           <Checkbox.OthersInput />
         </Checkbox.OthersWrapper>
       </Stack>
-      <div className="flex w-full gap-2">
+      <div className="flex w-full gap-2 mt-4">
         <Button onClick={stepper.decrement} className="w-[calc(50%-4px)]" variant="outline">Back</Button>
         <Button onClick={stepper.increment} className="w-[calc(50%-4px)]">Next</Button>
       </div>
@@ -179,7 +179,7 @@ function DaycareLocationPreference(stepper: Stepper, data: DDCData[], param: Par
         <span className="leading-tight">Feel free to update your postal code below.</span>
       </div>
       <Input placeholder="Your home postal code" value={510296} />
-      <div className="flex w-full gap-2">
+      <div className="flex w-full gap-2 mt-4">
         <Button onClick={stepper.decrement} className="w-[calc(50%-4px)]" variant="outline">Back</Button>
         <Button 
           className="w-[calc(50%-4px)]"
@@ -218,7 +218,7 @@ function DaycarePickupDropoffPreference(stepper: Stepper, data: DDCData[], param
         }>Drop-off
         </Checkbox>
       </Stack>
-      <div className="flex w-full gap-2">
+      <div className="flex w-full gap-2 mt-4">
         <Button onClick={stepper.decrement} className="w-[calc(50%-4px)]" variant="outline">Back</Button>
         <Button onClick={stepper.increment} className="w-[calc(50%-4px)]">Next</Button>
       </div>
@@ -239,7 +239,7 @@ function DaycarePickupDropoffLocation(stepper: Stepper, data: DDCData[], param: 
         <FormLabel isRequired>Postal code for pick-up</FormLabel>
         <Input placeholder="e.g. 429912" value={510296} />
       </div>
-      <div className="flex w-full gap-2">
+      <div className="flex w-full gap-2 mt-4">
         <Button onClick={stepper.decrement} className="w-[calc(50%-4px)]" variant="outline">Back</Button>
         <Button onClick={stepper.increment} className="w-[calc(50%-4px)]">Next</Button>
       </div>
@@ -278,7 +278,7 @@ function DaycarePricePreference(stepper: Stepper, data: DDCData[], param: Params
         <RangeSliderThumb boxSize={6} index={0} />
         <RangeSliderThumb boxSize={6} index={1} />
       </RangeSlider>
-      <div className="flex w-full gap-2">
+      <div className="flex w-full gap-2 mt-4">
         <Button onClick={stepper.decrement} className="w-[calc(50%-4px)]" variant="outline">Back</Button>
         <Button onClick={stepper.increment} className="w-[calc(50%-4px)]">Next</Button>
       </div>
@@ -363,7 +363,7 @@ function DaycareCentreDetails(data: DDCData) {
     <section className="flex flex-col gap-4">
       <Button variant="link" leftIcon={<BxChevronLeft fontSize="1.5rem" />} marginRight="auto" onClick={handleClick}>Back</Button>
       <h1 className="text-xl font-semibold">{data.name}</h1>
-      <div className="flex flex-col gap-2 text-sm">
+      <div className="flex flex-col gap-4 text-sm">
         <span>{data.about}</span>
         <div className="flex flex-col">
           <span><b>Operating hours: </b></span>
@@ -396,16 +396,20 @@ function DaycareCentreDetails(data: DDCData) {
           </div>
         </span>
         <span><b>Google reviews: </b>{data.googleReviews} ⭐</span>
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-2 my-2">
           <span className="text-lg"><b>Contact Details</b></span>
-          {data.phone && <span><b>Phone: </b><a href={`tel:+65${data.phone}`} target="_blank" className="underline text-blue-500">{data.phone}</a></span>}
-          {data.email && <span><b>Email: </b><a href={`mailto:${data.email}`} target="_blank" className="underline text-blue-500">{data.email}</a></span>}
-          {data.website && <span><b>Website: </b><a href={data.website} target="_blank" className="underline text-blue-500">{data.website}</a></span>}
+          <div className="flex flex-col gap-2">
+            {data.phone && <span><b>Phone: </b><a href={`tel:+65${data.phone}`} target="_blank" className="underline text-blue-500">{data.phone}</a></span>}
+            {data.email && <span><b>Email: </b><a href={`mailto:${data.email}`} target="_blank" className="underline text-blue-500">{data.email}</a></span>}
+            {data.website && <span><b>Website: </b><a href={data.website} target="_blank" className="underline text-blue-500">{data.website}</a></span>}
+          </div>
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-2 my-2">
           <span className="text-lg"><b>Address</b></span>
-          {data.buildingName && <span>{data.buildingName}</span>}
-          <span>{data.block} {data.streetName} {data.unitNo}, {data.postalCode}</span>
+          <div className="flex flex-col">
+            {data.buildingName && <span>{data.buildingName}</span>}
+            <span>{data.block} {data.streetName} {data.unitNo}, {data.postalCode}</span>
+          </div>
         </div>
       </div>
       <div id="embed-map-canvas" className="w-full">
