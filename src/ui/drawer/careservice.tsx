@@ -28,6 +28,10 @@ type Params = {
   remove: (name: string) => URLSearchParams;
 }
 
+const DEFAULT_POSTAL_CODE = 510296;
+const DEFAULT_MIN_PRICE = 10;
+const DEFAULT_MAX_PRICE = 50;
+
 const careServices: CareServicesData[] = [
   {
     title: "Daycare Services",
@@ -71,6 +75,7 @@ export default function CareServiceRecommender() {
   const searchParams = useSearchParams();
   const router = useRouter()
   const [currentIndex, setCurrentIndex] = useState(searchParams.get('step') ? parseInt(searchParams.get('step') as string) : 0);
+  const step = searchParams.get('step') ? parseInt(searchParams.get('step') as string) : 0;
 
   const appendQueryParam = (name: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString())
@@ -97,17 +102,32 @@ export default function CareServiceRecommender() {
   }, []);
 
   const incrementIndex = () => {
-    if (currentIndex < sections.length - 1) {
-      setCurrentIndex(i => i + 1);
-      router.push('?' + appendQueryParam('step', String(currentIndex + 1)).toString())
+    const p = new URLSearchParams(param.value.toString())
+    const currentStep = parseInt(p.get('step') || '0')
+
+    let nextStep = 0
+    if (currentStep === 0) {
+      nextStep = 1
+    } else if (currentStep === 1 && p.has('prefLoc')) {
+      nextStep = 2
+    } else if ((currentStep === 1 || currentStep === 2) && p.has('prefPickupDropoff')) {
+      nextStep = 3
+    } else if (currentStep === 3 && (p.has('pickup') || p.has('dropoff'))) {
+      nextStep = 4
+    } else if ((currentStep === 1 || currentStep === 2 || currentStep === 4) && p.has('prefPrice')) {
+      nextStep = 5
+    } else {
+      nextStep = 6
+    }
+
+    if (nextStep < sections.length) {
+      p.set('step', String(nextStep))
+      router.push('?' + p.toString())
     }
   }
 
   const decrementIndex = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex(i => i - 1);
-      router.push('?' + appendQueryParam('step', String(currentIndex - 1)).toString())
-    }
+    router.back()
   }
 
   const stepper: Stepper = {
@@ -117,7 +137,7 @@ export default function CareServiceRecommender() {
 
   return (
     <div className='w-full h-full px-8 pb-8 overflow-auto place-content-center'>
-      {data.length > 0 ? sections[currentIndex](stepper, data, param) : <LoadingSpinner />}
+      {data.length > 0 ? sections[step](stepper, data, param) : <LoadingSpinner />}
     </div>
   )
 }
@@ -135,7 +155,7 @@ function CareServiceOverview(stepper: Stepper, data: DDCData[], param: Params) {
 
 function CareServiceButton({ service, incrementIndex }: { service: CareServicesData; incrementIndex: () => void }) {
   return (
-    <button className={`flex p-4 border border-gray-200 rounded-md gap-2 place-items-start place-content-start text-left ${!service.enabled && 'bg-gray-100'}`} onClick={incrementIndex}>
+    <button className={`flex p-4 border border-gray-200 rounded-md gap-2 place-items-start place-content-start text-left ${!service.enabled && 'bg-gray-100'}`} onClick={incrementIndex} disabled={!service.enabled}>
       <Image src={service.icon} alt="ds" width={40} height={40} />
       <div className="flex flex-col gap-2">
         <span className="font-semibold text-sm">{service.title}</span>
@@ -148,17 +168,49 @@ function CareServiceButton({ service, incrementIndex }: { service: CareServicesD
 }
 
 function DaycarePreferenceOverview(stepper: Stepper, data: DDCData[], param: Params) {
+  const router = useRouter()
+  
+  function handleCheckLocation(e: React.ChangeEvent<HTMLInputElement>) {
+    const p = new URLSearchParams(param.value.toString())
+    e.target.checked ? p.set('prefLoc', 'true') : p.delete('prefLoc')
+    router.replace('?' + p.toString())
+  }
+
+  function handleCheckPrice(e: React.ChangeEvent<HTMLInputElement>) {
+    const p = new URLSearchParams(param.value.toString())
+    e.target.checked ? p.set('prefPrice', 'true') : p.delete('prefPrice')
+    router.replace('?' + p.toString())
+  }
+
+  function handleCheckPickupDropoff(e: React.ChangeEvent<HTMLInputElement>) {
+    const p = new URLSearchParams(param.value.toString())
+    e.target.checked ? p.set('prefPickupDropoff', 'true') : p.delete('prefPickupDropoff')
+    router.replace('?' + p.toString())
+  }
+
+  function handleCheckOthers(e: React.ChangeEvent<HTMLInputElement>) {
+    const p = new URLSearchParams(param.value.toString())
+    e.target.checked ? p.set('prefOthers', '') : p.delete('prefOthers')
+    router.replace('?' + p.toString())
+  }
+
+  function handleInputOthers(e: React.ChangeEvent<HTMLInputElement>) {
+    const p = new URLSearchParams(param.value.toString())
+    e.target.value ? p.set('prefOthers', e.target.value) : p.delete('prefOthers')
+    router.replace('?' + p.toString())
+  }
+
   return (
     <section className="flex flex-col gap-4">
       <h1 className="text-xl font-semibold">Daycare Services</h1>
       <span className="leading-tight">What factors are important to you when choosing a daycare service?</span>
       <Stack direction="column" spacing={1}>
-        <Checkbox>Location</Checkbox>
-        <Checkbox>Price</Checkbox>
-        <Checkbox>Pick-up / drop-off service</Checkbox>
+        <Checkbox onChange={handleCheckLocation} isChecked={param.value.has('prefLoc')}>Location</Checkbox>
+        <Checkbox onChange={handleCheckPrice} isChecked={param.value.has('prefPrice')}>Price</Checkbox>
+        <Checkbox onChange={handleCheckPickupDropoff} isChecked={param.value.has('prefPickupDropoff')}>Pick-up / drop-off service</Checkbox>
         <Checkbox.OthersWrapper>
-          <Checkbox.OthersCheckbox />
-          <Checkbox.OthersInput />
+          <Checkbox.OthersCheckbox onChange={handleCheckOthers} isChecked={param.value.has('prefOthers')} />
+          <Checkbox.OthersInput onChange={handleInputOthers} value={param.value.get('prefOthers') || ""} />
         </Checkbox.OthersWrapper>
       </Stack>
       <div className="flex w-full gap-2 mt-4">
@@ -171,6 +223,24 @@ function DaycarePreferenceOverview(stepper: Stepper, data: DDCData[], param: Par
 
 function DaycareLocationPreference(stepper: Stepper, data: DDCData[], param: Params) {
   const router = useRouter()
+
+  if (!param.value.has('home')) {
+    const p = new URLSearchParams(param.value.toString())
+    p.set('home', String(DEFAULT_POSTAL_CODE))
+    router.replace('?' + p.toString())
+  }
+
+  function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const p = new URLSearchParams(param.value.toString())
+    p.set('home', e.target.value)
+    router.replace('?' + p.toString())
+  }
+
+  function isPostalCodeValid() {
+    const postalCode = param.value.get('home') || ''
+    return postalCode.length === 6 && !isNaN(Number(postalCode))
+  }
+
   return (
     <section className="flex flex-col gap-4">
       <h1 className="text-xl font-semibold">Daycare Services</h1>
@@ -179,14 +249,23 @@ function DaycareLocationPreference(stepper: Stepper, data: DDCData[], param: Par
         <span className="leading-tight"><b>Are you searching for centres close to you and your Father’s home address?</b></span>
         <span className="leading-tight">Feel free to update your postal code below.</span>
       </div>
-      <Input placeholder="Your home postal code" value={510296} />
+      <Input
+        placeholder="Your home postal code"
+        defaultValue={param.value.get('home') || DEFAULT_POSTAL_CODE}
+        onChange={handleInputChange}
+      />
+      {!isPostalCodeValid() && <span className="text-sm font-semibold text-red-500">Please enter a valid postal code</span>}
       <div className="flex w-full gap-2 mt-4">
         <Button onClick={stepper.decrement} className="w-[calc(50%-4px)]" variant="outline">Back</Button>
         <Button 
           className="w-[calc(50%-4px)]"
+          disabled={!param.value.has('home') || !isPostalCodeValid()}
           onClick={() => {
-          stepper.increment();
-          router.push('?' + param.append('postal', '510296').toString())
+          stepper.increment()
+          if (!param.value.has('home')) {
+            const p = new URLSearchParams(param.value.toString())
+            router.push('?' + p.set('home', String(DEFAULT_POSTAL_CODE).toString()))
+          }
         }}>
           Next
         </Button>
@@ -197,26 +276,35 @@ function DaycareLocationPreference(stepper: Stepper, data: DDCData[], param: Par
 
 function DaycarePickupDropoffPreference(stepper: Stepper, data: DDCData[], param: Params) {
   const router = useRouter()
+
+  function handleCheckPickup(e: React.ChangeEvent<HTMLInputElement>) {
+    const p = new URLSearchParams(param.value.toString())
+    e.target.checked ? p.set('pickup', 'true') : p.delete('pickup')
+    router.replace('?' + p.toString())
+  }
+
+  function handleCheckDropoff(e: React.ChangeEvent<HTMLInputElement>) {
+    const p = new URLSearchParams(param.value.toString())
+    e.target.checked ? p.set('dropoff', 'true') : p.delete('dropoff')
+    router.replace('?' + p.toString())
+  }
+
   return (
     <section className="flex flex-col gap-4">
       <h1 className="text-xl font-semibold">Daycare Services</h1>
       <span className="leading-tight">Would you require pick up and drop off services?</span>
       <Stack direction="column" spacing={1}>
-        <Checkbox onChange={
-          (e) => {
-            e.target.checked ? 
-            router.push('?' + param.append('pickup', String(e.target.checked)).toString()) : 
-            router.push('?' + param.remove('pickup').toString())
-          }
-        }>Pick-up
+        <Checkbox
+          onChange={handleCheckPickup}
+          isChecked={param.value.has('pickup')}
+        >
+          Pick-up
         </Checkbox>
-        <Checkbox onChange={
-          (e) => {
-            e.target.checked ? 
-            router.push('?' + param.append('dropoff', String(e.target.checked)).toString()) : 
-            router.push('?' + param.remove('dropoff').toString())
-          }
-        }>Drop-off
+        <Checkbox
+          onChange={handleCheckDropoff}
+          isChecked={param.value.has('dropoff')}
+        >
+          Drop-off
         </Checkbox>
       </Stack>
       <div className="flex w-full gap-2 mt-4">
@@ -228,18 +316,49 @@ function DaycarePickupDropoffPreference(stepper: Stepper, data: DDCData[], param
 }
 
 function DaycarePickupDropoffLocation(stepper: Stepper, data: DDCData[], param: Params) {
+  const router = useRouter()
+
+  function updateParam(key: string, value: string) {
+    const p = new URLSearchParams(param.value.toString())
+    p.set(key, value)
+    router.replace('?' + p.toString())
+  }
+
+  const needPickup = param.value.has('pickup');
+  const needDropoff = param.value.has('dropoff');
+
+  if (needPickup && !param.value.has('pickupLoc')) {
+    const p = new URLSearchParams(param.value.toString())
+    p.set('pickupLoc', String(DEFAULT_POSTAL_CODE))
+    router.replace('?' + p.toString())
+  }
+
+  if (needDropoff && !param.value.has('dropoffLoc')) {
+    const p = new URLSearchParams(param.value.toString())
+    p.set('dropoffLoc', String(DEFAULT_POSTAL_CODE))
+    router.replace('?' + p.toString())
+  }
+
   return (
     <section className="flex flex-col gap-4">
       <h1 className="text-xl font-semibold">Daycare Services</h1>
       <span className="leading-tight">To check if the daycare centre offers <b>Pick-up and drop-off</b> to your desired locations, please confirm the postal code(s) below:</span>
-      <div className="flex flex-col">
+      {needPickup && <div className="flex flex-col">
         <FormLabel isRequired>Postal code for pick-up</FormLabel>
-        <Input placeholder="e.g. 429912" value={510296} />
-      </div>
-      <div className="flex flex-col">
-        <FormLabel isRequired>Postal code for pick-up</FormLabel>
-        <Input placeholder="e.g. 429912" value={510296} />
-      </div>
+        <Input
+          placeholder="e.g. 510296"
+          value={DEFAULT_POSTAL_CODE}
+          onChange={(e) => updateParam('pickupLoc', e.target.value)}
+        />
+      </div>}
+      {needDropoff && <div className="flex flex-col">
+        <FormLabel isRequired>Postal code for drop-off</FormLabel>
+        <Input
+          placeholder="e.g. 510296"
+          value={DEFAULT_POSTAL_CODE}
+          onChange={(e) => updateParam('dropoffLoc', e.target.value)}
+        />
+      </div>}
       <div className="flex w-full gap-2 mt-4">
         <Button onClick={stepper.decrement} className="w-[calc(50%-4px)]" variant="outline">Back</Button>
         <Button onClick={stepper.increment} className="w-[calc(50%-4px)]">Next</Button>
@@ -250,20 +369,34 @@ function DaycarePickupDropoffLocation(stepper: Stepper, data: DDCData[], param: 
 
 function DaycarePricePreference(stepper: Stepper, data: DDCData[], param: Params) {
   const router = useRouter()
+
+  if (!param.value.has('minp')) {
+    const p = new URLSearchParams(param.value.toString())
+    p.set('minp', String(DEFAULT_MIN_PRICE))
+    router.replace('?' + p.toString())
+  }
+
+  if (!param.value.has('maxp')) {
+    const p = new URLSearchParams(param.value.toString())
+    p.set('maxp', String(DEFAULT_MAX_PRICE))
+    router.replace('?' + p.toString())
+  }
+
+  const minp = parseInt(param.value.get('minp') || DEFAULT_MIN_PRICE.toString())
+  const maxp = parseInt(param.value.get('maxp') || DEFAULT_MAX_PRICE.toString())
+
   function handleDragEnd(value: number[]) {
     const p = new URLSearchParams(param.value.toString())
-    p.delete('minp')
-    p.delete('maxp')
-    p.append('minp', String(value[0]))
-    p.append('maxp', String(value[1]))
-    router.push('?' + p.toString())
+    p.set('minp', String(value[0]))
+    p.set('maxp', String(value[1]))
+    router.replace('?' + p.toString())
   }
   return (
     <section className="flex flex-col gap-4">
       <h1 className="text-xl font-semibold">Daycare Services</h1>
       <span className="leading-tight">What price are you willing to pay per day?</span>
       <span className="text-sm text-gray-400 leading-tight">(You can change this later)</span>
-      <RangeSlider defaultValue={[10, 50]} min={10} max={90} step={10} width="90%" marginBottom={8} marginX="auto" onChangeEnd={handleDragEnd}>
+      <RangeSlider defaultValue={[minp, maxp]} min={10} max={90} step={10} width="90%" marginBottom={8} marginX="auto" onChangeEnd={handleDragEnd}>
         <RangeSliderMark value={10} className="pt-4 ml-[-16px]">
           $10
         </RangeSliderMark>

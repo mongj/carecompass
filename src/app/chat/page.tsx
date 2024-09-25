@@ -20,9 +20,9 @@ export default function ChatIntro() {
   const router = useRouter();
   return (
     <div className="flex flex-col h-full w-full place-items-center place-content-between">
-      <div className="flex flex-col place-items-center h-full place-content-center text-center">
-        <span className="text-lg md:text-3xl font-bold">Welcome, Justin</span>
-        <span className="text-sm">CareCompass+ is a care recommender that provides you recommendations based on your caregiving needs.</span>
+      <div className="flex flex-col place-items-center h-full place-content-center text-center gap-2">
+        <span className="text-xl md:text-3xl font-bold">Welcome, Linda</span>
+        <span>CareCompass+ is a care recommender that provides you recommendations based on your caregiving needs.</span>
       </div>
       <div className="flex flex-col gap-2 w-full">
         <span className="font-semibold text-sm">How can I help you today?</span>
