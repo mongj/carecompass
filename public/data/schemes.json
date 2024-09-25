@@ -1,0 +1,85 @@
+[
+  {
+    "id": "PARENT-RELIEF",
+    "name": "Parent Relief",
+    "description": "Recognises individuals who are supporting their parents, grandparents, parents-in-law or grandparents-in-law in Singapore.",
+    "benefits": "$9,000 tax relief per dependant (for taxpayers staying with dependants)",
+    "eligibility": [
+      {
+        "description": "You have supported your dependant",
+        "satisfied": true
+      },
+      {
+        "description": "Your dependant was 55 years of age and above in 2023",
+        "satisfied": true
+      },
+      {
+        "description": "Your dependant did not have an annual income of more than $4,000 in year 2023",
+        "satisfied": true
+      },
+      {
+        "description": "Your dependant was living with you in the same household in Singapore",
+        "satisfied": true
+      },
+      {
+        "description": "No other relevant reliefs have been claimed on your dependant",
+        "satisfied": true
+      }
+    ],
+    "nextSteps": "**1. Consider if your dependant is eligible for Parent Relief (Disability)**  \n- This provides $14,000 in tax relief per dependant (for taxpayers staying with dependants)  \n- Requires an additional form to be submitted and documentation of disability  \n2. Re-file tax claims for year 2023  \n  \n**2. Email IRAS with the following details:**  \n- Year of Assessment that you wish to claim the relief: 2023  \n- Dependant's  \n         - Name: LINDA CHAN TING WEI  \n         - NRIC: S1234567A  \n         - Date of birth: 30/12/1993  \n         - Address: BLK 663 Changi Dr 23 02-48 S123045  \n         - Annual income: $65,123.00  \n- Confirmation that you have met the qualifying conditions (e.g. Dependent’s Notice of Assessment (NOA))"
+  },
+  {
+    "id": "CAREGIVER-RELIEF",
+    "name": "Caregivers Training Grant",
+    "description": "Supports caregivers (family, foreign domestic workers) attending approved courses on providing care.",
+    "benefits": "Up to $400 in the first year, followed by $200 annually. The amount will be applied directly to offset course fees.",
+    "eligibility": [
+      {
+        "description": "Care recipient is a Singapore Citizen or Permanent Resident",
+        "satisfied": true
+      },
+      {
+        "description": "Care recipient is aged 65 and older",
+        "satisfied": true
+      },
+      {
+        "description": "Caregiver must be person in charge of caring for the care recipient (this can include family members and foreign domestic workers)",
+        "satisfied": true
+      },
+      {
+        "description": "The full grant quantum has not been claimed by other family members or caregivers",
+        "satisfied": true
+      },
+      {
+        "description": "Selected course is on the approved list of courses",
+        "satisfied": false
+      }
+    ],
+    "nextSteps": "**1. Confirm the auto-populated fields and complete the rest of the Caregiver Training Grant form [here](https://www.aic.sg/wp-content/uploads/2023/11/CTG-Application-form.pdf).**  \nBe sure to provide the requested documents:  \n- Care Recipient’s NRIC / Birth Certificate  \n- Caregiver's NRIC  \n  \n**2. Select an approved course from the list [here](https://training-healthcare.vertis.digital/)**  \nand provide the completed form to the training provider at least 2 weeks before the course begins."
+  },
+  {
+    "id": "HOME-CAREGIVING-GRANT",
+    "name": "Home Caregiving Grant",
+    "description": "Defrays caregiving costs for eligible individuals with permanent moderate disability living in the community.",
+    "benefits": "$250 monthly cash payout.",
+    "eligibility": [
+      {
+        "description": "Care recipient is a Singapore Citizen (SC)",
+        "satisfied": true
+      },
+      {
+        "description": "Care recipient must always require some assistance with at least 3 Activities of Daily Living, as certified via a Functional Assessment Report",
+        "satisfied": false
+      },
+      {
+        "description": "Household monthly income per person is $2,800 or less as determined through Means Testing",
+        "satisfied": false
+      },
+      {
+        "description": "Care recipient is not in a residential long-term care institution (e.g. nursing home)",
+        "satisfied": true
+      }
+    ],
+    "nextSteps": "**1. Complete Means Testing [here](https://www.homes.gov.sg/eservice/) to verify your eligibility.**  \n  \n**2. Obtain a [Functional Assessment Report](https://www.aic.sg/wp-content/uploads/2023/05/Functional-Assessment-Report.pdf)**  \nfrom your GP or care provider. The cost of the Report will vary from provider to provider.  \n  \n**3. Apply for the Home Caregiving Grant [here](https://cp.efinance.aic.sg/)**  \nwhen steps 1 and 2 are completed and your eligibility has been confirmed."
+  }
+]

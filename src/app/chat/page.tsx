@@ -1,6 +1,7 @@
 "use client";
 
 import CareServiceRecommender from '@/ui/drawer/careservice';
+import { useRouter } from 'next/navigation';
 import { Drawer } from 'vaul';
 
 type Workflow = {
@@ -11,14 +12,12 @@ type Workflow = {
 const workflows: Workflow[] = [{
     prompt: "🏥 What caregiving options do I have?",
     ui: CareServiceRecommender,
-  }, {
-    prompt: "💵 What support might I be eligible for?",
-    ui: CareServiceRecommender,
-  }
+  },
 ];
 
 
 export default function ChatIntro() {
+  const router = useRouter();
   return (
     <div className="flex flex-col h-full w-full place-items-center place-content-between">
       <div className="flex flex-col place-items-center h-full place-content-center text-center">
@@ -29,6 +28,14 @@ export default function ChatIntro() {
         <span className="font-semibold text-sm">How can I help you today?</span>
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
           {workflows.map((workflow, index) => <WorkflowTrigger key={index} workflow={workflow} />)}
+          <button
+            className="bg-white px-4 py-2 min-h-12 border border-[rgb(191,194,200)] rounded-md hover:bg-gray-50 ease-in duration-100 leading-tight text-sm"
+            onClick={() => {
+              router.push('/dashboard');
+            }}
+          >
+            💵 What support might I be eligible for?
+          </button>
         </div>
       </div>
     </div>

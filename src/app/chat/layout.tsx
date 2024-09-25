@@ -10,8 +10,8 @@ import ChatHistory from "@/ui/ChatHistory";
 import { Thread } from "@/types/chat";
 import { useDisclosure, Drawer, DrawerOverlay, DrawerContent } from "@chakra-ui/react";
 
-import { IconButton } from "@opengovsg/design-system-react";
-import { MenuIcon, SquarePenIcon } from "lucide-react";
+import { Button, BxRightArrowAlt, IconButton } from "@opengovsg/design-system-react";
+import { ArrowRight, MenuIcon, SquarePenIcon } from "lucide-react";
 
 export default function ChatLayout({ children }: Readonly<{
   children: React.ReactNode;
@@ -39,7 +39,18 @@ export default function ChatLayout({ children }: Readonly<{
         </section>
         <header className="md:hidden flex place-content-between place-items-center px-4 w-full h-16 bg-[#096DD9] text-white">
           <ChatHistoryDrawer />
-          <h1 className="font-semibold text-sm">CareCompass+</h1>
+          <Button
+            colorScheme="white"
+            variant="clear"
+            aria-label="Support Dashboard"
+            rightIcon={<ArrowRight size={16} />}
+            size="sm"
+            className="font-semibold"
+            onClick={() => {
+              router.push(`/dashboard`);
+            }}>
+              My support dashboard
+            </Button>
           <IconButton colorScheme="white" variant="clear" aria-label="New thread button" icon={<SquarePenIcon />} size="sm" onClick={handleNewThread} />
         </header>
         <main className="h-full overflow-hidden flex w-full flex-col place-content-between px-6 md:p-8 bg-gray-100">
