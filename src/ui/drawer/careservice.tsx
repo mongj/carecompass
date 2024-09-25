@@ -7,6 +7,7 @@ import { Badge, Button, BxChevronLeft, BxRightArrowAlt, Checkbox, FormLabel, Inp
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { ReadonlyURLSearchParams, useRouter, useSearchParams } from 'next/navigation'
+import LoadingSpinner from "../loading";
 
 type CareServicesData = {
   title: string;
@@ -116,7 +117,7 @@ export default function CareServiceRecommender() {
 
   return (
     <div className='w-full h-full px-8 pb-8 overflow-auto place-content-center'>
-      {data.length > 0 ? sections[currentIndex](stepper, data, param) : <p>Loading...</p>}
+      {data.length > 0 ? sections[currentIndex](stepper, data, param) : <LoadingSpinner />}
     </div>
   )
 }

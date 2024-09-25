@@ -1,6 +1,7 @@
 "use client";
 
 import { EligibilityCriteria, SchemeData } from "@/types/scheme";
+import LoadingSpinner from "@/ui/loading";
 import { Text } from "@chakra-ui/react";
 import { BxsCheckCircle } from "@opengovsg/design-system-react";
 import { useSearchParams } from "next/navigation";
@@ -21,7 +22,7 @@ function SupportDetails() {
   }, [param]);
 
   if (!scheme) {
-    return <p>Loading...</p>;
+    return <LoadingSpinner />;
   }
 
   const numCriteria = scheme.eligibility.length
@@ -79,7 +80,7 @@ function CriteriaIndicator({ criteria }: { criteria: EligibilityCriteria }) {
 
 export default function SupportDetailsWithSuspense() {
   return (
-    <Suspense fallback={<p>Loading...</p>}>
+    <Suspense fallback={<LoadingSpinner />}>
       <SupportDetails />
     </Suspense>
   );
