@@ -16,6 +16,12 @@ type CareServicesData = {
   enabled?: boolean;
 }
 
+type Params = {
+  value: ReadonlyURLSearchParams;
+  append: (name: string, value: string) => URLSearchParams;
+  remove: (name: string) => URLSearchParams;
+}
+
 const careServices: CareServicesData[] = [
   {
     title: "Daycare Services",
@@ -58,6 +64,25 @@ export default function CareServiceRecommender() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [data, setData] = useState<DDCData[]>([]);
   const searchParams = useSearchParams();
+  const router = useRouter()
+
+  const appendQueryParam = (name: string, value: string) => {
+    const params = new URLSearchParams(searchParams.toString())
+    params.set(name, value)
+    return params
+  }
+
+  const removeQueryParam = (name: string) => {
+    const params = new URLSearchParams(searchParams.toString())
+    params.delete(name)
+    return params
+  }
+
+  const param: Params = {
+    value: searchParams,
+    append: appendQueryParam,
+    remove: removeQueryParam
+  }
 
   useEffect(() => {
     fetch('/data/ddc.json')
@@ -68,17 +93,18 @@ export default function CareServiceRecommender() {
   const incrementIndex = () => {
     if (currentIndex < sections.length - 1) {
       setCurrentIndex(i => i + 1);
+      router.push('?' + appendQueryParam('step', String(currentIndex + 1)).toString())
     }
   }
 
   return (
     <div className='w-full h-full px-8 pb-8 overflow-auto place-content-center'>
-      {data.length > 0 ? sections[currentIndex](incrementIndex, data, searchParams) : <p>Loading...</p>}
+      {data.length > 0 ? sections[currentIndex](incrementIndex, data, param) : <p>Loading...</p>}
     </div>
   )
 }
 
-function CareServiceOverview(incrementIndex: () => void, data: DDCData[], searchParams: ReadonlyURLSearchParams) {
+function CareServiceOverview(incrementIndex: () => void, data: DDCData[], param: Params) {
   return (
     <section className="flex flex-col">
       <span className="leading-tight">These are your caregiving options recommended based on your Father’s medical profile.</span>
@@ -103,7 +129,7 @@ function CareServiceButton({ service, incrementIndex }: { service: CareServicesD
   )
 }
 
-function DaycarePreferenceOverview(incrementIndex: () => void, data: DDCData[], searchParams: ReadonlyURLSearchParams) {
+function DaycarePreferenceOverview(incrementIndex: () => void, data: DDCData[], param: Params) {
   return (
     <section className="flex flex-col gap-4">
       <h1 className="text-xl font-semibold">Daycare Services</h1>
@@ -122,7 +148,8 @@ function DaycarePreferenceOverview(incrementIndex: () => void, data: DDCData[], 
   )
 }
 
-function DaycareLocationPreference(incrementIndex: () => void, data: DDCData[], searchParams: ReadonlyURLSearchParams) {
+function DaycareLocationPreference(incrementIndex: () => void, data: DDCData[], param: Params) {
+  const router = useRouter()
   return (
     <section className="flex flex-col gap-4">
       <h1 className="text-xl font-semibold">Daycare Services</h1>
@@ -132,26 +159,44 @@ function DaycareLocationPreference(incrementIndex: () => void, data: DDCData[], 
         <span className="leading-tight">Feel free to update your postal code below.</span>
       </div>
       <Input placeholder="Your home postal code" value={510296} />
-      <Button onClick={incrementIndex}>Proceed</Button>
+      <Button onClick={() => {
+        incrementIndex();
+        router.push('?' + param.append('postal', '510296').toString())
+      }}>Proceed</Button>
     </section>
   )
 }
 
-function DaycarePickupDropoffPreference(incrementIndex: () => void, data: DDCData[], searchParams: ReadonlyURLSearchParams) {
+function DaycarePickupDropoffPreference(incrementIndex: () => void, data: DDCData[], param: Params) {
+  const router = useRouter()
   return (
     <section className="flex flex-col gap-4">
       <h1 className="text-xl font-semibold">Daycare Services</h1>
       <span className="leading-tight">Would you require pick up and drop off services?</span>
       <Stack direction="column" spacing={1}>
-        <Checkbox>Pick-up</Checkbox>
-        <Checkbox>Drop-off</Checkbox>
+        <Checkbox onChange={
+          (e) => {
+            e.target.checked ? 
+            router.push('?' + param.append('pickup', String(e.target.checked)).toString()) : 
+            router.push('?' + param.remove('pickup').toString())
+          }
+        }>Pick-up
+        </Checkbox>
+        <Checkbox onChange={
+          (e) => {
+            e.target.checked ? 
+            router.push('?' + param.append('dropoff', String(e.target.checked)).toString()) : 
+            router.push('?' + param.remove('dropoff').toString())
+          }
+        }>Drop-off
+        </Checkbox>
       </Stack>
       <Button onClick={incrementIndex}>Proceed</Button>
     </section>
   )
 }
 
-function DaycarePickupDropoffLocation(incrementIndex: () => void, data: DDCData[], searchParams: ReadonlyURLSearchParams) {
+function DaycarePickupDropoffLocation(incrementIndex: () => void, data: DDCData[], param: Params) {
   return (
     <section className="flex flex-col gap-4">
       <h1 className="text-xl font-semibold">Daycare Services</h1>
@@ -169,13 +214,22 @@ function DaycarePickupDropoffLocation(incrementIndex: () => void, data: DDCData[
   )
 }
 
-function DaycarePricePreference(incrementIndex: () => void, data: DDCData[], searchParams: ReadonlyURLSearchParams) {
+function DaycarePricePreference(incrementIndex: () => void, data: DDCData[], param: Params) {
+  const router = useRouter()
+  function handleDragEnd(value: number[]) {
+    const p = new URLSearchParams(param.value.toString())
+    p.delete('minp')
+    p.delete('maxp')
+    p.append('minp', String(value[0]))
+    p.append('maxp', String(value[1]))
+    router.push('?' + p.toString())
+  }
   return (
     <section className="flex flex-col gap-4">
       <h1 className="text-xl font-semibold">Daycare Services</h1>
       <span className="leading-tight">What price are you willing to pay per day?</span>
       <span className="text-sm text-gray-400 leading-tight">(You can change this later)</span>
-      <RangeSlider defaultValue={[10, 50]} min={10} max={90} step={10} width="90%" marginBottom={8} marginX="auto">
+      <RangeSlider defaultValue={[10, 50]} min={10} max={90} step={10} width="90%" marginBottom={8} marginX="auto" onChangeEnd={handleDragEnd}>
         <RangeSliderMark value={10} className="pt-4 ml-[-16px]">
           $10
         </RangeSliderMark>
@@ -196,20 +250,22 @@ function DaycarePricePreference(incrementIndex: () => void, data: DDCData[], sea
   )
 }
 
-function DaycareRecommendations(incrementIndex: () => void, data: DDCData[], searchParams: ReadonlyURLSearchParams) {
+function DaycareRecommendations(incrementIndex: () => void, data: DDCData[], param: Params) {
   const router = useRouter()
   const recommendations = data.slice(0, 3);
 
-  const centreId = searchParams.get('centre');
-  const display = searchParams.get('show');
+  const centreId = param.value.get('centre');
+  const display = param.value.get('show');
   const selectedCentres = data.filter(c => c.friendlyId === centreId);
 
   function handleShowAll() {
-    router.push('?show=all')
+    const p = param.append('show', 'all')
+    router.push('?' + p.toString())
   }
 
   function handleShowRecommendations() {
-    router.push('?show=recommendations')
+    const p = param.append('show', 'recommendations')
+    router.push('?' + p.toString())
   }
 
   return selectedCentres.length > 0 ? (
@@ -219,7 +275,7 @@ function DaycareRecommendations(incrementIndex: () => void, data: DDCData[], sea
       <Button variant="link" leftIcon={<BxChevronLeft fontSize="1.5rem" />} marginRight="auto" onClick={handleShowRecommendations}>Back</Button>
       <span className="leading-tight">List of all dementia daycare centres:</span>
       <div className="flex flex-col gap-4">
-        {data.map((centre, index) => <DaycareRecommendationCard key={index} centre={centre} />)}
+        {data.map((centre, index) => <DaycareRecommendationCard key={index} centre={centre} param={param} />)}
       </div>
     </section>
   ) : (
@@ -227,7 +283,7 @@ function DaycareRecommendations(incrementIndex: () => void, data: DDCData[], sea
       <h1 className="text-xl font-semibold">Daycare Services</h1>
       <span className="leading-tight">Thank you! Based on your inputs, I recommend the following:</span>
       <div className="flex flex-col gap-4">
-        {recommendations.map((centre, index) => <DaycareRecommendationCard key={index} centre={centre} />)}
+        {recommendations.map((centre, index) => <DaycareRecommendationCard key={index} centre={centre} param={param} />)}
       </div>
       <Button>Save search</Button>
       <Button variant="outline" onClick={handleShowAll}>Show me the full list of centres</Button>
@@ -235,10 +291,12 @@ function DaycareRecommendations(incrementIndex: () => void, data: DDCData[], sea
   )
 }
 
-function DaycareRecommendationCard({ centre }: { centre: DDCData }) {
+function DaycareRecommendationCard({ centre, param }: { centre: DDCData; param: Params }) {
   const router = useRouter()
   function handleClick() {
-    router.push(`?centre=${centre.friendlyId}`)
+    const p = new URLSearchParams(param.value.toString())
+    p.set('centre', centre.friendlyId)
+    router.push(`?${p.toString()}`)
   }
   return (
     <div className="flex flex-col gap-4 p-4 border border-gray-200 rounded-md">
