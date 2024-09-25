@@ -12,7 +12,7 @@ export default function DashboardLayout({ children }: Readonly<{
 
   return (
     <div className="flex flex-col md:flex-row h-dvh max-h-dvh">
-      <header className="md:hidden flex place-content-centre place-items-center px-4 w-full h-16 bg-[#096DD9] text-white">
+      <header className="md:hidden flex place-content-centre place-items-center px-4 w-full h-16 bg-brand-primary-500 text-white">
         <Button 
           colorScheme="white"
           variant="link"
