@@ -10,7 +10,7 @@ import ChatHistory from "@/ui/ChatHistory";
 import { Thread } from "@/types/chat";
 import { useDisclosure, Drawer, DrawerOverlay, DrawerContent } from "@chakra-ui/react";
 
-import { Button, BxRightArrowAlt, IconButton } from "@opengovsg/design-system-react";
+import { Button, IconButton } from "@opengovsg/design-system-react";
 import { ArrowRight, MenuIcon, SquarePenIcon } from "lucide-react";
 
 export default function ChatLayout({ children }: Readonly<{

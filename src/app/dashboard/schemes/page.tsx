@@ -4,11 +4,11 @@ import { EligibilityCriteria, SchemeData } from "@/types/scheme";
 import { Text } from "@chakra-ui/react";
 import { BxsCheckCircle } from "@opengovsg/design-system-react";
 import { useSearchParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 
-export default function SupportDetails() {
+function SupportDetails() {
   const param = useSearchParams();
   const [scheme, setScheme] = useState<SchemeData>();
 
@@ -18,7 +18,7 @@ export default function SupportDetails() {
       .then((json) => {
         setScheme(json.find((scheme) => scheme.id === param.get('id')));
       });
-  }, []);
+  }, [param]);
 
   if (!scheme) {
     return <p>Loading...</p>;
@@ -74,5 +74,13 @@ function CriteriaIndicator({ criteria }: { criteria: EligibilityCriteria }) {
       <BxsCheckCircle color={criteria.satisfied ? "green" : "default"} fontSize="1.5rem" className="flex-none" />
       <span className="text-sm place-self-center">{criteria.description}</span>
     </div>
+  );
+}
+
+export default function SupportDetailsWithSuspense() {
+  return (
+    <Suspense fallback={<p>Loading...</p>}>
+      <SupportDetails />
+    </Suspense>
   );
 }
