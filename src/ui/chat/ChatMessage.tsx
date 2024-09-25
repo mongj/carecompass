@@ -48,7 +48,7 @@ function ClickableCard({ header, content }: { header: string, content?: string }
     <>
       <div onClick={onOpen} className="flex flex-col gap-2 bg-white border rounded-md p-4 max-h-36 sm:max-h-80 min-w-56 sm:min-w-72 shadow-sm cursor-pointer hover:bg-gray-100 ease-in duration-100">
         <h3 className="font-semibold text-lg leading-tight">{header}</h3>
-        <span className="text-gray-600 text-sm overflow-hidden text-ellipsis leading-tight line-clamp-3 md:line-clamp-6">{content}</span>
+        <span className="text-gray-600 text-sm overflow-hidden text-ellipsis leading-tight line-clamp-3 md:line-clamp-6 whitespace-pre-line">{content}</span>
       </div>
 
       <Modal isOpen={isOpen} onClose={onClose}>
