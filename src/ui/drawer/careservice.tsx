@@ -517,7 +517,7 @@ function DaycareRecommendations({ stepper, data, param } : DrawerSectionProps) {
     <DaycareCentreDetails {...selectedCentres[0]} />
   ) : display === "all" ? (
     <section className="flex flex-col gap-4">
-      <Button variant="link" leftIcon={<BxChevronLeft fontSize="1.5rem" />} marginRight="auto" onClick={handleShowRecommendations}>Back</Button>
+      <Button variant="link" leftIcon={<BxChevronLeft fontSize="1.5rem" />} marginRight="auto" onClick={() => router.back()}>Back</Button>
       <span className="leading-tight">List of all dementia daycare centres:</span>
       <div className="flex flex-col gap-4">
         {sortedViews.map((centre, index) => <DaycareRecommendationCard key={index} centre={centre} param={param} />)}
