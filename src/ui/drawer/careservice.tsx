@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
-import { DDCData } from "@/types/ddc";
+import { DDCData, DDCView } from "@/types/ddc";
 import { Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger, RangeSlider, RangeSliderFilledTrack, RangeSliderMark, RangeSliderThumb, RangeSliderTrack, Stack } from "@chakra-ui/react";
 import { Badge, Button, BxChevronLeft, BxRightArrowAlt, Checkbox, FormLabel, Input } from "@opengovsg/design-system-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { ReadonlyURLSearchParams, useRouter, useSearchParams } from 'next/navigation'
 import LoadingSpinner from "../loading";
+import { AddressResponse } from "@/types/onemap";
 
 type CareServicesData = {
   title: string;
@@ -28,7 +29,7 @@ type Params = {
   remove: (name: string) => URLSearchParams;
 }
 
-const DEFAULT_POSTAL_CODE = 510296;
+const DEFAULT_POSTAL_CODE = 469972;
 const DEFAULT_MIN_PRICE = 10;
 const DEFAULT_MAX_PRICE = 50;
 
@@ -73,8 +74,8 @@ const sections = [
 export default function CareServiceRecommender() {
   const [data, setData] = useState<DDCData[]>([]);
   const searchParams = useSearchParams();
-  const router = useRouter()
-  const [currentIndex, setCurrentIndex] = useState(searchParams.get('step') ? parseInt(searchParams.get('step') as string) : 0);
+  const router = useRouter();
+
   const step = searchParams.get('step') ? parseInt(searchParams.get('step') as string) : 0;
 
   const appendQueryParam = (name: string, value: string) => {
@@ -135,14 +136,22 @@ export default function CareServiceRecommender() {
     decrement: decrementIndex
   }
 
+  const SectionComponent = sections[step];
+
   return (
-    <div className='w-full h-full px-8 pb-8 overflow-auto place-content-center'>
-      {data.length > 0 ? sections[step](stepper, data, param) : <LoadingSpinner />}
+    <div className="w-full h-full px-8 pb-8 overflow-auto place-content-center">
+      {data.length > 0 ? (
+        <SectionComponent stepper={stepper} data={data} param={param} />
+      ) : (
+        <LoadingSpinner />
+      )}
     </div>
-  )
+  );
 }
 
-function CareServiceOverview(stepper: Stepper, data: DDCData[], param: Params) {
+type DrawerSectionProps = { stepper: Stepper, data: DDCData[], param: Params }
+
+function CareServiceOverview({ stepper, data, param } : DrawerSectionProps) {
   return (
     <section className="flex flex-col">
       <span className="leading-tight">These are your caregiving options recommended based on your Father’s medical profile.</span>
@@ -167,7 +176,7 @@ function CareServiceButton({ service, incrementIndex }: { service: CareServicesD
   )
 }
 
-function DaycarePreferenceOverview(stepper: Stepper, data: DDCData[], param: Params) {
+function DaycarePreferenceOverview({ stepper, data, param } : DrawerSectionProps) {
   const router = useRouter()
   
   function handleCheckLocation(e: React.ChangeEvent<HTMLInputElement>) {
@@ -221,7 +230,7 @@ function DaycarePreferenceOverview(stepper: Stepper, data: DDCData[], param: Par
   )
 }
 
-function DaycareLocationPreference(stepper: Stepper, data: DDCData[], param: Params) {
+function DaycareLocationPreference({ stepper, data, param } : DrawerSectionProps) {
   const router = useRouter()
 
   if (!param.value.has('home')) {
@@ -274,7 +283,7 @@ function DaycareLocationPreference(stepper: Stepper, data: DDCData[], param: Par
   )
 }
 
-function DaycarePickupDropoffPreference(stepper: Stepper, data: DDCData[], param: Params) {
+function DaycarePickupDropoffPreference({ stepper, data, param } : DrawerSectionProps) {
   const router = useRouter()
 
   function handleCheckPickup(e: React.ChangeEvent<HTMLInputElement>) {
@@ -315,7 +324,7 @@ function DaycarePickupDropoffPreference(stepper: Stepper, data: DDCData[], param
   )
 }
 
-function DaycarePickupDropoffLocation(stepper: Stepper, data: DDCData[], param: Params) {
+function DaycarePickupDropoffLocation({ stepper, data, param } : DrawerSectionProps) {
   const router = useRouter()
 
   function updateParam(key: string, value: string) {
@@ -367,7 +376,7 @@ function DaycarePickupDropoffLocation(stepper: Stepper, data: DDCData[], param: 
   )
 }
 
-function DaycarePricePreference(stepper: Stepper, data: DDCData[], param: Params) {
+function DaycarePricePreference({ stepper, data, param } : DrawerSectionProps) {
   const router = useRouter()
 
   if (!param.value.has('minp')) {
@@ -420,13 +429,79 @@ function DaycarePricePreference(stepper: Stepper, data: DDCData[], param: Params
   )
 }
 
-function DaycareRecommendations(stepper: Stepper, data: DDCData[], param: Params) {
+function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: number) {
+  function toRad(value: number) {
+      return value * Math.PI / 180;
+  }
+
+  const R = 6371; // Radius of the Earth in kilometers
+  const c = Math.acos((Math.sin(toRad(lat1)) * Math.sin(toRad(lat2))) + 
+                      (Math.cos(toRad(lat1)) * Math.cos(toRad(lat2))) * 
+                      (Math.cos(toRad(lon2) - toRad(lon1))))
+
+  return parseFloat((R * c).toFixed(1)); // Distance in kilometers
+}
+
+
+function DaycareRecommendations({ stepper, data, param } : DrawerSectionProps) {
   const router = useRouter()
-  const recommendations = data.slice(0, 3);
+  const [homeLat, setHomeLat] = useState(0)
+  const [homeLng, setHomeLng] = useState(0)
+  const [searchSaved, setSearchSaved] = useState(false)
+
+  useEffect(() => {
+    const homePostalCode = parseInt(param.value.get('home') || DEFAULT_POSTAL_CODE.toString())
+    fetch(`https://www.onemap.gov.sg/api/common/elastic/search?searchVal=${homePostalCode}&returnGeom=Y&getAddrDetails=Y&pageNum=1`).
+    then(res => res.json()).then(addr => {
+      setHomeLat(parseFloat(addr.results[0].LATITUDE))
+      setHomeLng(parseFloat(addr.results[0].LONGITUDE))
+    })
+  }, [param])
+
+  const views: DDCView[] = data.map(c => {
+    return ({ 
+      ...c, 
+      distanceFromHome: haversineDistance(homeLat, homeLng, c.lat, c.lng),
+      price: param.value.has('pickup') && param.value.has('dropoff') ? c.priceWithTwoWayTransport : 
+      param.value.has('dropoff') || param.value.has('pickup') ? c.priceWithOneWayTransport : 
+      c.priceNoTransport,
+    })}
+  )
+
+  // filter out centres that do not have pickup/dropoff services (if required) and price range
+  const filteredViews = views.filter(v => {
+    if (param.value.has('pickup') && !v.dropoffPickupAvailability.includes('Pickup')) {
+      return false
+    }
+    if (param.value.has('dropoff') && !v.dropoffPickupAvailability.includes('Dropoff')) {
+      return false
+    }
+    return true
+  }).filter(v => {
+    const minp = parseInt(param.value.get('minp') || '0')
+    const maxp = parseInt(param.value.get('maxp') || '1000000')
+    return v.price >= minp && v.price <= maxp
+  });
+
+  // sort by price and distance from home
+  const sortedViews = filteredViews.sort((a, b) => {
+    // Weight factors (you can adjust these based on your priority)
+    const distanceWeight = 0.9; // prioritize distance
+    const priceWeight = 0.1;    // prioritize price
+
+    // Calculate score for a and b
+    const scoreA = (a.distanceFromHome * distanceWeight) + (a.price * priceWeight);
+    const scoreB = (b.distanceFromHome * distanceWeight) + (b.price * priceWeight);
+
+    // Sort by the calculated score (lower score is better)
+    return scoreA - scoreB;
+  });
+
+  const recommendations = sortedViews.slice(0, 3);
 
   const centreId = param.value.get('centre');
   const display = param.value.get('show');
-  const selectedCentres = data.filter(c => c.friendlyId === centreId);
+  const selectedCentres = views.filter(c => c.friendlyId === centreId);
 
   function handleShowAll() {
     const p = param.append('show', 'all')
@@ -445,7 +520,7 @@ function DaycareRecommendations(stepper: Stepper, data: DDCData[], param: Params
       <Button variant="link" leftIcon={<BxChevronLeft fontSize="1.5rem" />} marginRight="auto" onClick={handleShowRecommendations}>Back</Button>
       <span className="leading-tight">List of all dementia daycare centres:</span>
       <div className="flex flex-col gap-4">
-        {data.map((centre, index) => <DaycareRecommendationCard key={index} centre={centre} param={param} />)}
+        {sortedViews.map((centre, index) => <DaycareRecommendationCard key={index} centre={centre} param={param} />)}
       </div>
     </section>
   ) : (
@@ -456,13 +531,13 @@ function DaycareRecommendations(stepper: Stepper, data: DDCData[], param: Params
       <div className="flex flex-col gap-4">
         {recommendations.map((centre, index) => <DaycareRecommendationCard key={index} centre={centre} param={param} />)}
       </div>
-      <Button>Save search</Button>
+      <Button onClick={() => setSearchSaved(true)} isDisabled={searchSaved}>{searchSaved ? 'Saved!' : 'Save search'}</Button>
       <Button variant="outline" onClick={handleShowAll}>Show me the full list of centres</Button>
     </section>
   )
 }
 
-function DaycareRecommendationCard({ centre, param }: { centre: DDCData; param: Params }) {
+function DaycareRecommendationCard({ centre, param }: { centre: DDCView; param: Params }) {
   const router = useRouter()
   function handleClick() {
     const p = new URLSearchParams(param.value.toString())
@@ -487,7 +562,7 @@ function DaycareRecommendationCard({ centre, param }: { centre: DDCData; param: 
   )
 }
 
-function DaycareCentreDetails(data: DDCData) {
+function DaycareCentreDetails(data: DDCView) {
   const router = useRouter()
   function handleClick() {
     router.back()

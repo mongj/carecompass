@@ -16,8 +16,14 @@ export type DDCData = {
   availability: string | null;
   block: string | null;
   about: string | null;
-  price: number;
+  priceNoTransport: number;
+  priceWithOneWayTransport: number;
+  priceWithTwoWayTransport: number;
   dropoffPickupAvailability: string[];
-  googleReviews: number;
-  distanceFromHome: number;
 };
+
+export interface DDCView extends DDCData {
+  price: number;
+  distanceFromHome: number;
+}
+

@@ -17,13 +17,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "51",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 220,
+        "priceNoTransport": 28,
+        "priceWithOneWayTransport": 30,
+        "priceWithTwoWayTransport": 32,
         "dropoffPickupAvailability": [
-            "Pickup",
-            "Dropoff"
-        ],
-        "googleReviews": 4.4,
-        "distanceFromHome": 17
+            "Pickup"
+        ]
     },
     {
         "friendlyId": "NTUFSSC-P-DCM",
@@ -43,13 +42,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "264",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 150,
+        "priceNoTransport": 25,
+        "priceWithOneWayTransport": 30,
+        "priceWithTwoWayTransport": 27,
         "dropoffPickupAvailability": [
-            "Dropoff",
-            "Pickup"
-        ],
-        "googleReviews": 4.2,
-        "distanceFromHome": 9
+            "Dropoff"
+        ]
     },
     {
         "friendlyId": "NTUFSTP-P-DCM",
@@ -69,13 +67,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "169",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 260,
+        "priceNoTransport": 27,
+        "priceWithOneWayTransport": 26,
+        "priceWithTwoWayTransport": 29,
         "dropoffPickupAvailability": [
-            "Pickup",
             "Dropoff"
-        ],
-        "googleReviews": 4.2,
-        "distanceFromHome": 4
+        ]
     },
     {
         "friendlyId": "CarHTPE-P-DCM",
@@ -95,13 +92,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "261A",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 220,
+        "priceNoTransport": 26,
+        "priceWithOneWayTransport": 25,
+        "priceWithTwoWayTransport": 31,
         "dropoffPickupAvailability": [
-            "Pickup",
-            "Dropoff"
-        ],
-        "googleReviews": 4.6,
-        "distanceFromHome": 17
+            "Pickup"
+        ]
     },
     {
         "friendlyId": "Fu HGCC-P-DCM",
@@ -121,12 +117,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "19",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 60,
+        "priceNoTransport": 30,
+        "priceWithOneWayTransport": 28,
+        "priceWithTwoWayTransport": 29,
         "dropoffPickupAvailability": [
+            "Pickup",
             "Dropoff"
-        ],
-        "googleReviews": 3.0,
-        "distanceFromHome": 8
+        ]
     },
     {
         "friendlyId": "NTUMWSC-P-DCM",
@@ -146,12 +143,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "117",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 20,
+        "priceNoTransport": 23,
+        "priceWithOneWayTransport": 31,
+        "priceWithTwoWayTransport": 32,
         "dropoffPickupAvailability": [
+            "Dropoff",
             "Pickup"
-        ],
-        "googleReviews": 4.6,
-        "distanceFromHome": 3
+        ]
     },
     {
         "friendlyId": "NTUFSRM-P-DCM",
@@ -171,13 +169,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "51",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 240,
+        "priceNoTransport": 22,
+        "priceWithOneWayTransport": 26,
+        "priceWithTwoWayTransport": 28,
         "dropoffPickupAvailability": [
-            "Pickup",
-            "Dropoff"
-        ],
-        "googleReviews": 4.0,
-        "distanceFromHome": 7
+            "Pickup"
+        ]
     },
     {
         "friendlyId": "SheAAHS-P-DCM",
@@ -197,12 +194,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "175",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 190,
+        "priceNoTransport": 25,
+        "priceWithOneWayTransport": 25,
+        "priceWithTwoWayTransport": 32,
         "dropoffPickupAvailability": [
-            "Dropoff"
-        ],
-        "googleReviews": 3.8,
-        "distanceFromHome": 8
+            "Pickup"
+        ]
     },
     {
         "friendlyId": "St SSCQ-P-DCM",
@@ -222,13 +219,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "11",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 50,
+        "priceNoTransport": 29,
+        "priceWithOneWayTransport": 31,
+        "priceWithTwoWayTransport": 31,
         "dropoffPickupAvailability": [
-            "Dropoff",
-            "Pickup"
-        ],
-        "googleReviews": 3.1,
-        "distanceFromHome": 11
+            "Pickup",
+            "Dropoff"
+        ]
     },
     {
         "friendlyId": "VanSCCT-P-DCM",
@@ -248,12 +245,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "31",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 270,
+        "priceNoTransport": 23,
+        "priceWithOneWayTransport": 24,
+        "priceWithTwoWayTransport": 27,
         "dropoffPickupAvailability": [
-            "Pickup"
-        ],
-        "googleReviews": 5.0,
-        "distanceFromHome": 18
+            "Pickup",
+            "Dropoff"
+        ]
     },
     {
         "friendlyId": "VanSCCW-P-DCM",
@@ -273,13 +271,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "2",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 190,
+        "priceNoTransport": 27,
+        "priceWithOneWayTransport": 24,
+        "priceWithTwoWayTransport": 26,
         "dropoffPickupAvailability": [
-            "Pickup",
             "Dropoff"
-        ],
-        "googleReviews": 3.5,
-        "distanceFromHome": 9
+        ]
     },
     {
         "friendlyId": "CarHTPW-P-DCM",
@@ -299,13 +296,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "131",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 150,
+        "priceNoTransport": 25,
+        "priceWithOneWayTransport": 25,
+        "priceWithTwoWayTransport": 26,
         "dropoffPickupAvailability": [
-            "Pickup",
             "Dropoff"
-        ],
-        "googleReviews": 3.8,
-        "distanceFromHome": 8
+        ]
     },
     {
         "friendlyId": "SenCCSC--CRC",
@@ -325,12 +321,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "70",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 180,
+        "priceNoTransport": 29,
+        "priceWithOneWayTransport": 26,
+        "priceWithTwoWayTransport": 27,
         "dropoffPickupAvailability": [
+            "Pickup",
             "Dropoff"
-        ],
-        "googleReviews": 3.1,
-        "distanceFromHome": 10
+        ]
     },
     {
         "friendlyId": "VanCCBB-P-DCM",
@@ -350,13 +347,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "11",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 100,
+        "priceNoTransport": 26,
+        "priceWithOneWayTransport": 26,
+        "priceWithTwoWayTransport": 31,
         "dropoffPickupAvailability": [
-            "Pickup",
             "Dropoff"
-        ],
-        "googleReviews": 4.4,
-        "distanceFromHome": 8
+        ]
     },
     {
         "friendlyId": "St EBTC-P-DCM",
@@ -376,13 +372,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "310",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 290,
+        "priceNoTransport": 23,
+        "priceWithOneWayTransport": 27,
+        "priceWithTwoWayTransport": 29,
         "dropoffPickupAvailability": [
             "Dropoff",
             "Pickup"
-        ],
-        "googleReviews": 3.2,
-        "distanceFromHome": 19
+        ]
     },
     {
         "friendlyId": "St SECC-P-DCM2",
@@ -402,13 +398,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "602",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 50,
+        "priceNoTransport": 29,
+        "priceWithOneWayTransport": 28,
+        "priceWithTwoWayTransport": 31,
         "dropoffPickupAvailability": [
-            "Dropoff",
-            "Pickup"
-        ],
-        "googleReviews": 4.4,
-        "distanceFromHome": 2
+            "Dropoff"
+        ]
     },
     {
         "friendlyId": "NTUCFSH-P-DCM",
@@ -428,12 +423,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "95B",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 40,
+        "priceNoTransport": 22,
+        "priceWithOneWayTransport": 25,
+        "priceWithTwoWayTransport": 27,
         "dropoffPickupAvailability": [
+            "Dropoff",
             "Pickup"
-        ],
-        "googleReviews": 3.8,
-        "distanceFromHome": 20
+        ]
     },
     {
         "friendlyId": "NTUSBMS-P-DCM",
@@ -453,12 +449,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "141",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 150,
+        "priceNoTransport": 24,
+        "priceWithOneWayTransport": 29,
+        "priceWithTwoWayTransport": 31,
         "dropoffPickupAvailability": [
+            "Pickup",
             "Dropoff"
-        ],
-        "googleReviews": 4.3,
-        "distanceFromHome": 19
+        ]
     },
     {
         "friendlyId": "St SEWC-P-DCM",
@@ -478,13 +475,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "97",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 130,
+        "priceNoTransport": 24,
+        "priceWithOneWayTransport": 25,
+        "priceWithTwoWayTransport": 30,
         "dropoffPickupAvailability": [
-            "Pickup",
-            "Dropoff"
-        ],
-        "googleReviews": 4.5,
-        "distanceFromHome": 13
+            "Pickup"
+        ]
     },
     {
         "friendlyId": "KwoPSCC-P-DCM",
@@ -504,13 +500,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "51",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 170,
+        "priceNoTransport": 27,
+        "priceWithOneWayTransport": 25,
+        "priceWithTwoWayTransport": 27,
         "dropoffPickupAvailability": [
-            "Pickup",
-            "Dropoff"
-        ],
-        "googleReviews": 3.7,
-        "distanceFromHome": 9
+            "Pickup"
+        ]
     },
     {
         "friendlyId": "GeyASCC-P-DCM",
@@ -530,13 +525,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "96",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 250,
+        "priceNoTransport": 25,
+        "priceWithOneWayTransport": 30,
+        "priceWithTwoWayTransport": 30,
         "dropoffPickupAvailability": [
-            "Dropoff",
-            "Pickup"
-        ],
-        "googleReviews": 4.6,
-        "distanceFromHome": 16
+            "Pickup",
+            "Dropoff"
+        ]
     },
     {
         "friendlyId": "ThoHFSC-P-NH",
@@ -556,12 +551,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "91",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 30,
+        "priceNoTransport": 23,
+        "priceWithOneWayTransport": 26,
+        "priceWithTwoWayTransport": 31,
         "dropoffPickupAvailability": [
-            "Pickup"
-        ],
-        "googleReviews": 3.1,
-        "distanceFromHome": 17
+            "Pickup",
+            "Dropoff"
+        ]
     },
     {
         "friendlyId": "MuhADCC-P-DCM",
@@ -581,13 +577,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "10",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 270,
+        "priceNoTransport": 26,
+        "priceWithOneWayTransport": 26,
+        "priceWithTwoWayTransport": 30,
         "dropoffPickupAvailability": [
             "Dropoff",
             "Pickup"
-        ],
-        "googleReviews": 3.0,
-        "distanceFromHome": 3
+        ]
     },
     {
         "friendlyId": "PCFSCE-P-DCM",
@@ -607,13 +603,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "650",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 120,
+        "priceNoTransport": 27,
+        "priceWithOneWayTransport": 24,
+        "priceWithTwoWayTransport": 29,
         "dropoffPickupAvailability": [
             "Pickup",
             "Dropoff"
-        ],
-        "googleReviews": 4.0,
-        "distanceFromHome": 19
+        ]
     },
     {
         "friendlyId": "MWSSCCE-P-DCM",
@@ -633,13 +629,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "1",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 90,
+        "priceNoTransport": 26,
+        "priceWithOneWayTransport": 25,
+        "priceWithTwoWayTransport": 26,
         "dropoffPickupAvailability": [
-            "Pickup",
-            "Dropoff"
-        ],
-        "googleReviews": 4.4,
-        "distanceFromHome": 3
+            "Dropoff",
+            "Pickup"
+        ]
     },
     {
         "friendlyId": "St SEMP-P-DCM",
@@ -659,13 +655,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "86",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 140,
+        "priceNoTransport": 22,
+        "priceWithOneWayTransport": 23,
+        "priceWithTwoWayTransport": 27,
         "dropoffPickupAvailability": [
-            "Dropoff",
-            "Pickup"
-        ],
-        "googleReviews": 4.2,
-        "distanceFromHome": 20
+            "Dropoff"
+        ]
     },
     {
         "friendlyId": "THKKBBN-P-DCM",
@@ -686,13 +681,12 @@
         "availability": "WEEKENDS_ONLY",
         "block": "534",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 240,
+        "priceNoTransport": 28,
+        "priceWithOneWayTransport": 24,
+        "priceWithTwoWayTransport": 32,
         "dropoffPickupAvailability": [
-            "Pickup",
             "Dropoff"
-        ],
-        "googleReviews": 4.5,
-        "distanceFromHome": 18
+        ]
     },
     {
         "friendlyId": "ManEJDC-P-DCM",
@@ -712,12 +706,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "20",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 190,
+        "priceNoTransport": 26,
+        "priceWithOneWayTransport": 29,
+        "priceWithTwoWayTransport": 29,
         "dropoffPickupAvailability": [
-            "Pickup"
-        ],
-        "googleReviews": 4.6,
-        "distanceFromHome": 11
+            "Pickup",
+            "Dropoff"
+        ]
     },
     {
         "friendlyId": "NTUSPRC-P-DCM",
@@ -737,12 +732,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "112",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 110,
+        "priceNoTransport": 21,
+        "priceWithOneWayTransport": 26,
+        "priceWithTwoWayTransport": 27,
         "dropoffPickupAvailability": [
             "Dropoff"
-        ],
-        "googleReviews": 4.6,
-        "distanceFromHome": 10
+        ]
     },
     {
         "friendlyId": "PCFSCCS-P-DCM",
@@ -762,12 +757,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "120",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 100,
+        "priceNoTransport": 26,
+        "priceWithOneWayTransport": 30,
+        "priceWithTwoWayTransport": 32,
         "dropoffPickupAvailability": [
-            "Pickup"
-        ],
-        "googleReviews": 3.6,
-        "distanceFromHome": 6
+            "Pickup",
+            "Dropoff"
+        ]
     },
     {
         "friendlyId": "St SECC-P-DCM",
@@ -787,12 +783,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "350",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 50,
+        "priceNoTransport": 23,
+        "priceWithOneWayTransport": 30,
+        "priceWithTwoWayTransport": 30,
         "dropoffPickupAvailability": [
             "Dropoff"
-        ],
-        "googleReviews": 3.8,
-        "distanceFromHome": 18
+        ]
     },
     {
         "friendlyId": "St SETC-P-DCM",
@@ -812,12 +808,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "101",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 90,
+        "priceNoTransport": 26,
+        "priceWithOneWayTransport": 25,
+        "priceWithTwoWayTransport": 29,
         "dropoffPickupAvailability": [
-            "Dropoff"
-        ],
-        "googleReviews": 3.6,
-        "distanceFromHome": 16
+            "Pickup"
+        ]
     },
     {
         "friendlyId": "St SCTC-P-DCM",
@@ -837,12 +833,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "1",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 120,
+        "priceNoTransport": 22,
+        "priceWithOneWayTransport": 29,
+        "priceWithTwoWayTransport": 28,
         "dropoffPickupAvailability": [
+            "Pickup",
             "Dropoff"
-        ],
-        "googleReviews": 4.0,
-        "distanceFromHome": 3
+        ]
     },
     {
         "friendlyId": "AllSHT-P-DCM",
@@ -862,13 +859,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "11",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 80,
+        "priceNoTransport": 29,
+        "priceWithOneWayTransport": 30,
+        "priceWithTwoWayTransport": 27,
         "dropoffPickupAvailability": [
-            "Dropoff",
-            "Pickup"
-        ],
-        "googleReviews": 3.4,
-        "distanceFromHome": 19
+            "Pickup",
+            "Dropoff"
+        ]
     },
     {
         "friendlyId": "St SEHC-P-DCM",
@@ -888,13 +885,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "126",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 90,
+        "priceNoTransport": 30,
+        "priceWithOneWayTransport": 26,
+        "priceWithTwoWayTransport": 25,
         "dropoffPickupAvailability": [
-            "Dropoff",
             "Pickup"
-        ],
-        "googleReviews": 3.4,
-        "distanceFromHome": 18
+        ]
     },
     {
         "friendlyId": "St EGYC-P-DCM",
@@ -914,13 +910,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "831",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 260,
+        "priceNoTransport": 24,
+        "priceWithOneWayTransport": 23,
+        "priceWithTwoWayTransport": 26,
         "dropoffPickupAvailability": [
-            "Dropoff",
-            "Pickup"
-        ],
-        "googleReviews": 4.1,
-        "distanceFromHome": 7
+            "Dropoff"
+        ]
     },
     {
         "friendlyId": "HomNFWB-P-DCM",
@@ -940,13 +935,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "991B",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 170,
+        "priceNoTransport": 21,
+        "priceWithOneWayTransport": 30,
+        "priceWithTwoWayTransport": 29,
         "dropoffPickupAvailability": [
             "Pickup",
             "Dropoff"
-        ],
-        "googleReviews": 3.5,
-        "distanceFromHome": 12
+        ]
     },
     {
         "friendlyId": "HomNFWH-P-DCM",
@@ -966,12 +961,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "35",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 280,
+        "priceNoTransport": 20,
+        "priceWithOneWayTransport": 26,
+        "priceWithTwoWayTransport": 30,
         "dropoffPickupAvailability": [
-            "Pickup"
-        ],
-        "googleReviews": 4.6,
-        "distanceFromHome": 7
+            "Pickup",
+            "Dropoff"
+        ]
     },
     {
         "friendlyId": "St SERC-P-DCM",
@@ -991,13 +987,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "164",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 30,
+        "priceNoTransport": 25,
+        "priceWithOneWayTransport": 30,
+        "priceWithTwoWayTransport": 29,
         "dropoffPickupAvailability": [
-            "Dropoff",
-            "Pickup"
-        ],
-        "googleReviews": 3.9,
-        "distanceFromHome": 12
+            "Pickup",
+            "Dropoff"
+        ]
     },
     {
         "friendlyId": "ManHSCC-P-DCM",
@@ -1017,12 +1013,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "14F",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 100,
+        "priceNoTransport": 27,
+        "priceWithOneWayTransport": 30,
+        "priceWithTwoWayTransport": 31,
         "dropoffPickupAvailability": [
-            "Pickup"
-        ],
-        "googleReviews": 3.5,
-        "distanceFromHome": 9
+            "Pickup",
+            "Dropoff"
+        ]
     },
     {
         "friendlyId": "PCFSCS-P-DCM",
@@ -1042,12 +1039,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "109",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 40,
+        "priceNoTransport": 23,
+        "priceWithOneWayTransport": 26,
+        "priceWithTwoWayTransport": 33,
         "dropoffPickupAvailability": [
-            "Pickup"
-        ],
-        "googleReviews": 4.4,
-        "distanceFromHome": 12
+            "Dropoff"
+        ]
     },
     {
         "friendlyId": "PCFSCBH-P-DCM",
@@ -1067,13 +1064,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "307",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 210,
+        "priceNoTransport": 24,
+        "priceWithOneWayTransport": 26,
+        "priceWithTwoWayTransport": 29,
         "dropoffPickupAvailability": [
             "Pickup",
             "Dropoff"
-        ],
-        "googleReviews": 4.6,
-        "distanceFromHome": 8
+        ]
     },
     {
         "friendlyId": "RenMKNH-P-DCM",
@@ -1093,12 +1090,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "10",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 100,
+        "priceNoTransport": 24,
+        "priceWithOneWayTransport": 25,
+        "priceWithTwoWayTransport": 32,
         "dropoffPickupAvailability": [
-            "Dropoff"
-        ],
-        "googleReviews": 3.4,
-        "distanceFromHome": 7
+            "Pickup"
+        ]
     },
     {
         "friendlyId": "St SEKB-P-DCM",
@@ -1118,13 +1115,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "216",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 280,
+        "priceNoTransport": 22,
+        "priceWithOneWayTransport": 25,
+        "priceWithTwoWayTransport": 33,
         "dropoffPickupAvailability": [
-            "Pickup",
-            "Dropoff"
-        ],
-        "googleReviews": 3.2,
-        "distanceFromHome": 8
+            "Pickup"
+        ]
     },
     {
         "friendlyId": "PCFSCS-P-DCM2",
@@ -1144,13 +1140,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "313",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 170,
+        "priceNoTransport": 24,
+        "priceWithOneWayTransport": 26,
+        "priceWithTwoWayTransport": 29,
         "dropoffPickupAvailability": [
             "Pickup",
             "Dropoff"
-        ],
-        "googleReviews": 4.2,
-        "distanceFromHome": 6
+        ]
     },
     {
         "friendlyId": "St BAAH-P-DCM",
@@ -1170,12 +1166,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "152B",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 160,
+        "priceNoTransport": 28,
+        "priceWithOneWayTransport": 27,
+        "priceWithTwoWayTransport": 28,
         "dropoffPickupAvailability": [
+            "Dropoff",
             "Pickup"
-        ],
-        "googleReviews": 3.4,
-        "distanceFromHome": 14
+        ]
     },
     {
         "friendlyId": "LioFTEB-P-DCM",
@@ -1195,12 +1192,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "9",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 240,
+        "priceNoTransport": 23,
+        "priceWithOneWayTransport": 29,
+        "priceWithTwoWayTransport": 30,
         "dropoffPickupAvailability": [
             "Pickup"
-        ],
-        "googleReviews": 4.0,
-        "distanceFromHome": 4
+        ]
     },
     {
         "friendlyId": "St EJEC-P-DCM",
@@ -1220,12 +1217,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "327",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 70,
+        "priceNoTransport": 20,
+        "priceWithOneWayTransport": 30,
+        "priceWithTwoWayTransport": 26,
         "dropoffPickupAvailability": [
-            "Dropoff"
-        ],
-        "googleReviews": 3.3,
-        "distanceFromHome": 6
+            "Dropoff",
+            "Pickup"
+        ]
     },
     {
         "friendlyId": "St EARC-P-DCM",
@@ -1245,13 +1243,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "150A",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 160,
+        "priceNoTransport": 28,
+        "priceWithOneWayTransport": 25,
+        "priceWithTwoWayTransport": 30,
         "dropoffPickupAvailability": [
-            "Pickup",
-            "Dropoff"
-        ],
-        "googleReviews": 3.0,
-        "distanceFromHome": 7
+            "Dropoff",
+            "Pickup"
+        ]
     },
     {
         "friendlyId": "NTUFSBL-P-DCM",
@@ -1271,13 +1269,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "216",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 280,
+        "priceNoTransport": 24,
+        "priceWithOneWayTransport": 25,
+        "priceWithTwoWayTransport": 27,
         "dropoffPickupAvailability": [
-            "Pickup",
-            "Dropoff"
-        ],
-        "googleReviews": 3.3,
-        "distanceFromHome": 4
+            "Dropoff",
+            "Pickup"
+        ]
     },
     {
         "friendlyId": "St EBBC-P-DCM",
@@ -1297,13 +1295,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "168",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 80,
+        "priceNoTransport": 22,
+        "priceWithOneWayTransport": 29,
+        "priceWithTwoWayTransport": 30,
         "dropoffPickupAvailability": [
-            "Pickup",
-            "Dropoff"
-        ],
-        "googleReviews": 4.6,
-        "distanceFromHome": 4
+            "Dropoff",
+            "Pickup"
+        ]
     },
     {
         "friendlyId": "SASSHK-P-CBRC",
@@ -1324,13 +1322,12 @@
         "availability": "WEEKENDS_ONLY",
         "block": "337",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 140,
+        "priceNoTransport": 24,
+        "priceWithOneWayTransport": 26,
+        "priceWithTwoWayTransport": 27,
         "dropoffPickupAvailability": [
-            "Pickup",
             "Dropoff"
-        ],
-        "googleReviews": 3.2,
-        "distanceFromHome": 17
+        ]
     },
     {
         "friendlyId": "RenBBNH-P-DCM",
@@ -1350,13 +1347,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "31",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 270,
+        "priceNoTransport": 27,
+        "priceWithOneWayTransport": 23,
+        "priceWithTwoWayTransport": 28,
         "dropoffPickupAvailability": [
-            "Pickup",
-            "Dropoff"
-        ],
-        "googleReviews": 4.6,
-        "distanceFromHome": 9
+            "Dropoff",
+            "Pickup"
+        ]
     },
     {
         "friendlyId": "AngSCH-P-DCM",
@@ -1376,12 +1373,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "4",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 90,
+        "priceNoTransport": 22,
+        "priceWithOneWayTransport": 27,
+        "priceWithTwoWayTransport": 31,
         "dropoffPickupAvailability": [
             "Pickup"
-        ],
-        "googleReviews": 3.9,
-        "distanceFromHome": 14
+        ]
     },
     {
         "friendlyId": "PCFSCYT-P-DCM",
@@ -1401,12 +1398,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "625",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 90,
+        "priceNoTransport": 28,
+        "priceWithOneWayTransport": 28,
+        "priceWithTwoWayTransport": 26,
         "dropoffPickupAvailability": [
-            "Pickup"
-        ],
-        "googleReviews": 4.0,
-        "distanceFromHome": 14
+            "Pickup",
+            "Dropoff"
+        ]
     },
     {
         "friendlyId": "St SEKH-P-DCM",
@@ -1426,13 +1424,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "801",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 70,
+        "priceNoTransport": 27,
+        "priceWithOneWayTransport": 25,
+        "priceWithTwoWayTransport": 31,
         "dropoffPickupAvailability": [
             "Pickup",
             "Dropoff"
-        ],
-        "googleReviews": 4.7,
-        "distanceFromHome": 6
+        ]
     },
     {
         "friendlyId": "NTUCFSM-P-DCM",
@@ -1452,12 +1450,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "172",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 80,
+        "priceNoTransport": 23,
+        "priceWithOneWayTransport": 27,
+        "priceWithTwoWayTransport": 26,
         "dropoffPickupAvailability": [
-            "Pickup"
-        ],
-        "googleReviews": 4.0,
-        "distanceFromHome": 15
+            "Dropoff"
+        ]
     },
     {
         "friendlyId": "SreMSCW-P-DCM",
@@ -1477,12 +1475,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "861",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 160,
+        "priceNoTransport": 25,
+        "priceWithOneWayTransport": 30,
+        "priceWithTwoWayTransport": 29,
         "dropoffPickupAvailability": [
+            "Dropoff",
             "Pickup"
-        ],
-        "googleReviews": 4.4,
-        "distanceFromHome": 3
+        ]
     },
     {
         "friendlyId": "ManFTNH-P-DCM",
@@ -1502,13 +1501,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "20",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 100,
+        "priceNoTransport": 22,
+        "priceWithOneWayTransport": 28,
+        "priceWithTwoWayTransport": 30,
         "dropoffPickupAvailability": [
-            "Pickup",
             "Dropoff"
-        ],
-        "googleReviews": 3.3,
-        "distanceFromHome": 13
+        ]
     },
     {
         "friendlyId": "St ENSE-P-DCM",
@@ -1528,13 +1526,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "260",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 300,
+        "priceNoTransport": 21,
+        "priceWithOneWayTransport": 31,
+        "priceWithTwoWayTransport": 31,
         "dropoffPickupAvailability": [
-            "Pickup",
             "Dropoff"
-        ],
-        "googleReviews": 3.1,
-        "distanceFromHome": 6
+        ]
     },
     {
         "friendlyId": "AllCYFG-P-CBN",
@@ -1554,13 +1551,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "674",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 270,
+        "priceNoTransport": 20,
+        "priceWithOneWayTransport": 25,
+        "priceWithTwoWayTransport": 31,
         "dropoffPickupAvailability": [
-            "Dropoff",
-            "Pickup"
-        ],
-        "googleReviews": 3.1,
-        "distanceFromHome": 14
+            "Dropoff"
+        ]
     },
     {
         "friendlyId": "St ENSC-P-DCM",
@@ -1580,12 +1576,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "766",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 160,
+        "priceNoTransport": 24,
+        "priceWithOneWayTransport": 25,
+        "priceWithTwoWayTransport": 31,
         "dropoffPickupAvailability": [
             "Pickup"
-        ],
-        "googleReviews": 3.6,
-        "distanceFromHome": 8
+        ]
     },
     {
         "friendlyId": "St SESL-P-DCM",
@@ -1605,12 +1601,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "222",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 260,
+        "priceNoTransport": 29,
+        "priceWithOneWayTransport": 29,
+        "priceWithTwoWayTransport": 33,
         "dropoffPickupAvailability": [
+            "Dropoff",
             "Pickup"
-        ],
-        "googleReviews": 4.6,
-        "distanceFromHome": 4
+        ]
     },
     {
         "friendlyId": "SASSWC-P-DCM",
@@ -1631,12 +1628,12 @@
         "availability": "WEEKENDS_ONLY",
         "block": "704",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 20,
+        "priceNoTransport": 27,
+        "priceWithOneWayTransport": 26,
+        "priceWithTwoWayTransport": 30,
         "dropoffPickupAvailability": [
             "Pickup"
-        ],
-        "googleReviews": 4.6,
-        "distanceFromHome": 15
+        ]
     },
     {
         "friendlyId": "JamNHDS-P-DCM",
@@ -1656,12 +1653,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "130",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 240,
+        "priceNoTransport": 28,
+        "priceWithOneWayTransport": 27,
+        "priceWithTwoWayTransport": 26,
         "dropoffPickupAvailability": [
-            "Pickup"
-        ],
-        "googleReviews": 3.3,
-        "distanceFromHome": 20
+            "Pickup",
+            "Dropoff"
+        ]
     },
     {
         "friendlyId": "KwoSCSG-P-CBN",
@@ -1681,13 +1679,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "25",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 300,
+        "priceNoTransport": 29,
+        "priceWithOneWayTransport": 30,
+        "priceWithTwoWayTransport": 25,
         "dropoffPickupAvailability": [
             "Dropoff",
             "Pickup"
-        ],
-        "googleReviews": 3.7,
-        "distanceFromHome": 7
+        ]
     },
     {
         "friendlyId": "KwoWSCM-P-DCM",
@@ -1707,13 +1705,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "113",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 130,
+        "priceNoTransport": 28,
+        "priceWithOneWayTransport": 26,
+        "priceWithTwoWayTransport": 25,
         "dropoffPickupAvailability": [
-            "Dropoff",
             "Pickup"
-        ],
-        "googleReviews": 4.0,
-        "distanceFromHome": 7
+        ]
     },
     {
         "friendlyId": "RenRCH-P-DCM",
@@ -1733,13 +1730,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "71",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 80,
+        "priceNoTransport": 29,
+        "priceWithOneWayTransport": 29,
+        "priceWithTwoWayTransport": 25,
         "dropoffPickupAvailability": [
-            "Pickup",
-            "Dropoff"
-        ],
-        "googleReviews": 3.9,
-        "distanceFromHome": 4
+            "Pickup"
+        ]
     },
     {
         "friendlyId": "KwoWSCM--CRC",
@@ -1759,13 +1755,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "82",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 130,
+        "priceNoTransport": 29,
+        "priceWithOneWayTransport": 26,
+        "priceWithTwoWayTransport": 28,
         "dropoffPickupAvailability": [
-            "Pickup",
-            "Dropoff"
-        ],
-        "googleReviews": 4.8,
-        "distanceFromHome": 2
+            "Dropoff",
+            "Pickup"
+        ]
     },
     {
         "friendlyId": "NTUFSDC-P-DCM",
@@ -1785,13 +1781,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "62",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 20,
+        "priceNoTransport": 21,
+        "priceWithOneWayTransport": 23,
+        "priceWithTwoWayTransport": 26,
         "dropoffPickupAvailability": [
-            "Dropoff",
             "Pickup"
-        ],
-        "googleReviews": 3.9,
-        "distanceFromHome": 14
+        ]
     },
     {
         "friendlyId": "St SCSC-H-B",
@@ -1811,13 +1806,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "10",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 160,
+        "priceNoTransport": 26,
+        "priceWithOneWayTransport": 27,
+        "priceWithTwoWayTransport": 30,
         "dropoffPickupAvailability": [
-            "Pickup",
-            "Dropoff"
-        ],
-        "googleReviews": 3.8,
-        "distanceFromHome": 6
+            "Dropoff",
+            "Pickup"
+        ]
     },
     {
         "friendlyId": "NTUCFSF-P-DCM",
@@ -1837,13 +1832,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "91",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 120,
+        "priceNoTransport": 22,
+        "priceWithOneWayTransport": 28,
+        "priceWithTwoWayTransport": 25,
         "dropoffPickupAvailability": [
-            "Dropoff",
-            "Pickup"
-        ],
-        "googleReviews": 3.8,
-        "distanceFromHome": 9
+            "Pickup",
+            "Dropoff"
+        ]
     },
     {
         "friendlyId": "NTUFSPS-P-DCM",
@@ -1863,13 +1858,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "571",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 170,
+        "priceNoTransport": 24,
+        "priceWithOneWayTransport": 24,
+        "priceWithTwoWayTransport": 25,
         "dropoffPickupAvailability": [
-            "Dropoff",
             "Pickup"
-        ],
-        "googleReviews": 4.1,
-        "distanceFromHome": 13
+        ]
     },
     {
         "friendlyId": "St SESC-P-DCM",
@@ -1889,12 +1883,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "217",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 70,
+        "priceNoTransport": 26,
+        "priceWithOneWayTransport": 31,
+        "priceWithTwoWayTransport": 32,
         "dropoffPickupAvailability": [
-            "Dropoff"
-        ],
-        "googleReviews": 3.6,
-        "distanceFromHome": 17
+            "Dropoff",
+            "Pickup"
+        ]
     },
     {
         "friendlyId": "NTUFSTJ-P-DCM",
@@ -1914,13 +1909,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "349",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 90,
+        "priceNoTransport": 30,
+        "priceWithOneWayTransport": 25,
+        "priceWithTwoWayTransport": 29,
         "dropoffPickupAvailability": [
-            "Pickup",
-            "Dropoff"
-        ],
-        "googleReviews": 3.2,
-        "distanceFromHome": 8
+            "Pickup"
+        ]
     },
     {
         "friendlyId": "NTUFSJC-P-DCM",
@@ -1940,13 +1934,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "402",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 260,
+        "priceNoTransport": 30,
+        "priceWithOneWayTransport": 25,
+        "priceWithTwoWayTransport": 32,
         "dropoffPickupAvailability": [
-            "Pickup",
             "Dropoff"
-        ],
-        "googleReviews": 3.4,
-        "distanceFromHome": 14
+        ]
     },
     {
         "friendlyId": "NTUHJCP-H-B",
@@ -1966,12 +1959,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "493",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 240,
+        "priceNoTransport": 29,
+        "priceWithOneWayTransport": 27,
+        "priceWithTwoWayTransport": 32,
         "dropoffPickupAvailability": [
             "Dropoff"
-        ],
-        "googleReviews": 5.0,
-        "distanceFromHome": 6
+        ]
     },
     {
         "friendlyId": "SunWAMS-P-DCM",
@@ -1991,13 +1984,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "5",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 100,
+        "priceNoTransport": 22,
+        "priceWithOneWayTransport": 28,
+        "priceWithTwoWayTransport": 31,
         "dropoffPickupAvailability": [
-            "Pickup",
-            "Dropoff"
-        ],
-        "googleReviews": 3.7,
-        "distanceFromHome": 9
+            "Dropoff",
+            "Pickup"
+        ]
     },
     {
         "friendlyId": "St SECP--CRC",
@@ -2017,13 +2010,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "113",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 280,
+        "priceNoTransport": 27,
+        "priceWithOneWayTransport": 25,
+        "priceWithTwoWayTransport": 33,
         "dropoffPickupAvailability": [
             "Pickup",
             "Dropoff"
-        ],
-        "googleReviews": 3.5,
-        "distanceFromHome": 13
+        ]
     },
     {
         "friendlyId": "PCFSCKA-P-DCM",
@@ -2043,13 +2036,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "4",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 260,
+        "priceNoTransport": 20,
+        "priceWithOneWayTransport": 30,
+        "priceWithTwoWayTransport": 29,
         "dropoffPickupAvailability": [
-            "Pickup",
-            "Dropoff"
-        ],
-        "googleReviews": 4.6,
-        "distanceFromHome": 9
+            "Pickup"
+        ]
     },
     {
         "friendlyId": "St ETBC-P-DCM",
@@ -2069,13 +2061,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "33",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 60,
+        "priceNoTransport": 26,
+        "priceWithOneWayTransport": 26,
+        "priceWithTwoWayTransport": 30,
         "dropoffPickupAvailability": [
-            "Pickup",
-            "Dropoff"
-        ],
-        "googleReviews": 4.2,
-        "distanceFromHome": 1
+            "Pickup"
+        ]
     },
     {
         "friendlyId": "SASSTB-P-CBN",
@@ -2096,13 +2087,12 @@
         "availability": "WEEKENDS_ONLY",
         "block": "30",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 110,
+        "priceNoTransport": 24,
+        "priceWithOneWayTransport": 30,
+        "priceWithTwoWayTransport": 32,
         "dropoffPickupAvailability": [
-            "Pickup",
             "Dropoff"
-        ],
-        "googleReviews": 4.9,
-        "distanceFromHome": 2
+        ]
     },
     {
         "friendlyId": "YonECC-P-CBRC",
@@ -2122,12 +2112,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "335A",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 300,
+        "priceNoTransport": 25,
+        "priceWithOneWayTransport": 26,
+        "priceWithTwoWayTransport": 28,
         "dropoffPickupAvailability": [
             "Dropoff"
-        ],
-        "googleReviews": 3.1,
-        "distanceFromHome": 19
+        ]
     },
     {
         "friendlyId": "AWWDCCY-P-DCD",
@@ -2147,13 +2137,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "740",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 260,
+        "priceNoTransport": 23,
+        "priceWithOneWayTransport": 29,
+        "priceWithTwoWayTransport": 30,
         "dropoffPickupAvailability": [
-            "Dropoff",
-            "Pickup"
-        ],
-        "googleReviews": 4.7,
-        "distanceFromHome": 9
+            "Pickup",
+            "Dropoff"
+        ]
     },
     {
         "friendlyId": "NewHCBB-P-DCD",
@@ -2173,12 +2163,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "511",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 260,
+        "priceNoTransport": 21,
+        "priceWithOneWayTransport": 29,
+        "priceWithTwoWayTransport": 33,
         "dropoffPickupAvailability": [
+            "Pickup",
             "Dropoff"
-        ],
-        "googleReviews": 3.8,
-        "distanceFromHome": 13
+        ]
     },
     {
         "friendlyId": "NewHCJP-P-DCD",
@@ -2198,13 +2189,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "1",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 210,
+        "priceNoTransport": 22,
+        "priceWithOneWayTransport": 24,
+        "priceWithTwoWayTransport": 26,
         "dropoffPickupAvailability": [
-            "Pickup",
-            "Dropoff"
-        ],
-        "googleReviews": 3.1,
-        "distanceFromHome": 14
+            "Pickup"
+        ]
     },
     {
         "friendlyId": "NewHCT-P-DCD",
@@ -2224,13 +2214,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "362",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 120,
+        "priceNoTransport": 30,
+        "priceWithOneWayTransport": 27,
+        "priceWithTwoWayTransport": 31,
         "dropoffPickupAvailability": [
-            "Dropoff",
             "Pickup"
-        ],
-        "googleReviews": 4.4,
-        "distanceFromHome": 13
+        ]
     },
     {
         "friendlyId": "NewHCTP-P-DCD",
@@ -2250,12 +2239,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "157",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 160,
+        "priceNoTransport": 23,
+        "priceWithOneWayTransport": 28,
+        "priceWithTwoWayTransport": 31,
         "dropoffPickupAvailability": [
+            "Pickup",
             "Dropoff"
-        ],
-        "googleReviews": 3.3,
-        "distanceFromHome": 7
+        ]
     },
     {
         "friendlyId": "KwoSCJB-P-DCD",
@@ -2275,12 +2265,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "69",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 200,
+        "priceNoTransport": 21,
+        "priceWithOneWayTransport": 23,
+        "priceWithTwoWayTransport": 28,
         "dropoffPickupAvailability": [
             "Pickup"
-        ],
-        "googleReviews": 3.7,
-        "distanceFromHome": 17
+        ]
     },
     {
         "friendlyId": "NTUAHKA-P-DCD",
@@ -2300,12 +2290,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "676",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 220,
+        "priceNoTransport": 27,
+        "priceWithOneWayTransport": 29,
+        "priceWithTwoWayTransport": 26,
         "dropoffPickupAvailability": [
-            "Pickup"
-        ],
-        "googleReviews": 3.3,
-        "distanceFromHome": 10
+            "Dropoff"
+        ]
     },
     {
         "friendlyId": "NTUFSHB-P-DCD",
@@ -2325,13 +2315,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "11",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 140,
+        "priceNoTransport": 21,
+        "priceWithOneWayTransport": 27,
+        "priceWithTwoWayTransport": 28,
         "dropoffPickupAvailability": [
             "Pickup",
             "Dropoff"
-        ],
-        "googleReviews": 4.8,
-        "distanceFromHome": 14
+        ]
     },
     {
         "friendlyId": "NTUCFST-P-DCD",
@@ -2351,13 +2341,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "1",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 70,
+        "priceNoTransport": 22,
+        "priceWithOneWayTransport": 27,
+        "priceWithTwoWayTransport": 31,
         "dropoffPickupAvailability": [
-            "Dropoff",
             "Pickup"
-        ],
-        "googleReviews": 3.0,
-        "distanceFromHome": 2
+        ]
     },
     {
         "friendlyId": "St SSCH-P-DCD",
@@ -2377,13 +2366,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "303",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 140,
+        "priceNoTransport": 27,
+        "priceWithOneWayTransport": 28,
+        "priceWithTwoWayTransport": 27,
         "dropoffPickupAvailability": [
             "Pickup",
             "Dropoff"
-        ],
-        "googleReviews": 3.3,
-        "distanceFromHome": 20
+        ]
     },
     {
         "friendlyId": "St SCJC-P-DCD",
@@ -2403,13 +2392,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "5",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 240,
+        "priceNoTransport": 28,
+        "priceWithOneWayTransport": 25,
+        "priceWithTwoWayTransport": 32,
         "dropoffPickupAvailability": [
-            "Dropoff",
             "Pickup"
-        ],
-        "googleReviews": 4.3,
-        "distanceFromHome": 9
+        ]
     },
     {
         "friendlyId": "St CAMK-P-DCD",
@@ -2430,13 +2418,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "2",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 150,
+        "priceNoTransport": 24,
+        "priceWithOneWayTransport": 24,
+        "priceWithTwoWayTransport": 25,
         "dropoffPickupAvailability": [
-            "Dropoff",
             "Pickup"
-        ],
-        "googleReviews": 3.8,
-        "distanceFromHome": 18
+        ]
     },
     {
         "friendlyId": "SunSCCD-P-DCD",
@@ -2456,13 +2443,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "557",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 240,
+        "priceNoTransport": 20,
+        "priceWithOneWayTransport": 29,
+        "priceWithTwoWayTransport": 27,
         "dropoffPickupAvailability": [
             "Dropoff",
             "Pickup"
-        ],
-        "googleReviews": 4.5,
-        "distanceFromHome": 4
+        ]
     },
     {
         "friendlyId": "TheAPBA-P-DCD",
@@ -2483,12 +2470,13 @@
         "availability": "WEEKENDS_ONLY",
         "block": "187",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 210,
+        "priceNoTransport": 25,
+        "priceWithOneWayTransport": 23,
+        "priceWithTwoWayTransport": 31,
         "dropoffPickupAvailability": [
+            "Pickup",
             "Dropoff"
-        ],
-        "googleReviews": 3.6,
-        "distanceFromHome": 1
+        ]
     },
     {
         "friendlyId": "ThePJCA-P-DCD",
@@ -2508,12 +2496,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "9",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 140,
+        "priceNoTransport": 23,
+        "priceWithOneWayTransport": 30,
+        "priceWithTwoWayTransport": 28,
         "dropoffPickupAvailability": [
-            "Dropoff"
-        ],
-        "googleReviews": 3.7,
-        "distanceFromHome": 15
+            "Dropoff",
+            "Pickup"
+        ]
     },
     {
         "friendlyId": "VanSCCS-P-DCD",
@@ -2533,13 +2522,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "50",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 280,
+        "priceNoTransport": 26,
+        "priceWithOneWayTransport": 27,
+        "priceWithTwoWayTransport": 28,
         "dropoffPickupAvailability": [
-            "Dropoff",
-            "Pickup"
-        ],
-        "googleReviews": 4.2,
-        "distanceFromHome": 15
+            "Dropoff"
+        ]
     },
     {
         "friendlyId": "St SJS-P-DCD",
@@ -2559,12 +2547,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "420",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 110,
+        "priceNoTransport": 28,
+        "priceWithOneWayTransport": 31,
+        "priceWithTwoWayTransport": 28,
         "dropoffPickupAvailability": [
-            "Dropoff"
-        ],
-        "googleReviews": 5.0,
-        "distanceFromHome": 13
+            "Dropoff",
+            "Pickup"
+        ]
     },
     {
         "friendlyId": "MonMSL--DDC",
@@ -2584,12 +2573,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "1",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 120,
+        "priceNoTransport": 25,
+        "priceWithOneWayTransport": 24,
+        "priceWithTwoWayTransport": 33,
         "dropoffPickupAvailability": [
             "Pickup"
-        ],
-        "googleReviews": 4.2,
-        "distanceFromHome": 12
+        ]
     },
     {
         "friendlyId": "St EOPC--DDC",
@@ -2610,13 +2599,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "1",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 180,
+        "priceNoTransport": 20,
+        "priceWithOneWayTransport": 26,
+        "priceWithTwoWayTransport": 28,
         "dropoffPickupAvailability": [
-            "Pickup",
-            "Dropoff"
-        ],
-        "googleReviews": 4.7,
-        "distanceFromHome": 16
+            "Pickup"
+        ]
     },
     {
         "friendlyId": "St CAMK--DDC",
@@ -2637,13 +2625,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "2",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 110,
+        "priceNoTransport": 26,
+        "priceWithOneWayTransport": 24,
+        "priceWithTwoWayTransport": 33,
         "dropoffPickupAvailability": [
-            "Pickup",
             "Dropoff"
-        ],
-        "googleReviews": 3.3,
-        "distanceFromHome": 7
+        ]
     },
     {
         "friendlyId": "St SSCD--CRC",
@@ -2663,12 +2650,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "28",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 270,
+        "priceNoTransport": 20,
+        "priceWithOneWayTransport": 30,
+        "priceWithTwoWayTransport": 31,
         "dropoffPickupAvailability": [
             "Dropoff"
-        ],
-        "googleReviews": 3.6,
-        "distanceFromHome": 19
+        ]
     },
     {
         "friendlyId": "KwoSSCC-P-DCM",
@@ -2688,12 +2675,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "705",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 270,
+        "priceNoTransport": 25,
+        "priceWithOneWayTransport": 26,
+        "priceWithTwoWayTransport": 28,
         "dropoffPickupAvailability": [
-            "Pickup"
-        ],
-        "googleReviews": 3.2,
-        "distanceFromHome": 3
+            "Pickup",
+            "Dropoff"
+        ]
     },
     {
         "friendlyId": "NTUFSGE-P-CBN",
@@ -2713,12 +2701,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "25",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 160,
+        "priceNoTransport": 26,
+        "priceWithOneWayTransport": 26,
+        "priceWithTwoWayTransport": 29,
         "dropoffPickupAvailability": [
-            "Pickup"
-        ],
-        "googleReviews": 3.3,
-        "distanceFromHome": 3
+            "Dropoff"
+        ]
     },
     {
         "friendlyId": "NTUFSGW--CRC",
@@ -2738,13 +2726,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "1",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 50,
+        "priceNoTransport": 25,
+        "priceWithOneWayTransport": 29,
+        "priceWithTwoWayTransport": 31,
         "dropoffPickupAvailability": [
-            "Dropoff",
-            "Pickup"
-        ],
-        "googleReviews": 3.6,
-        "distanceFromHome": 16
+            "Dropoff"
+        ]
     },
     {
         "friendlyId": "NTUFSCC--CRC",
@@ -2764,13 +2751,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "35",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 110,
+        "priceNoTransport": 20,
+        "priceWithOneWayTransport": 28,
+        "priceWithTwoWayTransport": 32,
         "dropoffPickupAvailability": [
-            "Pickup",
-            "Dropoff"
-        ],
-        "googleReviews": 4.0,
-        "distanceFromHome": 16
+            "Pickup"
+        ]
     },
     {
         "friendlyId": "NTUFSPR--CRC",
@@ -2790,13 +2776,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "12",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 150,
+        "priceNoTransport": 22,
+        "priceWithOneWayTransport": 28,
+        "priceWithTwoWayTransport": 27,
         "dropoffPickupAvailability": [
-            "Pickup",
-            "Dropoff"
-        ],
-        "googleReviews": 3.2,
-        "distanceFromHome": 5
+            "Pickup"
+        ]
     },
     {
         "friendlyId": "St SEHM-P-DCM",
@@ -2816,12 +2801,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "364",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 190,
+        "priceNoTransport": 28,
+        "priceWithOneWayTransport": 23,
+        "priceWithTwoWayTransport": 29,
         "dropoffPickupAvailability": [
-            "Dropoff"
-        ],
-        "googleReviews": 3.2,
-        "distanceFromHome": 4
+            "Dropoff",
+            "Pickup"
+        ]
     },
     {
         "friendlyId": "AWWDDCC--CRC",
@@ -2841,12 +2827,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "123",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 160,
+        "priceNoTransport": 21,
+        "priceWithOneWayTransport": 30,
+        "priceWithTwoWayTransport": 30,
         "dropoffPickupAvailability": [
+            "Dropoff",
             "Pickup"
-        ],
-        "googleReviews": 4.3,
-        "distanceFromHome": 10
+        ]
     },
     {
         "friendlyId": "St AMKP-P-CBN",
@@ -2866,12 +2853,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "21",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 80,
+        "priceNoTransport": 25,
+        "priceWithOneWayTransport": 29,
+        "priceWithTwoWayTransport": 33,
         "dropoffPickupAvailability": [
-            "Pickup"
-        ],
-        "googleReviews": 3.5,
-        "distanceFromHome": 14
+            "Dropoff"
+        ]
     },
     {
         "friendlyId": "NTUFSJW-P-DCM",
@@ -2891,13 +2878,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "50",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 190,
+        "priceNoTransport": 23,
+        "priceWithOneWayTransport": 29,
+        "priceWithTwoWayTransport": 31,
         "dropoffPickupAvailability": [
-            "Dropoff",
-            "Pickup"
-        ],
-        "googleReviews": 4.4,
-        "distanceFromHome": 9
+            "Dropoff"
+        ]
     },
     {
         "friendlyId": "NTUFSJS-P-CBN",
@@ -2918,13 +2904,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "6B",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 170,
+        "priceNoTransport": 29,
+        "priceWithOneWayTransport": 29,
+        "priceWithTwoWayTransport": 30,
         "dropoffPickupAvailability": [
-            "Pickup",
-            "Dropoff"
-        ],
-        "googleReviews": 4.1,
-        "distanceFromHome": 18
+            "Dropoff",
+            "Pickup"
+        ]
     },
     {
         "friendlyId": "NTUHBBW--CRC",
@@ -2944,13 +2930,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "439",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 30,
+        "priceNoTransport": 29,
+        "priceWithOneWayTransport": 27,
+        "priceWithTwoWayTransport": 26,
         "dropoffPickupAvailability": [
-            "Dropoff",
             "Pickup"
-        ],
-        "googleReviews": 3.5,
-        "distanceFromHome": 16
+        ]
     },
     {
         "friendlyId": "AllLCYC--CRC",
@@ -2970,13 +2955,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "2",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 280,
+        "priceNoTransport": 21,
+        "priceWithOneWayTransport": 31,
+        "priceWithTwoWayTransport": 29,
         "dropoffPickupAvailability": [
-            "Pickup",
-            "Dropoff"
-        ],
-        "googleReviews": 3.2,
-        "distanceFromHome": 9
+            "Pickup"
+        ]
     },
     {
         "friendlyId": "80ad8445-ecc5-4f39-8830-b88eb1f96b83",
@@ -2997,12 +2981,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "2",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 70,
+        "priceNoTransport": 28,
+        "priceWithOneWayTransport": 27,
+        "priceWithTwoWayTransport": 33,
         "dropoffPickupAvailability": [
             "Pickup"
-        ],
-        "googleReviews": 4.1,
-        "distanceFromHome": 15
+        ]
     },
     {
         "friendlyId": "369a4dc3-3cf8-4cd9-8c52-dc5aea403ddd",
@@ -3022,12 +3006,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "152B",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 250,
+        "priceNoTransport": 29,
+        "priceWithOneWayTransport": 26,
+        "priceWithTwoWayTransport": 25,
         "dropoffPickupAvailability": [
             "Dropoff"
-        ],
-        "googleReviews": 4.5,
-        "distanceFromHome": 6
+        ]
     },
     {
         "friendlyId": "NTUHBBW-H-B",
@@ -3047,12 +3031,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "439",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 220,
+        "priceNoTransport": 22,
+        "priceWithOneWayTransport": 24,
+        "priceWithTwoWayTransport": 30,
         "dropoffPickupAvailability": [
             "Dropoff"
-        ],
-        "googleReviews": 3.3,
-        "distanceFromHome": 15
+        ]
     },
     {
         "friendlyId": "1058a699-3e10-4039-8bf5-858255195e54",
@@ -3072,12 +3056,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "35",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 250,
+        "priceNoTransport": 22,
+        "priceWithOneWayTransport": 24,
+        "priceWithTwoWayTransport": 28,
         "dropoffPickupAvailability": [
+            "Dropoff",
             "Pickup"
-        ],
-        "googleReviews": 4.0,
-        "distanceFromHome": 13
+        ]
     },
     {
         "friendlyId": "CarHTPW-H-B",
@@ -3097,13 +3082,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "131",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 160,
+        "priceNoTransport": 29,
+        "priceWithOneWayTransport": 26,
+        "priceWithTwoWayTransport": 26,
         "dropoffPickupAvailability": [
             "Dropoff",
             "Pickup"
-        ],
-        "googleReviews": 3.2,
-        "distanceFromHome": 9
+        ]
     },
     {
         "friendlyId": "4014423f-241b-40c8-b790-c5771cd7cdc4",
@@ -3123,12 +3108,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "12",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 40,
+        "priceNoTransport": 22,
+        "priceWithOneWayTransport": 26,
+        "priceWithTwoWayTransport": 32,
         "dropoffPickupAvailability": [
             "Pickup"
-        ],
-        "googleReviews": 3.6,
-        "distanceFromHome": 18
+        ]
     },
     {
         "friendlyId": "0cf364bc-15a2-4d2c-81f3-14b3ed025707",
@@ -3148,13 +3133,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "9",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 50,
+        "priceNoTransport": 24,
+        "priceWithOneWayTransport": 24,
+        "priceWithTwoWayTransport": 32,
         "dropoffPickupAvailability": [
-            "Pickup",
-            "Dropoff"
-        ],
-        "googleReviews": 3.6,
-        "distanceFromHome": 9
+            "Pickup"
+        ]
     },
     {
         "friendlyId": "fa9368f5-d60d-41ec-a853-059a27c5e164",
@@ -3174,12 +3158,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "364",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 300,
+        "priceNoTransport": 25,
+        "priceWithOneWayTransport": 24,
+        "priceWithTwoWayTransport": 32,
         "dropoffPickupAvailability": [
-            "Pickup"
-        ],
-        "googleReviews": 4.1,
-        "distanceFromHome": 6
+            "Pickup",
+            "Dropoff"
+        ]
     },
     {
         "friendlyId": "NTUAHKA-H-B",
@@ -3199,13 +3184,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "676",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 70,
+        "priceNoTransport": 23,
+        "priceWithOneWayTransport": 28,
+        "priceWithTwoWayTransport": 29,
         "dropoffPickupAvailability": [
             "Dropoff",
             "Pickup"
-        ],
-        "googleReviews": 4.8,
-        "distanceFromHome": 2
+        ]
     },
     {
         "friendlyId": "bf6854f8-6695-4e8a-80de-d062224af241",
@@ -3226,13 +3211,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "152A",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 240,
+        "priceNoTransport": 26,
+        "priceWithOneWayTransport": 24,
+        "priceWithTwoWayTransport": 26,
         "dropoffPickupAvailability": [
-            "Pickup",
             "Dropoff"
-        ],
-        "googleReviews": 4.4,
-        "distanceFromHome": 19
+        ]
     },
     {
         "friendlyId": "fb7aa638-6fc5-4fda-927d-8191cdeaf893",
@@ -3250,13 +3234,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "353",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 40,
+        "priceNoTransport": 29,
+        "priceWithOneWayTransport": 26,
+        "priceWithTwoWayTransport": 26,
         "dropoffPickupAvailability": [
-            "Dropoff",
-            "Pickup"
-        ],
-        "googleReviews": 3.9,
-        "distanceFromHome": 18
+            "Dropoff"
+        ]
     },
     {
         "friendlyId": "e3edefc4-a661-433d-a9c4-d3774b61e81c",
@@ -3274,13 +3257,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "115C",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 40,
+        "priceNoTransport": 27,
+        "priceWithOneWayTransport": 23,
+        "priceWithTwoWayTransport": 28,
         "dropoffPickupAvailability": [
-            "Pickup",
             "Dropoff"
-        ],
-        "googleReviews": 3.1,
-        "distanceFromHome": 17
+        ]
     },
     {
         "friendlyId": "796aa5de-59a2-4150-820f-85cf04b2db83",
@@ -3298,13 +3280,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "153",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 70,
+        "priceNoTransport": 29,
+        "priceWithOneWayTransport": 24,
+        "priceWithTwoWayTransport": 27,
         "dropoffPickupAvailability": [
             "Pickup",
             "Dropoff"
-        ],
-        "googleReviews": 3.4,
-        "distanceFromHome": 20
+        ]
     },
     {
         "friendlyId": "5698ac59-3994-4e0a-96b6-dea70c27d955",
@@ -3325,13 +3307,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "417",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 140,
+        "priceNoTransport": 24,
+        "priceWithOneWayTransport": 30,
+        "priceWithTwoWayTransport": 32,
         "dropoffPickupAvailability": [
-            "Pickup",
-            "Dropoff"
-        ],
-        "googleReviews": 3.4,
-        "distanceFromHome": 9
+            "Pickup"
+        ]
     },
     {
         "friendlyId": "5837280f-8eef-4ad0-8cdc-13fc34e7d5b4",
@@ -3352,12 +3333,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "222C",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 60,
+        "priceNoTransport": 27,
+        "priceWithOneWayTransport": 30,
+        "priceWithTwoWayTransport": 32,
         "dropoffPickupAvailability": [
-            "Dropoff"
-        ],
-        "googleReviews": 3.4,
-        "distanceFromHome": 1
+            "Pickup"
+        ]
     },
     {
         "friendlyId": "b1250741-45b0-43dd-83b2-1d0bb9d372dc",
@@ -3377,13 +3358,13 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "645",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 180,
+        "priceNoTransport": 24,
+        "priceWithOneWayTransport": 23,
+        "priceWithTwoWayTransport": 27,
         "dropoffPickupAvailability": [
             "Pickup",
             "Dropoff"
-        ],
-        "googleReviews": 3.6,
-        "distanceFromHome": 11
+        ]
     },
     {
         "friendlyId": "30bd0fc0-37e4-45e4-a2a6-e80bb86861e0",
@@ -3401,13 +3382,12 @@
         "availability": "NO_WEEKENDS_AND_EVENINGS",
         "block": "394",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 190,
+        "priceNoTransport": 24,
+        "priceWithOneWayTransport": 25,
+        "priceWithTwoWayTransport": 26,
         "dropoffPickupAvailability": [
-            "Pickup",
-            "Dropoff"
-        ],
-        "googleReviews": 4.6,
-        "distanceFromHome": 1
+            "Pickup"
+        ]
     },
     {
         "friendlyId": "2addb4f1-816e-424a-bb41-9ff2f038fd36",
@@ -3428,13 +3408,13 @@
         "availability": "WEEKENDS_ONLY",
         "block": "11",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 250,
+        "priceNoTransport": 23,
+        "priceWithOneWayTransport": 31,
+        "priceWithTwoWayTransport": 31,
         "dropoffPickupAvailability": [
-            "Dropoff",
-            "Pickup"
-        ],
-        "googleReviews": 3.4,
-        "distanceFromHome": 16
+            "Pickup",
+            "Dropoff"
+        ]
     },
     {
         "friendlyId": "24752042-fdb1-4a4f-8229-349580ca53a8",
@@ -3455,11 +3435,11 @@
         "availability": "WEEKENDS_ONLY",
         "block": "264",
         "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "price": 180,
+        "priceNoTransport": 24,
+        "priceWithOneWayTransport": 27,
+        "priceWithTwoWayTransport": 31,
         "dropoffPickupAvailability": [
-            "Dropoff"
-        ],
-        "googleReviews": 3.7,
-        "distanceFromHome": 14
+            "Pickup"
+        ]
     }
 ]
