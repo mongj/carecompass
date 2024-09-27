@@ -1,8 +1,8 @@
 "use client";
 
 import { SchemeData } from "@/types/scheme";
-import { Button, Text } from "@chakra-ui/react";
-import { BxRightArrowAlt, BxsCheckCircle } from "@opengovsg/design-system-react";
+import { Button } from "@chakra-ui/react";
+import { BxRightArrowAlt } from "@opengovsg/design-system-react";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
@@ -34,10 +34,7 @@ export default function SupportDashboard() {
 
 function SchemeButton({ scheme }: { scheme: SchemeData }) {
   const router = useRouter();
-
-  const numCriteria = scheme.eligibility.length
-  const numFulfilledCriteria = scheme.eligibility.filter((criteria) => criteria.satisfied).length
-
+  
   function handleClick() {
     router.push(`/dashboard/schemes?id=${scheme.id}`);
   }

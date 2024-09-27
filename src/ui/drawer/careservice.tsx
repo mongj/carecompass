@@ -481,7 +481,6 @@ function DaycareRecommendationCard({ centre, param }: { centre: DDCData; param: 
             {centre.dropoffPickupAvailability.map((e, i) => <Badge key={i} colorScheme="success" variant="subtle">{e}</Badge>)}
           </div>
         </span>
-        <span><b>Google reviews: </b>{centre.googleReviews} ⭐</span>
       </div>
       <Button variant="clear" rightIcon={<BxRightArrowAlt fontSize="1.5rem" />} marginLeft="auto" onClick={handleClick}>More Info</Button>
     </div>
@@ -530,7 +529,6 @@ function DaycareCentreDetails(data: DDCData) {
             {data.dropoffPickupAvailability.map((e, i) => <Badge key={i} colorScheme="success" variant="subtle">{e}</Badge>)}
           </div>
         </span>
-        <span><b>Google reviews: </b>{data.googleReviews} ⭐</span>
         <div className="flex flex-col gap-2 my-2">
           <span className="text-lg"><b>Contact Details</b></span>
           <div className="flex flex-col gap-2">
