@@ -13,7 +13,7 @@ export default function ChatHistory({ router }: { router: AppRouterInstance}) {
       <h3 className="font-semibold text-xl">
         Chat History
       </h3>
-      <div className="flex flex-col w-full gap-1">
+      <div className="flex flex-col w-full gap-1 place-content-start h-full">
         {chats.map((chat) => (
           <button 
             key={chat.id}

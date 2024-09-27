@@ -33,7 +33,7 @@ export default function Search({ currentChatId } : { currentChatId?: string }) {
           "content": query,
         });
       } else {
-        router.replace("/chat");
+        router.replace(`/chat`);
       }
     } else {
       // create a new chat
@@ -55,6 +55,17 @@ export default function Search({ currentChatId } : { currentChatId?: string }) {
 
     // TODO: Query backend for response
     // This is a placeholder for the actual backend query
+
+    const jsonFallback = `
+    {
+      "content": [
+        {
+          "type": "text",
+          "content": "I'm sorry, the conversation feature is currently not available for this demo. One question you can try asking is: \n\nHow do I effectively communicate with someone who has dementia?"
+        },
+      ]
+    }
+    `.replaceAll("\n", "").replace(/\s{2,}/g, ' ').trim();
 
     const json = `
     {
@@ -104,10 +115,15 @@ export default function Search({ currentChatId } : { currentChatId?: string }) {
     }
     `.replaceAll("\n", "").replace(/\s{2,}/g, ' ').trim();
     
-    const words = json.split(" ");
+    let words: string[] = [];
 
     if (query === "How do I effectively communicate with someone who has dementia?") {
-      const chatIndex = chats.findIndex((chat) => chat.id === currentChatId);
+      words = json.split(" ")
+    } else {
+      words = jsonFallback.split(" ");
+    }
+
+    const chatIndex = chats.findIndex((chat) => chat.id === currentChatId);
       if (chatIndex != -1) {
         // Add a bot message
         const responseId = uuidv4();
@@ -154,7 +170,6 @@ export default function Search({ currentChatId } : { currentChatId?: string }) {
             }
           }, 25);
       }
-    }
   }
 
   function handleInput(e: React.ChangeEvent<HTMLInputElement>) {

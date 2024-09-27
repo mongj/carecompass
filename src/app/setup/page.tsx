@@ -80,11 +80,18 @@ function PersonalDetailsForm() {
   const [medicalCondition, setMedicalCondition] = useState<string[]>([]);
 
   function handleNext() {
+    // store data in localstorage
+    if (typeof window !== "undefined") {
+      localStorage.setItem("cc-name", name);
+      localStorage.setItem("cc-relationship", relationship);
+      localStorage.setItem("cc-medicalCondition", JSON.stringify(medicalCondition));
+    }
+
     if (params.has("singpass") && params.get("singpass") === "true") {
       alert("Singpass integration is not available in this demo.\n\nPreloaded data will be used instead.");
-      router.push(`/singpass?name=${name}`);
+      router.push(`/singpass`);
     } else {
-      router.push(`/chat?name=${name}`);
+      router.push(`/chat`);
     }
   }
 

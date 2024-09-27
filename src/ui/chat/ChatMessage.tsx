@@ -28,7 +28,7 @@ function ResponseMessage({ res }: { res: BotResponse }) {
           return null;
         }
         if (block.type === "text") {
-          return <span key={index} className="text-sm sm:text-base leading-tight">{block.content}</span>
+          return <span key={index} className="text-sm sm:text-base leading-tight whitespace-pre-line">{block.content}</span>
         } else {
           return (
             <div key={index} className="flex flex-col md:flex-row gap-2 overflow-auto">

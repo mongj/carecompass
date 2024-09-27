@@ -3,25 +3,24 @@
 import LoadingSpinner from "@/ui/loading";
 import { Button, BxRightArrowAlt } from "@opengovsg/design-system-react";
 import Image from "next/image";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Suspense } from "react";
 
 function SingpassAuth() {
   const router = useRouter();
-  const params = useSearchParams();
 
   function handleMyInfo() {
       alert("Singpass integration is not available in this demo.\n\nPreloaded data will be used instead.");
-      router.push(`/chat?name=${params.get("name")}`);
+      router.push(`/chat`);
   }
 
   function handleScanNRIC() {
       alert("This option allows caregivers to scan the care recipient's NRIC to retrieve basic information such as name, age, and address.\n\nThis feature is not available yet and preloaded data will be used instead.");
-      router.push(`/chat?name=${params.get("name")}`);
+      router.push(`/chat`);
   }
 
   function handleNext() {
-    router.push(`/chat?name=${params.get("name")}`);
+    router.push(`/chat`);
   }
 
   return (
