@@ -10,6 +10,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        singpass: '#F4333D',
         blue: {
           '50': '#F7F9FE',
           '100': '#E7EFFC',

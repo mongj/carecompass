@@ -2,12 +2,14 @@
 
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useChatContext } from "@/app/chat/context";
+import { Button } from "@opengovsg/design-system-react";
+import { LogOutIcon } from "lucide-react";
 
 export default function ChatHistory({ router }: { router: AppRouterInstance}) {
   const { chats } = useChatContext();
 
   return (
-    <div className="flex flex-col p-6 gap-4">
+    <div className="flex flex-col p-6 gap-4 h-full place-content-between">
       <h3 className="font-semibold text-xl">
         Chat History
       </h3>
@@ -22,6 +24,7 @@ export default function ChatHistory({ router }: { router: AppRouterInstance}) {
           </button>
         ))}
       </div>
+      <Button className="w-full" variant="solid" rightIcon={<LogOutIcon />} onClick={() => router.push("/")}>Log out</Button>
     </div>
   );
 }

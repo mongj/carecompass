@@ -1,7 +1,7 @@
 "use client";
 
 import CareServiceRecommender from '@/ui/drawer/careservice';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Drawer } from 'vaul';
 
 type Workflow = {
@@ -18,10 +18,12 @@ const workflows: Workflow[] = [{
 
 export default function ChatIntro() {
   const router = useRouter();
+  const params = useSearchParams();
+  
   return (
     <div className="flex flex-col h-full w-full place-items-center place-content-between">
       <div className="flex flex-col place-items-center h-full place-content-center text-center gap-2">
-        <span className="text-xl md:text-3xl font-bold">Welcome, Linda</span>
+        <span className="text-xl md:text-3xl font-bold">{params.get("name") ? `Welcome, ${params.get("name")}` : 'Welcome, Linda'}</span>
         <span>CareCompass+ is a care recommender that provides you recommendations based on your caregiving needs.</span>
       </div>
       <div className="flex flex-col gap-2 w-full">
