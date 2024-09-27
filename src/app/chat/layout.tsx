@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { AddIcon } from "@chakra-ui/icons";
 import Search from "@/ui/Search";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { ChatContext } from "./context";
 import { useRef, useState } from "react";
 import ChatHistory from "@/ui/ChatHistory";
@@ -18,10 +18,11 @@ export default function ChatLayout({ children }: Readonly<{
 }>) {
   const router = useRouter();
   const params = useParams<{ chatId: string }>();
+  const queryParams = useSearchParams();
   const [chats, setChats] = useState<Thread[]>([]);
   
   function handleNewThread() {
-    router.replace(`/chat`);
+    router.replace(`/chat?name=${queryParams.get("name")}`);
   }
 
   return (
