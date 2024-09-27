@@ -450,6 +450,7 @@ function DaycareRecommendations(stepper: Stepper, data: DDCData[], param: Params
     </section>
   ) : (
     <section className="flex flex-col gap-4">
+      <Button onClick={stepper.decrement} className="w-[calc(50%-4px)]" variant="link" leftIcon={<BxChevronLeft fontSize="1.5rem" />}>Back</Button>
       <h1 className="text-xl font-semibold">Daycare Services</h1>
       <span className="leading-tight">Thank you! Based on your inputs, I recommend the following:</span>
       <div className="flex flex-col gap-4">
