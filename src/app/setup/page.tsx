@@ -1,9 +1,10 @@
 "use client";
 
+import LoadingSpinner from "@/ui/loading";
 import { Stack } from "@chakra-ui/react";
 import { Button, BxChevronLeft, BxRightArrowAlt, FormLabel, Input, MultiSelect, SingleSelect } from "@opengovsg/design-system-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 
 const relationshipOptions = [
   {
@@ -71,7 +72,7 @@ const medicalConditionOptions = [
   }
 ]
 
-export default function PersonalDetailsForm() {
+function PersonalDetailsForm() {
   const router = useRouter();
   const params = useSearchParams();
   const [name, setName] = useState("");
@@ -129,4 +130,12 @@ export default function PersonalDetailsForm() {
       </main>
   </div>
   )
+}
+
+export default function PersonalDetailsFormWithSuspense() {
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <PersonalDetailsForm />
+    </Suspense>
+  );
 }

@@ -1,7 +1,9 @@
 "use client";
 
 import CareServiceRecommender from '@/ui/drawer/careservice';
+import LoadingSpinner from '@/ui/loading';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 import { Drawer } from 'vaul';
 
 type Workflow = {
@@ -16,7 +18,7 @@ const workflows: Workflow[] = [{
 ];
 
 
-export default function ChatIntro() {
+function ChatIntro() {
   const router = useRouter();
   const params = useSearchParams();
   
@@ -58,5 +60,13 @@ function WorkflowTrigger({ workflow }: { workflow: Workflow }) {
       </Drawer.Content>
     </Drawer.Portal>
   </Drawer.Root>
+  );
+}
+
+export default function ChatIntroWithSuspense() {
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <ChatIntro />
+    </Suspense>
   );
 }

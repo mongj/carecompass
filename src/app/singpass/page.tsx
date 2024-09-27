@@ -1,10 +1,12 @@
 "use client";
 
+import LoadingSpinner from "@/ui/loading";
 import { Button, BxRightArrowAlt } from "@opengovsg/design-system-react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
-export default function SingpassAuth() {
+function SingpassAuth() {
   const router = useRouter();
   const params = useSearchParams();
 
@@ -38,4 +40,8 @@ export default function SingpassAuth() {
       </main>
   </div>
   )
+}
+
+export default function SingpassAuthWithSuspense() {
+  return <Suspense fallback={<LoadingSpinner />}><SingpassAuth /></Suspense>;
 }
