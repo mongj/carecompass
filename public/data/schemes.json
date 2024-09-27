@@ -26,7 +26,8 @@
         "satisfied": true
       }
     ],
-    "nextSteps": "**1. Consider if your dependant is eligible for Parent Relief (Disability)**  \n- This provides $14,000 in tax relief per dependant (for taxpayers staying with dependants)  \n- Requires an additional form to be submitted and documentation of disability  \n2. Re-file tax claims for year 2023  \n  \n**2. Email IRAS with the following details:**  \n- Year of Assessment that you wish to claim the relief: 2023  \n- Dependant's  \n         - Name: LINDA CHAN TING WEI  \n         - NRIC: S1234567A  \n         - Date of birth: 30/12/1993  \n         - Address: BLK 663 Changi Dr 23 02-48 S123045  \n         - Annual income: $65,123.00  \n- Confirmation that you have met the qualifying conditions (e.g. Dependent’s Notice of Assessment (NOA))"
+    "nextSteps": "**1. Consider if your dependant is eligible for Parent Relief (Disability)**  \n- This provides $14,000 in tax relief per dependant (for taxpayers staying with dependants)  \n- Requires an additional form to be submitted and documentation of disability  \n2. Re-file tax claims for year 2023  \n  \n**2. Email IRAS with the following details:**  \n- Year of Assessment that you wish to claim the relief: 2023  \n- Dependant's  \n         - Name: LINDA CHAN TING WEI  \n         - NRIC: S1234567A  \n         - Date of birth: 30/12/1993  \n         - Address: BLK 663 Changi Dr 23 02-48 S123045  \n         - Annual income: $65,123.00  \n- Confirmation that you have met the qualifying conditions (e.g. Dependent’s Notice of Assessment (NOA))",
+    "numSteps": 2
   },
   {
     "id": "CAREGIVER-RELIEF",
@@ -55,7 +56,8 @@
         "satisfied": false
       }
     ],
-    "nextSteps": "**1. Confirm the auto-populated fields and complete the rest of the Caregiver Training Grant form [here](https://www.aic.sg/wp-content/uploads/2023/11/CTG-Application-form.pdf).**  \nBe sure to provide the requested documents:  \n- Care Recipient’s NRIC / Birth Certificate  \n- Caregiver's NRIC  \n  \n**2. Select an approved course from the list [here](https://training-healthcare.vertis.digital/)**  \nand provide the completed form to the training provider at least 2 weeks before the course begins."
+    "nextSteps": "**1. Confirm the auto-populated fields and complete the rest of the Caregiver Training Grant form [here](https://www.aic.sg/wp-content/uploads/2023/11/CTG-Application-form.pdf).**  \nBe sure to provide the requested documents:  \n- Care Recipient’s NRIC / Birth Certificate  \n- Caregiver's NRIC  \n  \n**2. Select an approved course from the list [here](https://training-healthcare.vertis.digital/)**  \nand provide the completed form to the training provider at least 2 weeks before the course begins.",
+    "numSteps": 2
   },
   {
     "id": "HOME-CAREGIVING-GRANT",
@@ -80,6 +82,7 @@
         "satisfied": true
       }
     ],
-    "nextSteps": "**1. Complete Means Testing [here](https://www.homes.gov.sg/eservice/) to verify your eligibility.**  \n  \n**2. Obtain a [Functional Assessment Report](https://www.aic.sg/wp-content/uploads/2023/05/Functional-Assessment-Report.pdf)**  \nfrom your GP or care provider. The cost of the Report will vary from provider to provider.  \n  \n**3. Apply for the Home Caregiving Grant [here](https://cp.efinance.aic.sg/)**  \nwhen steps 1 and 2 are completed and your eligibility has been confirmed."
+    "nextSteps": "**1. Complete Means Testing [here](https://www.homes.gov.sg/eservice/) to verify your eligibility.**  \n  \n**2. Obtain a [Functional Assessment Report](https://www.aic.sg/wp-content/uploads/2023/05/Functional-Assessment-Report.pdf)**  \nfrom your GP or care provider. The cost of the Report will vary from provider to provider.  \n  \n**3. Apply for the Home Caregiving Grant [here](https://cp.efinance.aic.sg/)**  \nwhen steps 1 and 2 are completed and your eligibility has been confirmed.",
+    "numSteps": 3
   }
 ]

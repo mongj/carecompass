@@ -5,6 +5,7 @@ export type SchemeData = {
   benefits: string;
   eligibility: EligibilityCriteria[];
   nextSteps: string;
+  numSteps: number;
 };
 
 export type EligibilityCriteria = {

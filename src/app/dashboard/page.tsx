@@ -1,8 +1,8 @@
 "use client";
 
 import { SchemeData } from "@/types/scheme";
-import { Text } from "@chakra-ui/react";
-import { BxsCheckCircle } from "@opengovsg/design-system-react";
+import { Button, Text } from "@chakra-ui/react";
+import { BxRightArrowAlt, BxsCheckCircle } from "@opengovsg/design-system-react";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
@@ -43,15 +43,12 @@ function SchemeButton({ scheme }: { scheme: SchemeData }) {
   }
   
   return (
-    <button className="flex p-4 bg-white border border-gray-200 rounded-md gap-2 place-items-start place-content-start text-left" onClick={handleClick}>
+    <div className="flex p-4 bg-white border border-gray-200 rounded-md gap-2 place-items-start place-content-start text-left">
       <div className="flex flex-col gap-2">
         <span className="font-semibold text-sm">{scheme.name}</span>
         <span className="text-sm">{scheme.description}</span>
-        <div className="flex place-items-center gap-2">
-          <BxsCheckCircle color="green" fontSize="1.5rem" />
-          <Text color="green" fontSize="sm" fontWeight="semibold">{numFulfilledCriteria} of {numCriteria} eligibility criteria met</Text>
-        </div>
+        <Button variant="clear" size="sm" rightIcon={<BxRightArrowAlt />} marginLeft="auto" onClick={handleClick}>{scheme.numSteps} more steps to apply</Button>
       </div>
-    </button>
+    </div>
   )
 }
