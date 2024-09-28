@@ -31,7 +31,7 @@ function PhotoSlider({ photos }: { photos: string[] }) {
         href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
       />
       <Slider {...settings} className="mb-6">
-        {photos.map((photo, index) => <Image key={index} src={photo} alt="ds" width={400} height={200} className="rounded-md" />)}
+        {photos.map((photo, index) => <Image key={index} src={photo} alt="ds" width={400} height={200} className="rounded-md max-h-48" />)}
       </Slider>
     </>
   );
