@@ -1,4 +1,13 @@
 // Types for dementia daycare centre data
+export type Review = {
+  author: string;
+  rating: number;
+  review_text: string;
+  relative_time: string;
+  publish_time: string;
+  author_photo: string;
+  author_uri: string;
+};
 
 export type DDCData = {
   friendlyId: string;
@@ -15,11 +24,15 @@ export type DDCData = {
   website: string | null;
   availability: string | null;
   block: string | null;
-  about: string | null;
   priceNoTransport: number;
   priceWithOneWayTransport: number;
   priceWithTwoWayTransport: number;
   dropoffPickupAvailability: string[];
+  place_id: string;
+  display_name: string;
+  rating_count: number;
+  reviews: Review[];
+  photos: string[];
 };
 
 export interface DDCView extends DDCData {

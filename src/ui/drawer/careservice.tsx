@@ -8,7 +8,34 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { ReadonlyURLSearchParams, useRouter, useSearchParams } from 'next/navigation'
 import LoadingSpinner from "../loading";
-import { AddressResponse } from "@/types/onemap";
+import Slider from "react-slick";
+
+function PhotoSlider({ photos }: { photos: string[] }) {
+  var settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
+  return (
+    <>
+      <link
+        rel="stylesheet"
+        type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
+      />
+      <link
+        rel="stylesheet"
+        type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
+      />
+      <Slider {...settings} className="mb-6">
+        {photos.map((photo, index) => <Image key={index} src={photo} alt="ds" width={400} height={200} className="rounded-md" />)}
+      </Slider>
+    </>
+  );
+}
 
 type CareServicesData = {
   title: string;
@@ -539,11 +566,14 @@ function DaycareRecommendations({ stepper, data, param } : DrawerSectionProps) {
 
 function DaycareRecommendationCard({ centre, param }: { centre: DDCView; param: Params }) {
   const router = useRouter()
+  const avgReview = centre.reviews.reduce((acc, cur) => acc + cur.rating, 0) / centre.reviews.length
+
   function handleClick() {
     const p = new URLSearchParams(param.value.toString())
     p.set('centre', centre.friendlyId)
     router.push(`?${p.toString()}`)
   }
+
   return (
     <div className="flex flex-col gap-4 p-4 border border-gray-200 rounded-md">
       <span className="font-semibold">{centre.name}</span>
@@ -556,6 +586,7 @@ function DaycareRecommendationCard({ centre, param }: { centre: DDCView; param: 
             {centre.dropoffPickupAvailability.map((e, i) => <Badge key={i} colorScheme="success" variant="subtle">{e}</Badge>)}
           </div>
         </span>
+        {!isNaN(avgReview) && <span><b>Google Reviews:</b> {avgReview} ⭐</span>}
       </div>
       <Button variant="clear" rightIcon={<BxRightArrowAlt fontSize="1.5rem" />} marginLeft="auto" onClick={handleClick}>More Info</Button>
     </div>
@@ -564,6 +595,8 @@ function DaycareRecommendationCard({ centre, param }: { centre: DDCView; param: 
 
 function DaycareCentreDetails(data: DDCView) {
   const router = useRouter()
+  const avgReview = data.reviews.reduce((acc, cur) => acc + cur.rating, 0) / data.reviews.length
+
   function handleClick() {
     router.back()
   }
@@ -571,9 +604,9 @@ function DaycareCentreDetails(data: DDCView) {
   return (
     <section className="flex flex-col gap-4">
       <Button variant="link" leftIcon={<BxChevronLeft fontSize="1.5rem" />} marginRight="auto" onClick={handleClick}>Back</Button>
+      <PhotoSlider photos={data.photos} />
       <h1 className="text-xl font-semibold">{data.name}</h1>
       <div className="flex flex-col gap-4 text-sm">
-        <span>{data.about}</span>
         <div className="flex flex-col">
           <span><b>Operating hours: </b></span>
           <span>{data.operatingHours.join(', \n')}</span>
@@ -604,6 +637,7 @@ function DaycareCentreDetails(data: DDCView) {
             {data.dropoffPickupAvailability.map((e, i) => <Badge key={i} colorScheme="success" variant="subtle">{e}</Badge>)}
           </div>
         </span>
+        {!isNaN(avgReview) && <span><b>Google Reviews:</b> {avgReview} ⭐</span>}
         <div className="flex flex-col gap-2 my-2">
           <span className="text-lg"><b>Contact Details</b></span>
           <div className="flex flex-col gap-2">
@@ -628,6 +662,28 @@ function DaycareCentreDetails(data: DDCView) {
           className="w-full h-96 rounded-md border border-gray-200 shadow"
         />
       </div>
+      <ReviewSection reviews={data.reviews} />
     </section>
   )
+}
+
+function ReviewSection({ reviews } : { reviews: DDCView['reviews'] }) {
+  return (
+    <section className="flex flex-col gap-4">
+      <h1 className="text-xl font-semibold">Reviews</h1>
+      <div className="flex flex-col gap-4">
+        {reviews.map((review, index) => (
+          <div key={index} className="flex flex-col gap-2 p-4 border border-gray-200 rounded-md">
+            <span className="font-semibold">{review.author}</span>
+            <div className="flex gap-2">
+              <span>{review.rating} ⭐</span>
+              <span>{review.relative_time})</span>
+            </div>
+            <span>{review.review_text}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+
 }
