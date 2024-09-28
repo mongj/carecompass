@@ -11,7 +11,7 @@ import LoadingSpinner from "../loading";
 import Slider from "react-slick";
 
 function PhotoSlider({ photos }: { photos: string[] }) {
-  var settings = {
+  const settings = {
     dots: true,
     infinite: true,
     speed: 500,
