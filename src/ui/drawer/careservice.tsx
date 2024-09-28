@@ -676,8 +676,8 @@ function ReviewSection({ reviews } : { reviews: DDCView['reviews'] }) {
           <div key={index} className="flex flex-col gap-2 p-4 border border-gray-200 rounded-md">
             <span className="font-semibold">{review.author}</span>
             <div className="flex gap-2">
-              <span>{review.rating} ⭐</span>
-              <span>{review.relative_time})</span>
+              <span>{review.rating} {"⭐".repeat(Math.round(review.rating))}</span>
+              <span>{review.relative_time}</span>
             </div>
             <span>{review.review_text}</span>
           </div>
