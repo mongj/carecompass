@@ -13,10 +13,13 @@
     "@chakra-ui/icons": "^2.1.1",
     "@chakra-ui/next-js": "^2.2.0",
     "@chakra-ui/react": "^2.8.2",
+    "@clerk/nextjs": "^5.7.5",
+    "@clerk/types": "^4.26.0",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@nanostores/react": "github:ai/react",
     "@opengovsg/design-system-react": "^1.24.0",
+    "@tailwindcss/typography": "^0.5.15",
     "@uidotdev/usehooks": "^2.4.1",
     "ahooks": "^3.8.1",
     "ai": "^3.4.14",
@@ -33,8 +36,10 @@
     "react-slick": "^0.30.2",
     "react-spinners": "^0.14.1",
     "remark-gfm": "^4.0.0",
+    "sonner": "^1.5.0",
     "uuid": "^10.0.0",
-    "vaul": "^0.9.4"
+    "vaul": "^0.9.4",
+    "zustand": "^5.0.0"
   },
   "devDependencies": {
     "@types/node": "^20",

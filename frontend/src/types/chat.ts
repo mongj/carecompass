@@ -1,12 +1,17 @@
-export interface Thread {
-  id: string;
+export type GetUserThreadResponse = {
+  thread_id: string;
   title: string;
+}
+
+export type Thread = {
+  id: string;
+  title?: string;
   messages: Message[];
 }
 
-export interface Message {
+export type Message = {
   id: string;
-  role: "user" | "bot";
+  role: "user" | "assistant";
   content: string | BotResponse;
 }
 
@@ -25,4 +30,8 @@ export type BotResponseUI = {
     header: string,
     content?: string,
   }[]
+}
+
+export type CreateThreadResponse = {
+  thread_id: string
 }

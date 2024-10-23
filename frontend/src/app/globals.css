@@ -16,6 +16,15 @@ body {
   overflow: hidden;
 }
 
+.markdown > * {
+  all: revert;
+}
+
+.markdown > ol {
+  list-style: decimal;
+  padding-left: 2rem;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

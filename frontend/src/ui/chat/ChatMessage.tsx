@@ -1,18 +1,22 @@
 import { BotResponse, Message } from "@/types/chat";
 import { Avatar, Button, ModalContent, ModalOverlay, useDisclosure } from "@chakra-ui/react";
 import { Modal } from "@chakra-ui/react";
+import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 export default function ChatMessage({ message }: { message: Message }) {
   return (
     <div className="flex place-items-start gap-2 md:gap-4">
       {
-        message.role === "bot" ? 
+        message.role === "assistant" ? 
           <Avatar className="mt-2 sticky" src="/img/logo.svg" size="xs" /> : 
           <Avatar className="mt-2 sticky" colorScheme="sub" size="xs" />
       }
       <div className="w-[calc(100%-40px)] md:w-[calc(100%-48px)] flex flex-col bg-white p-4 border rounded-lg">
         {typeof message.content === 'string' ? 
-          <span className="text-sm sm:text-base leading-tight">{message.content}</span>
+          <div className="flex flex-col gap-0 p-0 m-0">
+            <Markdown remarkPlugins={[remarkGfm]} className="prose prose-sm leading-tight">{message.content}</Markdown>
+          </div>
           : <ResponseMessage res={message.content} />
         }
       </div>

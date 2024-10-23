@@ -1,29 +1,67 @@
 "use client";
 
-import { Button } from "@opengovsg/design-system-react";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useAuthStore } from '@/stores/auth';
+import { useUserStore } from '@/stores/user';
+import LoadingSpinner from '@/ui/loading';
+import { SignedIn, SignedOut, useUser } from '@clerk/nextjs'
+import { useRouter } from 'next/navigation';
 
-export default function Home() {
-  const router = useRouter();
-
-  function handleSingpass() {
-    router.push("/setup?singpass=true");
-  }
-
-  function handleNoSingpass() {
-    router.push("/setup?singpass=false");
-  }
-
+export default function Main() {  
+  console.log('Main');
   return (
-    <div className="flex flex-col h-dvh max-h-dvh">
-      <main className="h-full overflow-auto flex w-full flex-col p-8 gap-4 place-content-center">
-        <h3 className="font-bold text-2xl">Welcome to CareCompass+</h3>
-        <span className="">We are a care recommender that provides personalized recommendations based on your caregiving needs.</span>
-        <Image src="/img/scene-messaging.svg" alt="logo" width={500} height={200} />
-        <Button onClick={handleSingpass}>Sign in with Singpass</Button>
-        <Button variant="outline" onClick={handleNoSingpass}>Continue without signing in</Button>
-      </main>
-  </div>
+    <>
+      <SignedIn>
+        <UserInfoChecker />
+      </SignedIn>
+      <SignedOut>
+        <Route route="/auth" />
+      </SignedOut>
+    </>
   )
+}
+
+export function Route(props: { route: string }) {
+  const router = useRouter();
+  router.push(props.route);
+  return null;
+}
+
+export function UserInfoChecker() {
+  const router = useRouter();
+  const { user } = useUser();
+
+  if (!user) {
+    return (
+      <main className="flex w-full h-full place-content-center place-items-center">
+        <LoadingSpinner />
+      </main>
+    );
+  }
+
+  // Update store
+  useAuthStore.setState((state) => {
+    return {
+      ...state,
+      currentUser: user,
+    };
+  });
+
+  // Fetch user data
+  fetch(`${process.env.NEXT_PUBLIC_APP_BACKEND_URL}/users/${user.id}`).then((res) => {
+    if (res.ok) {
+      res.json().then((data) => {
+        useUserStore.setState((state) => {
+          return {
+            ...state,
+            user: data,
+          };
+        });
+        router.push("/chat");
+      });
+    } else if (res.status === 404) {
+      router.push(`/onboarding?id=${user.id}`);
+    } else {
+      router.push("/error");
+    }}
+  );
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuthStore } from '@/stores/auth';
 import CareServiceRecommender from '@/ui/drawer/careservice';
 import LoadingSpinner from '@/ui/loading';
 import { useRouter } from 'next/navigation';
@@ -20,15 +21,19 @@ const workflows: Workflow[] = [{
 
 function ChatIntro() {
   const router = useRouter();
+  const user = useAuthStore(state => state.currentUser);
 
   // get name from localstorage
-  const name = typeof window !== "undefined" ? window.localStorage.getItem('cc-name') : 'Linda';
+  const threadId = typeof window !== "undefined" ? window.localStorage.getItem('cc-threadId') : null;
+  if (threadId) {
+    router.push(`/chat/${threadId}`);
+  }
   
   return (
     <div className="flex flex-col h-full w-full place-items-center place-content-between">
       <div className="flex flex-col place-items-center h-full place-content-center text-center gap-2">
-        <span className="text-xl md:text-3xl font-bold">{name ? `Welcome, ${name}` : 'Welcome, Linda'}</span>
-        <span>CareCompass+ is a care recommender that provides you recommendations based on your caregiving needs.</span>
+        <span className="text-xl md:text-3xl font-bold">{`Welcome, ${user.firstName}`}</span>
+        <span>CareCompass is a care recommender that provides you recommendations based on your caregiving needs.</span>
       </div>
       <div className="flex flex-col gap-2 w-full">
         <span className="font-semibold text-sm">How can I help you today?</span>

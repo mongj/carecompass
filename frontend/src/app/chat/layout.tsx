@@ -3,26 +3,53 @@
 import Image from "next/image";
 import { AddIcon } from "@chakra-ui/icons";
 import Search from "@/ui/Search";
-import { useParams, useRouter } from "next/navigation";
+import { redirect, useParams, useRouter } from "next/navigation";
 import { ChatContext } from "./context";
-import { useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import ChatHistory from "@/ui/ChatHistory";
 import { Thread } from "@/types/chat";
-import { useDisclosure, Drawer, DrawerOverlay, DrawerContent } from "@chakra-ui/react";
+import { useDisclosure, Drawer, DrawerOverlay, DrawerContent, Divider } from "@chakra-ui/react";
 
 import { Button, IconButton } from "@opengovsg/design-system-react";
-import { ArrowRight, MenuIcon, SquarePenIcon } from "lucide-react";
+import { ArrowRight, LogOutIcon, MenuIcon, SquarePenIcon } from "lucide-react";
+import { SignOutButton, useAuth, useUser } from "@clerk/nextjs";
+import UserProfileCard from "./UserProfileCard";
+import LoadingSpinner from "@/ui/loading";
+import { useAuthStore } from "@/stores/auth";
 
 export default function ChatLayout({ children }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const auth = useAuth();
+  const { user } = useUser()
   const router = useRouter();
   const params = useParams<{ chatId: string }>();
   const [chats, setChats] = useState<Thread[]>([]);
+
+  useLayoutEffect(() => {
+    if(!auth.isSignedIn){
+      redirect("/")
+    }
+  }, [auth.isSignedIn])
   
   function handleNewThread() {
     router.replace(`/chat`);
   }
+
+  if (!user) {
+    return (
+      <main className="flex w-full h-full place-content-center place-items-center">
+        <LoadingSpinner />
+      </main>
+    );
+  }
+
+  useAuthStore.setState((state) => {
+    return {
+      ...state,
+      currentUser: user,
+    };
+  })
 
   return (
     <ChatContext.Provider value={{ chats, setChats }}>
@@ -38,7 +65,7 @@ export default function ChatLayout({ children }: Readonly<{
           </div>
         </section>
         <header className="md:hidden flex place-content-between place-items-center px-4 w-full h-16 bg-brand-primary-500 text-white">
-          <ChatHistoryDrawer />
+          <LeftDrawer />
           <Button
             colorScheme="white"
             variant="clear"
@@ -66,7 +93,7 @@ export default function ChatLayout({ children }: Readonly<{
   );
 }
 
-function ChatHistoryDrawer() {
+function LeftDrawer() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = useRef(null)
   const router = useRouter();
@@ -83,8 +110,14 @@ function ChatHistoryDrawer() {
         finalFocusRef={btnRef}
       >
         <DrawerOverlay />
-        <DrawerContent>
-          <ChatHistory router={router} />
+        <DrawerContent className="p-6 gap-4">
+          <UserProfileCard />
+          <Divider />
+          <ChatHistory router={router} onClose={onClose} />
+          <Divider />
+          <SignOutButton>
+            <Button className="w-full" variant="solid" rightIcon={<LogOutIcon />}>Log out</Button>
+          </SignOutButton>
         </DrawerContent>
       </Drawer>
     </>
