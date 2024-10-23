@@ -182,7 +182,7 @@ class ThreadResponse(BaseModel):
     title: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 @app.get("/users/{id}/threads", response_model=List[ThreadResponse])
 def read_userthreads(id: str, session: SessionDep) -> User:
