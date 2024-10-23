@@ -13,7 +13,6 @@ export default function Search({ currentChatId } : { currentChatId?: string }) {
 
   async function handleSubmitPrompt(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setIsSending(true);
     const query = prompt.trim();
 
     // Clear the input field
@@ -22,6 +21,8 @@ export default function Search({ currentChatId } : { currentChatId?: string }) {
     if (!query) {
       return;
     }
+
+    setIsSending(true);
 
     let threadId = currentChatId;
 
@@ -75,7 +76,7 @@ export default function Search({ currentChatId } : { currentChatId?: string }) {
   return (
     <form className="flex w-full gap-2 my-6" onSubmit={handleSubmitPrompt}>
       <Input placeholder="Message" value={prompt} onChange={handleInput} disabled={isSending} />
-      <IconButton icon={<SearchIcon />} aria-label={"Search"} type="submit" isLoading={isSending} />
+      <IconButton icon={<SearchIcon />} aria-label={"Search"} type="submit" isLoading={isSending} isDisabled={prompt.trim().length === 0} />
     </form>
   );
 }
@@ -125,7 +126,7 @@ async function getResponse(threadId: string, query: string) {
       if (useCurrentThreadStore.getState().isWaitingForResponse) {
         useCurrentThreadStore.getState().setIsWaitingForResponse(false);
       }
-      
+
       if (done) break;
 
       const chunk = decoder.decode(value, { stream: true }); // Convert Uint8Array to string
