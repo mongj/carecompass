@@ -5,6 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import LoadingSpinner from "@/ui/loading";
 import { useCurrentThreadStore } from "@/stores/currentThread";
+import { Avatar } from "@chakra-ui/react";
+import { PulseLoader } from "react-spinners";
 
 export default function Chat({ params }: { params: { chatId: string }}) {
   const router = useRouter();
@@ -71,6 +73,13 @@ export default function Chat({ params }: { params: { chatId: string }}) {
         <ChatMessage key={message.id} message={message} />
       ))}
       <div id="msg-bottom" />
+      {useCurrentThreadStore.getState().isWaitingForResponse && 
+      <div className="flex place-items-start gap-2 md:gap-4">
+        <Avatar className="mt-2 sticky" src="/img/logo.svg" size="xs" />
+        <div className="w-[calc(100%-40px)] md:w-[calc(100%-48px)] flex flex-col bg-white p-4 border rounded-lg">
+          <PulseLoader color="#1361F0" size={8} />
+        </div>
+      </div>}
     </section>
   );
 }

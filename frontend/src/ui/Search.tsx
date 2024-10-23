@@ -9,9 +9,11 @@ import { useState } from "react";
 export default function Search({ currentChatId } : { currentChatId?: string }) {
   const router = useRouter();
   const [prompt, setPrompt] = useState("");
+  const [isSending, setIsSending] = useState(false);
 
   async function handleSubmitPrompt(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setIsSending(true);
     const query = prompt.trim();
 
     // Clear the input field
@@ -63,6 +65,7 @@ export default function Search({ currentChatId } : { currentChatId?: string }) {
     }
 
     getResponse(threadId, query);
+    setIsSending(false);
   }
 
   function handleInput(e: React.ChangeEvent<HTMLInputElement>) {
@@ -71,8 +74,8 @@ export default function Search({ currentChatId } : { currentChatId?: string }) {
 
   return (
     <form className="flex w-full gap-2 my-6" onSubmit={handleSubmitPrompt}>
-      <Input placeholder="Message" value={prompt} onChange={handleInput} />
-      <IconButton icon={<SearchIcon />} aria-label={"Search"} type="submit" />
+      <Input placeholder="Message" value={prompt} onChange={handleInput} disabled={isSending} />
+      <IconButton icon={<SearchIcon />} aria-label={"Search"} type="submit" isLoading={isSending} />
     </form>
   );
 }
@@ -99,6 +102,8 @@ async function createThread() {
 }
 
 async function getResponse(threadId: string, query: string) {
+  useCurrentThreadStore.getState().setIsWaitingForResponse(true);
+
   const response = await fetch(`${process.env.NEXT_PUBLIC_APP_BACKEND_URL}/threads/${threadId}/messages`, {
     method: 'POST',
     headers: {
@@ -116,6 +121,11 @@ async function getResponse(threadId: string, query: string) {
     const decoder = new TextDecoder('utf-8'); // Decodes the binary data into a string
     while (true) {
       const { value, done } = await reader.read();
+
+      if (useCurrentThreadStore.getState().isWaitingForResponse) {
+        useCurrentThreadStore.getState().setIsWaitingForResponse(false);
+      }
+      
       if (done) break;
 
       const chunk = decoder.decode(value, { stream: true }); // Convert Uint8Array to string
