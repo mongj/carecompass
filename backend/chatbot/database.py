@@ -20,7 +20,7 @@ class User(Person, table=True):
 class Thread(SQLModel, table=True):
     thread_id: str = Field(primary_key=True, index=True)
     user_id: str = Field(foreign_key="user.clerk_id")
-    title: str | None = Field(default=None)
+    title: Optional[str] = Field(default=None)
 
     user: User = Relationship(back_populates="threads")
 
