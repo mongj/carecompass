@@ -7,7 +7,6 @@ import { SignedIn, SignedOut, useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation';
 
 export default function Main() {  
-  console.log('Main');
   return (
     <>
       <SignedIn>

@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function Search({ currentChatId } : { currentChatId?: string }) {
-  console.log(currentChatId)
   const router = useRouter();
   const [prompt, setPrompt] = useState("");
 
