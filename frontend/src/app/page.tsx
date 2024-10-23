@@ -20,13 +20,13 @@ export default function Main() {
   )
 }
 
-export function Route(props: { route: string }) {
+function Route(props: { route: string }) {
   const router = useRouter();
   router.push(props.route);
   return null;
 }
 
-export function UserInfoChecker() {
+function UserInfoChecker() {
   const router = useRouter();
   const { user } = useUser();
 
