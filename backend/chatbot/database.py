@@ -30,12 +30,13 @@ def build_db_conn_string():
     db_user = os.getenv("DB_USER")
     db_password = os.getenv("DB_PASSWORD")
     db_host = os.getenv("DB_HOST")
+    db_port = os.getenv("DB_PORT")
     db_name = os.getenv("DB_NAME")
     db_sslmode = os.getenv("DB_SSLMODE")
 
-    return f"postgresql://{db_user}:{db_password}@{db_host}/{db_name}?sslmode={db_sslmode}"
+    return f"postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}?sslmode={db_sslmode}"
 
-DB_CONN_STRING = "postgresql://neondb_owner:ipIB5z2vSHJG@ep-yellow-wind-a1642y1z.ap-southeast-1.aws.neon.tech/neondb?sslmode=require"
+DB_CONN_STRING = build_db_conn_string()
 
 engine = create_engine(DB_CONN_STRING)
 
