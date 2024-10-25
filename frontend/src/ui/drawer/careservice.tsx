@@ -576,7 +576,6 @@ function DaycareRecommendationCard({ centre, param }: { centre: DDCView; param: 
 
   return (
     <div className="flex flex-col gap-4 p-4 border border-gray-200 rounded-md">
-      <PhotoSlider photos={centre.photos} />
       <span className="font-semibold">{centre.name}</span>
       <div className="flex flex-col gap-2 text-sm">
         {/* <span><b>Price per day: </b>${centre.price}</span> */}
