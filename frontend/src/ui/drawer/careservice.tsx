@@ -56,7 +56,7 @@ type Params = {
   remove: (name: string) => URLSearchParams;
 }
 
-const DEFAULT_POSTAL_CODE = 469972;
+const DEFAULT_POSTAL_CODE = 520362;
 const DEFAULT_MIN_PRICE = 10;
 const DEFAULT_MAX_PRICE = 50;
 
