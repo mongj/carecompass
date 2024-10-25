@@ -576,16 +576,17 @@ function DaycareRecommendationCard({ centre, param }: { centre: DDCView; param: 
 
   return (
     <div className="flex flex-col gap-4 p-4 border border-gray-200 rounded-md">
+      <PhotoSlider photos={centre.photos} />
       <span className="font-semibold">{centre.name}</span>
       <div className="flex flex-col gap-2 text-sm">
-        <span><b>Price per day: </b>${centre.price}</span>
+        {/* <span><b>Price per day: </b>${centre.price}</span> */}
         <span><b>Location: </b>{centre.distanceFromHome}km from home</span>
-        <span className="flex gap-1 place-items-center">
+        {/* <span className="flex gap-1 place-items-center">
           <b>Pickup/Dropoff: </b>
           <div className="flex gap-2">
             {centre.dropoffPickupAvailability.map((e, i) => <Badge key={i} colorScheme="success" variant="subtle">{e}</Badge>)}
           </div>
-        </span>
+        </span> */}
         {!isNaN(avgReview) && <span><b>Google Reviews:</b> {avgReview} ⭐</span>}
       </div>
       <Button variant="clear" rightIcon={<BxRightArrowAlt fontSize="1.5rem" />} marginLeft="auto" onClick={handleClick}>More Info</Button>
@@ -611,7 +612,7 @@ function DaycareCentreDetails(data: DDCView) {
           <span><b>Operating hours: </b></span>
           <span>{data.operatingHours.join(', \n')}</span>
         </div>
-        <div className="flex flex-col">
+        {/* <div className="flex flex-col">
           <span><b>Price per day: </b><Popover>
             <PopoverTrigger>
               <a className="underline">(how is this calculated?)</a>
@@ -630,13 +631,13 @@ function DaycareCentreDetails(data: DDCView) {
             </PopoverContent>
           </Popover></span>
           <span>${data.price.toFixed(2)}</span>
-        </div>
-        <span className="flex gap-1 place-items-center">
+        </div> */}
+        {/* <span className="flex gap-1 place-items-center">
           <b>Pickup/Dropoff: </b>
           <div className="flex gap-2">
             {data.dropoffPickupAvailability.map((e, i) => <Badge key={i} colorScheme="success" variant="subtle">{e}</Badge>)}
           </div>
-        </span>
+        </span> */}
         {!isNaN(avgReview) && <span><b>Google Reviews:</b> {avgReview} ⭐</span>}
         <div className="flex flex-col gap-2 my-2">
           <span className="text-lg"><b>Contact Details</b></span>
