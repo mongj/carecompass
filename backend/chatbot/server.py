@@ -38,7 +38,9 @@ app = FastAPI(lifespan=lifespan)
 # TODO: use env variables
 origins = [
     "http://localhost:3000",
-    "https://carecompass.mingjun.dev"
+    "https://carecompass.mingjun.dev",
+    "https://app.carecompass.sg",
+    "https://my.carecompass.sg",
 ]
 
 app.add_middleware(
