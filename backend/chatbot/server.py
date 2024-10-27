@@ -41,6 +41,7 @@ origins = [
     "https://carecompass.mingjun.dev",
     "https://app.carecompass.sg",
     "https://my.carecompass.sg",
+    "https://carecompass-bfg.vercel.app"
 ]
 
 app.add_middleware(
