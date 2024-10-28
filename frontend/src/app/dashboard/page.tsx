@@ -18,11 +18,8 @@ export default function SupportDashboard() {
 
   return (
     <div className="flex flex-col h-full w-full gap-4 py-6">
-      <section className="flex flex-col gap-2">
-        <h3 className="font-semibold text-lg">My Active Support</h3>
-        <div className="flex p-4 bg-white border border-gray-200 rounded-md min-h-32 text-center place-content-center place-items-center">
-          <span className="text-sm text-gray-500 whitespace-pre-line">{`None for now\nExplore support options below`}</span>
-        </div>
+      <section className="gap-2 p-4 bg-blue-100 rounded border border-blue-300 align-middle">
+        This is a mockup of the support dashboard.
       </section>
       <section className="flex flex-col gap-2 pb-6">
         <h3 className="font-semibold text-lg">Explore Support</h3>
