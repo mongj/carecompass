@@ -89,7 +89,8 @@ async function createThread() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        user_id: useUserStore.getState().user.clerk_id
+        // user_id: useUserStore.getState().user.clerk_id
+        user_id: typeof window !== "undefined" ? window.localStorage.getItem('cc-userId') : null
       }),
     });
     if (!response.ok) {

@@ -16,7 +16,7 @@ export default function RootLayout({ children }: Readonly<{
       <body className='w-screen h-dvh'>
         <Toaster richColors />
         <Providers>
-          <div className='sm:hidden'>
+          <div className='w-full h-full sm:hidden'>
             {children}
           </div>
           <main className="hidden sm:flex h-full w-full flex-col p-8 gap-4 place-content-center place-items-center">

@@ -49,7 +49,7 @@ function PersonalDetailsForm() {
 
   const [personalDetails, setPersonalDetails] = useState<UserData>({
     citizenship: " ",
-    care_recipient_age: 0,
+    care_recipient_age: 65,
     care_recipient_citizenship: "",
     care_recipient_residence: 0,
     care_recipient_relationship: "",
@@ -89,74 +89,72 @@ function PersonalDetailsForm() {
   // 5. What is your loved one’s relationship to you? (Parent, spouse, other family, non-family member)
 
   return (
-    <div className="flex flex-col h-full max-h-screen place-content-center">
-      <main className="flex h-full overflow-auto w-full flex-col p-8 gap-8 place-content-center">
-        <div className="flex flex-col gap-2">
-          <h3 className="font-bold text-2xl">Get Started</h3>
-          <span className="">Could you tell us a little more about yourself and your loved one?</span>
-        </div>
-        <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-          <Stack gap={0} spacing={0}>
-            <FormLabel isRequired>{`Your citizenship status`}</FormLabel>
-            <SingleSelect
-              placeholder="Select an option"
-              value={personalDetails.citizenship}
-              name="citizenship"
-              items={citizenshipOptions}
-              onChange={(e) => setPersonalDetails({ ...personalDetails, citizenship: e })}
-            />
-          </Stack>
-          <Stack gap={0} spacing={0}>
-            <FormLabel isRequired>{`I am caring for my`}</FormLabel>
-            <SingleSelect
-              placeholder="Select an option"
-              value={personalDetails.care_recipient_relationship}
-              name="carerecipient_relationship"
-              items={relationshipOptions}
-              onChange={(e) => setPersonalDetails({ ...personalDetails, care_recipient_relationship: e })}
-            />
-          </Stack>
-          <Stack gap={0} spacing={0}>
-            <FormLabel isRequired>{`Loved one’s citizenship status`}</FormLabel>
-            <SingleSelect
-              placeholder="Select an option"
-              value={personalDetails.care_recipient_citizenship}
-              name="carerecipient_citizenship"
-              items={citizenshipOptions}
-              onChange={(e) => setPersonalDetails({ ...personalDetails, care_recipient_citizenship: e })}
-            />
-          </Stack>
-          <Stack gap={0} spacing={0}>
-            <FormLabel isRequired>{`Loved one’s age`}</FormLabel>
-            <NumberInput
-              min={0}
-              placeholder="Age"
-              value={personalDetails.care_recipient_age}
-              name="carerecipient_age"
-              onChange={(e) => setPersonalDetails({ ...personalDetails, care_recipient_age: Number(e) })}
-            />
-          </Stack>
-          <Stack gap={0} spacing={0}>
-            <FormLabel isRequired>{`Loved one’s residential status`}</FormLabel>
-            <RadioGroup
-              onChange={(e) => setPersonalDetails({ ...personalDetails, care_recipient_residence: Number(e) })}
-              value={personalDetails.care_recipient_residence.toString()}
-            >
-              <Radio value='0' allowDeselect>
-                My loved one stays with me
-              </Radio>
-              <Radio value='1' allowDeselect>
-                My loved one stays in a nursing home or residential long-term care facility
-              </Radio>
-              <Radio value='2' allowDeselect>
-                Others
-              </Radio>
-            </RadioGroup>
-          </Stack>
-          <Button isLoading={isSubmitting} loadingText="Submitting" variant="solid" type="submit" rightIcon={<BxRightArrowAlt />}>{'Next'}</Button>
-        </form>
-      </main>
-  </div>
+    <main className="flex flex-col h-full overflow-auto w-full py-16 p-8 gap-8">
+      <div className="flex flex-col gap-2">
+        <h3 className="font-bold text-2xl">Get Started</h3>
+        <span className="">Could you tell us a little more about yourself and your loved one?</span>
+      </div>
+      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+        <Stack gap={0} spacing={0}>
+          <FormLabel isRequired>{`Your citizenship status`}</FormLabel>
+          <SingleSelect
+            placeholder="Select an option"
+            value={personalDetails.citizenship}
+            name="citizenship"
+            items={citizenshipOptions}
+            onChange={(e) => setPersonalDetails({ ...personalDetails, citizenship: e })}
+          />
+        </Stack>
+        <Stack gap={0} spacing={0}>
+          <FormLabel isRequired>{`I am caring for my`}</FormLabel>
+          <SingleSelect
+            placeholder="Select an option"
+            value={personalDetails.care_recipient_relationship}
+            name="carerecipient_relationship"
+            items={relationshipOptions}
+            onChange={(e) => setPersonalDetails({ ...personalDetails, care_recipient_relationship: e })}
+          />
+        </Stack>
+        <Stack gap={0} spacing={0}>
+          <FormLabel isRequired>{`Loved one’s citizenship status`}</FormLabel>
+          <SingleSelect
+            placeholder="Select an option"
+            value={personalDetails.care_recipient_citizenship}
+            name="carerecipient_citizenship"
+            items={citizenshipOptions}
+            onChange={(e) => setPersonalDetails({ ...personalDetails, care_recipient_citizenship: e })}
+          />
+        </Stack>
+        <Stack gap={0} spacing={0}>
+          <FormLabel isRequired>{`Loved one’s age`}</FormLabel>
+          <NumberInput
+            min={0}
+            placeholder="Age"
+            value={personalDetails.care_recipient_age}
+            name="carerecipient_age"
+            onChange={(e) => setPersonalDetails({ ...personalDetails, care_recipient_age: Number(e) })}
+          />
+        </Stack>
+        <Stack gap={0} spacing={0}>
+          <FormLabel isRequired>{`Loved one’s residential status`}</FormLabel>
+          <RadioGroup
+            onChange={(e) => setPersonalDetails({ ...personalDetails, care_recipient_residence: Number(e) })}
+            value={personalDetails.care_recipient_residence.toString()}
+          >
+            <Radio value='0' allowDeselect>
+              My loved one stays with me
+            </Radio>
+            <Radio value='1' allowDeselect>
+              My loved one stays in a nursing home or residential long-term care facility
+            </Radio>
+            <Radio value='2' allowDeselect>
+              Others
+            </Radio>
+          </RadioGroup>
+        </Stack>
+        <Button isLoading={isSubmitting} loadingText="Submitting" variant="solid" type="submit" rightIcon={<BxRightArrowAlt />}>{'Next'}</Button>
+      </form>
+    </main>
   )
 }
 

@@ -7,13 +7,14 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import { useEffect, useState } from "react";
 
 export default function ChatHistory({ router, onClose }: { router: AppRouterInstance, onClose?: () => void }) {
-  const user_id = useUserStore((state) => state.user.clerk_id);
+  // const userId = useUserStore((state) => state.user.clerk_id);
+  const userId = typeof window !== "undefined" ? window.localStorage.getItem('cc-userId') : null;
   const [chats, setChats] = useState<GetUserThreadResponse[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setIsLoading(true);
-    fetch(`${process.env.NEXT_PUBLIC_APP_BACKEND_URL}/users/${user_id}/threads`, {
+    fetch(`${process.env.NEXT_PUBLIC_APP_BACKEND_URL}/users/${userId}/threads`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -23,7 +24,7 @@ export default function ChatHistory({ router, onClose }: { router: AppRouterInst
         res.json().then((data) => setChats(data));
       }
     }).finally(() => setIsLoading(false));
-  }, [user_id]);
+  }, [userId]);
 
   return (
     <div className="flex flex-col gap-4 h-full">

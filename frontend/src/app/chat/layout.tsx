@@ -26,35 +26,42 @@ export default function ChatLayout({ children }: Readonly<{
   const params = useParams<{ chatId: string }>();
   const [chats, setChats] = useState<Thread[]>([]);
 
+  // useLayoutEffect(() => {
+  //   if(!auth.isSignedIn){
+  //     redirect("/")
+  //   }
+  // }, [auth.isSignedIn])
+
   useLayoutEffect(() => {
-    if(!auth.isSignedIn){
+    const userId = typeof window !== "undefined" ? window.localStorage.getItem('cc-userId') : null;
+    if(!userId){
       redirect("/")
     }
-  }, [auth.isSignedIn])
+  }, [])
   
   function handleNewThread() {
     router.replace(`/chat`);
   }
 
-  if (!user) {
-    return (
-      <main className="flex w-full h-full place-content-center place-items-center">
-        <LoadingSpinner />
-      </main>
-    );
-  }
+  // if (!user) {
+  //   return (
+  //     <main className="flex w-full h-full place-content-center place-items-center">
+  //       <LoadingSpinner />
+  //     </main>
+  //   );
+  // }
 
-  useAuthStore.setState((state) => {
-    return {
-      ...state,
-      currentUser: user,
-    };
-  })
+  // useAuthStore.setState((state) => {
+  //   return {
+  //     ...state,
+  //     currentUser: user,
+  //   };
+  // })
 
   return (
     <ChatContext.Provider value={{ chats, setChats }}>
       <div className="flex flex-col md:flex-row h-dvh max-h-dvh">
-        <section className="hidden md:block w-64 min-w-64 bg-textured-gradient bg-cover px-4 py-8 shadow-md">
+        <section className="hidden md:block w-64 min-w-64 bg-white bg-cover px-4 py-8 shadow-md">
           <div className="flex flex-col place-items-center gap-8">
             <Image src="/img/logo.svg" alt="Logo" width={64} height={64} />
             <button className="flex place-items-center gap-2 rounded-full border border-gray-100 bg-white px-4 py-2 text-black duration-200 ease-in-out hover:bg-gray-200" onClick={handleNewThread}>
@@ -115,9 +122,13 @@ function LeftDrawer() {
           <Divider />
           <ChatHistory router={router} onClose={onClose} />
           <Divider />
-          <SignOutButton>
+          <Button className="w-full" variant="solid" rightIcon={<LogOutIcon />} onClick={() => {
+            window.localStorage.removeItem('cc-userId');
+            router.push("/");
+          }}>Log out</Button>
+          {/* <SignOutButton>
             <Button className="w-full" variant="solid" rightIcon={<LogOutIcon />}>Log out</Button>
-          </SignOutButton>
+          </SignOutButton> */}
         </DrawerContent>
       </Drawer>
     </>

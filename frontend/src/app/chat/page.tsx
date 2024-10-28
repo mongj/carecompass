@@ -32,7 +32,8 @@ function ChatIntro() {
   return (
     <div className="flex flex-col h-full w-full place-items-center place-content-between">
       <div className="flex flex-col place-items-center h-full place-content-center text-center gap-2">
-        <span className="text-xl md:text-3xl font-bold">{`Welcome, ${user.firstName}`}</span>
+        <span className="text-xl md:text-3xl font-bold">{`Welcome!`}</span>
+        {/* <span className="text-xl md:text-3xl font-bold">{`Welcome, ${user.firstName}`}</span> */}
         <span>CareCompass is a care recommender that provides you recommendations based on your caregiving needs.</span>
       </div>
       <div className="flex flex-col gap-2 w-full">

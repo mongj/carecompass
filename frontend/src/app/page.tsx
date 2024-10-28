@@ -6,15 +6,21 @@ import LoadingSpinner from '@/ui/loading';
 import { SignedIn, SignedOut, useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation';
 
-export default function Main() {  
+export default function Main() {
+  const userId = typeof window !== "undefined" ? window.localStorage.getItem('cc-userId') : null;
+  if (userId) {
+    return <Route route="/chat" />
+  } else {
+    return <Route route="/auth" />
+  }
   return (
     <>
-      <SignedIn>
+      {/* <SignedIn>
         <UserInfoChecker />
       </SignedIn>
       <SignedOut>
         <Route route="/auth" />
-      </SignedOut>
+      </SignedOut> */}
     </>
   )
 }
