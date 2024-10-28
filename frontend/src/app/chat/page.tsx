@@ -3,6 +3,7 @@
 import { useAuthStore } from '@/stores/auth';
 import CareServiceRecommender from '@/ui/drawer/careservice';
 import LoadingSpinner from '@/ui/loading';
+import { useChatQuery } from '@/util/hooks/useChatQuery';
 import { useRouter } from 'next/navigation';
 import { Suspense } from 'react';
 import { Drawer } from 'vaul';
@@ -18,10 +19,27 @@ const workflows: Workflow[] = [{
   },
 ];
 
+type ChatPrompt = {
+  label: string;
+  query: string;
+}
+
+const chatPrompts: ChatPrompt[] = [
+  {
+    label: "🏥 What caregiving options do I have?",
+    query: "What caregiving options do I have?",
+  },
+  {
+    label: "💵 What support might I be eligible for?",
+    query: "What support might I be eligible for?",
+  }
+];
+
 
 function ChatIntro() {
   const router = useRouter();
   const user = useAuthStore(state => state.currentUser);
+  const { handleSubmitPrompt } = useChatQuery()
 
   // get name from localstorage
   const threadId = typeof window !== "undefined" ? window.localStorage.getItem('cc-threadId') : null;
@@ -39,7 +57,7 @@ function ChatIntro() {
       <div className="flex flex-col gap-2 w-full">
         <span className="font-semibold text-sm">How can I help you today?</span>
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
-          {workflows.map((workflow, index) => <WorkflowTrigger key={index} workflow={workflow} />)}
+          {/* {workflows.map((workflow, index) => <WorkflowTrigger key={index} workflow={workflow} />)}
           <button
             className="bg-white px-4 py-2 min-h-12 border border-[rgb(191,194,200)] rounded-md hover:bg-gray-50 ease-in duration-100 leading-tight text-sm"
             onClick={() => {
@@ -47,7 +65,23 @@ function ChatIntro() {
             }}
           >
             💵 What support might I be eligible for?
-          </button>
+          </button> */}
+          {chatPrompts.map((chatPrompt, index) => (
+            <form 
+              className="w-full"
+              onSubmit={(e) => {
+                handleSubmitPrompt(e, chatPrompt.query);
+              }}
+            >
+            <button
+              key={index}
+              className="w-full bg-white px-4 py-2 min-h-12 border border-[rgb(191,194,200)] rounded-md hover:bg-gray-50 ease-in duration-100 leading-tight text-sm"
+              type="submit"
+            >
+              {chatPrompt.label}
+            </button>
+            </form>
+          ))}
         </div>
       </div>
     </div>
