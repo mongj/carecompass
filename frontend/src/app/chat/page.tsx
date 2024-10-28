@@ -68,18 +68,19 @@ function ChatIntro() {
           </button> */}
           {chatPrompts.map((chatPrompt, index) => (
             <form 
+              key={index}
               className="w-full"
               onSubmit={(e) => {
                 handleSubmitPrompt(e, chatPrompt.query);
               }}
             >
-            <button
-              key={index}
-              className="w-full bg-white px-4 py-2 min-h-12 border border-[rgb(191,194,200)] rounded-md hover:bg-gray-50 ease-in duration-100 leading-tight text-sm"
-              type="submit"
-            >
-              {chatPrompt.label}
-            </button>
+              <button
+                key={index}
+                className="w-full bg-white px-4 py-2 min-h-12 border border-[rgb(191,194,200)] rounded-md hover:bg-gray-50 ease-in duration-100 leading-tight text-sm"
+                type="submit"
+              >
+                {chatPrompt.label}
+              </button>
             </form>
           ))}
         </div>

@@ -117,7 +117,7 @@ function LeftDrawer() {
         finalFocusRef={btnRef}
       >
         <DrawerOverlay />
-        <DrawerContent className="p-6 gap-4">
+        <DrawerContent className="flex flex-col p-6 gap-4">
           <UserProfileCard />
           <Divider />
           <ChatHistory router={router} onClose={onClose} />

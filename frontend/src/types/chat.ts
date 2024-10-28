@@ -9,28 +9,43 @@ export type Thread = {
   messages: Message[];
 }
 
+export enum MessageRole {
+  User = "user",
+  Assistant = "assistant",
+}
+
 export type Message = {
   id: string;
-  role: "user" | "assistant";
-  content: string | BotResponse;
+  role: MessageRole;
+  content: string;
 }
 
 export type BotResponse = {
-  content: (BotResponseText | BotResponseUI)[],
+  output: (BotResponseMarkdown | BotResponseUI)[],
 }
 
-export type BotResponseText = {
-  type: "text",
+export enum BotResponseType {
+  Markdown = "markdown",
+  Button = "button",
+}
+
+export type BotResponseMarkdown = {
+  type: BotResponseType.Markdown,
   content: string,
 }
 
-export type BotResponseUI = {
-  type: "ui",
-  content: {
-    header: string,
-    content?: string,
-  }[]
+export enum BotResponseComponentID {
+  CareserviceRecommender = "careservice-recommender",
+  DaycareRecommender = "daycare-recommender",
+  SchemesRecommender = "schemes-recommender",
 }
+
+export type BotResponseUI = {
+  type: BotResponseType.Button,
+  id: BotResponseComponentID,
+  content: string,
+}
+
 
 export type CreateThreadResponse = {
   thread_id: string

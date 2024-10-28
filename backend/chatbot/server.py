@@ -118,7 +118,7 @@ async def stream_chat_responses(thread_id: str, query: str) -> AsyncGenerator[st
         thread_id=thread_id,
         assistant_id=os.getenv('OPENAI_ASSISTANT_ID'),
         stream=True,
-        response_format={ "type": "text" }
+        response_format={ "type": "json_object" }
     )
 
     for event in stream:

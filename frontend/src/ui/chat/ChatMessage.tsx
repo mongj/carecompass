@@ -1,72 +1,110 @@
-import { BotResponse, Message } from "@/types/chat";
-import { Avatar, Button, ModalContent, ModalOverlay, useDisclosure } from "@chakra-ui/react";
-import { Modal } from "@chakra-ui/react";
+import { BotResponse, BotResponseComponentID, BotResponseType, Message, MessageRole } from "@/types/chat";
+import { Avatar } from "@chakra-ui/react";
+import { Button, BxRightArrowAlt } from "@opengovsg/design-system-react";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { parse } from "partial-json";
+import { Drawer } from 'vaul';
+import CareServiceRecommender from "../drawer/careservice";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function ChatMessage({ message }: { message: Message }) {
   return (
     <div className="flex place-items-start gap-2 md:gap-4">
       {
-        message.role === "assistant" ? 
-          <Avatar className="mt-2 sticky" src="/img/logo.svg" size="xs" /> : 
-          <Avatar className="mt-2 sticky" colorScheme="sub" size="xs" />
+        message.role === MessageRole.User ? 
+          <Avatar className="mt-2 sticky" colorScheme="sub" size="xs" /> :
+          <Avatar className="mt-2 sticky" src="/img/logo.svg" size="xs" />
       }
       <div className="w-[calc(100%-40px)] md:w-[calc(100%-48px)] flex flex-col bg-white p-4 border rounded-lg">
-        {typeof message.content === 'string' ? 
-          <div className="flex flex-col gap-0 p-0 m-0">
-            <Markdown remarkPlugins={[remarkGfm]} className="prose prose-sm leading-tight">{message.content}</Markdown>
-          </div>
-          : <ResponseMessage res={message.content} />
+        {message.role === MessageRole.User ? 
+          <UserMessage content={message.content} /> :
+          <AssistantMessage content={message.content} />
         }
       </div>
     </div>
   );
 }
 
-function ResponseMessage({ res }: { res: BotResponse }) {
+function UserMessage({ content }: { content: string }) {
   return (
-    <div className="flex flex-col gap-4">
-      {res.content && res.content.map((block, index) => {
-        if (!block.content) {
-          return null;
+    <div className="flex flex-col gap-0 p-0 m-0">
+      <Markdown remarkPlugins={[remarkGfm]} className="prose prose-sm leading-tight">{content}</Markdown>
+    </div>
+  );
+}
+
+function AssistantMessage({ content }: { content: string }) {
+  const router = useRouter();
+  const pathname = usePathname();
+  
+  // Parse the JSON string into a BotResponse object
+  content = content.replaceAll(/\\"/g, '\"');
+  const parsedContent: BotResponse = parse(content);
+
+  if (!parsedContent.output) {
+    return <></>;
+  }
+  
+  return (
+    <div className="flex flex-col gap-4 p-0 m-0">
+      {parsedContent.output.map((response, index) => {
+        if (!response.content) {
+          return <></>;
         }
-        if (block.type === "text") {
-          return <span key={index} className="text-sm sm:text-base leading-tight whitespace-pre-line">{block.content}</span>
-        } else {
-          return (
-            <div key={index} className="flex flex-col md:flex-row gap-2 overflow-auto">
-              {block.content.map((uiBlock, index) => (
-                <ClickableCard key={index} header={uiBlock.header} content={uiBlock.content} />
-              ))}
-            </div>);
+
+        response.content = response.content.replaceAll(/\\n/g, '\n');
+
+        if (response.type === BotResponseType.Markdown) {
+          return <Markdown key={index} remarkPlugins={[remarkGfm]} className="prose prose-sm leading-tight">{response.content}</Markdown>
+        } else if (response.type === BotResponseType.Button) {
+          if (response.id === BotResponseComponentID.CareserviceRecommender) {
+            return <WorkflowTrigger key={index} WorkflowComponent={CareServiceRecommender} triggerText={response.content} />
+          } else if (response.id === BotResponseComponentID.DaycareRecommender) {
+            router.push(`${pathname}?step=1`);
+            return <WorkflowTrigger key={index} WorkflowComponent={CareServiceRecommender} triggerText={response.content} />;
+          } else if (response.id === BotResponseComponentID.SchemesRecommender) {
+            return (
+              <Button
+                key={index}
+                size="sm"
+                rightIcon={<BxRightArrowAlt />}
+                variant="outline"
+                paddingY={6}
+                onClick={() => router.push('/dashboard')}
+              >
+                {response.content}
+              </Button>);
+          } else {
+            return <></>;
+          }
         }
       })}
     </div>
   )
 }
 
-function ClickableCard({ header, content }: { header: string, content?: string }) {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+function WorkflowTrigger({ WorkflowComponent, triggerText }: { WorkflowComponent: React.ComponentType, triggerText: string }) {
   return (
-    <>
-      <div onClick={onOpen} className="flex flex-col gap-2 bg-white border rounded-md p-4 max-h-36 sm:max-h-80 min-w-56 sm:min-w-72 shadow-sm cursor-pointer hover:bg-gray-100 ease-in duration-100">
-        <h3 className="font-semibold text-lg leading-tight">{header}</h3>
-        <span className="text-gray-600 text-sm overflow-hidden text-ellipsis leading-tight line-clamp-3 md:line-clamp-6 whitespace-pre-line">{content}</span>
-      </div>
-
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent className="flex flex-col gap-4 p-8">
-          <h3 className="font-semibold text-2xl leading-tight">{header}</h3>
-          <span className="text-gray-600 text-sm overflow-hidden text-ellipsis">{content}</span>
-          <div className="flex place-content-end">
-            <Button colorScheme='blue' onClick={onClose}>
-              Close
-            </Button>
-          </div>
-        </ModalContent>
-      </Modal>
-    </>
-  )
+    <Drawer.Root shouldScaleBackground>
+    <Drawer.Trigger asChild>
+    <Button
+      size="sm"
+      rightIcon={<BxRightArrowAlt />}
+      variant="outline"
+      paddingY={6}
+    >
+      {triggerText}
+    </Button>
+    </Drawer.Trigger>
+    <Drawer.Overlay className="fixed inset-0 bg-black/40" />
+    <Drawer.Portal>
+      <Drawer.Content className="fixed flex flex-col bg-white border border-gray-200 border-b-none rounded-t-[10px] bottom-0 left-0 right-0 h-full max-h-[100dvh] mx-[-1px]">
+        <Drawer.Handle className='my-4'/>
+        <WorkflowComponent/>
+      </Drawer.Content>
+    </Drawer.Portal>
+  </Drawer.Root>
+  );
 }
+

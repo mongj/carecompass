@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCurrentThreadStore } from "@/stores/currentThread";
-import { CreateThreadResponse } from "@/types/chat";
+import { BotResponse, CreateThreadResponse, MessageRole } from "@/types/chat";
+import { parse } from "partial-json";
 
 export function useChatQuery(currentChatId?: string) {
   const router = useRouter();
@@ -40,7 +41,7 @@ export function useChatQuery(currentChatId?: string) {
           messages: [
             {
               id: "NEW_USER_MESSAGE",
-              role: "user",
+              role: MessageRole.User,
               content: query,
             },
           ],
@@ -56,7 +57,7 @@ export function useChatQuery(currentChatId?: string) {
             ...state.thread.messages,
             {
               id: "NEW_USER_MESSAGE" + state.thread.messages.length,
-              role: "user",
+              role: MessageRole.User,
               content: query,
             },
           ],
@@ -124,7 +125,6 @@ async function getResponse(threadId: string, query: string) {
       const parsedChunk = parseEventStream(chunk);
       if (parsedChunk) {
         combined += parsedChunk;
-        combined = combined.replace(/【.*?】/g, "");
         useCurrentThreadStore.setState((state) => {
           if (!state.thread.messages.find((message) => message.id === messageId)) {
             return {
@@ -134,7 +134,7 @@ async function getResponse(threadId: string, query: string) {
                   ...state.thread.messages,
                   {
                     id: messageId,
-                    role: "assistant",
+                    role: MessageRole.Assistant,
                     content: combined,
                   },
                 ],
@@ -146,7 +146,7 @@ async function getResponse(threadId: string, query: string) {
                 ...state.thread,
                 messages: state.thread.messages.map((message) =>
                   message.id === messageId
-                    ? { ...message, content: combined }
+                    ? { ...message, role: MessageRole.Assistant, content: combined }
                     : message
                 ),
               },
@@ -159,7 +159,7 @@ async function getResponse(threadId: string, query: string) {
 }
 
 function parseEventStream(input: string): string {
-  const tokenRegex = /"token":\s*"([^"]+)"/g;
+  const tokenRegex = /"token":\s*"(.*)"/g;
   let match;
   let result = "";
 
@@ -171,5 +171,5 @@ function parseEventStream(input: string): string {
     String.fromCharCode(parseInt(unicode, 16))
   );
 
-  return result.replace(/\\n/g, "\n");
+  return result;
 }
