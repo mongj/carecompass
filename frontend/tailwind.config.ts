@@ -269,9 +269,6 @@ const config: Config = {
           },
         },
       },
-      backgroundImage: {
-        "textured-gradient": "url('/img/gradient.png')",
-      },
     },
   },
   plugins: [
