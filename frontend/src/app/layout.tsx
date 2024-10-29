@@ -7,6 +7,7 @@ import { ThemeProvider } from '@opengovsg/design-system-react';
 import { ChakraProvider } from '@chakra-ui/react';
 import { Toaster } from 'sonner'
 import Image from 'next/image';
+import Analytics from './analytics';
 
 export default function RootLayout({ children }: Readonly<{
   children: React.ReactNode;
@@ -15,6 +16,7 @@ export default function RootLayout({ children }: Readonly<{
     <html lang='en'>
       <body className='w-screen h-dvh'>
         <Toaster richColors />
+        <Analytics />
         <Providers>
           <div className='w-full h-full sm:hidden'>
             {children}
