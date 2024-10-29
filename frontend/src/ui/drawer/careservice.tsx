@@ -2,13 +2,14 @@
 "use client";
 
 import { DDCData, DDCView } from "@/types/ddc";
-import { Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger, RangeSlider, RangeSliderFilledTrack, RangeSliderMark, RangeSliderThumb, RangeSliderTrack, Stack } from "@chakra-ui/react";
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger, RangeSlider, RangeSliderFilledTrack, RangeSliderMark, RangeSliderThumb, RangeSliderTrack, Stack } from "@chakra-ui/react";
 import { Badge, Button, BxChevronLeft, BxRightArrowAlt, Checkbox, FormLabel, Input } from "@opengovsg/design-system-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { ReadonlyURLSearchParams, useRouter, useSearchParams } from 'next/navigation'
 import LoadingSpinner from "../loading";
 import Slider from "react-slick";
+import CustomMarkdown from "../CustomMarkdown";
 
 function PhotoSlider({ photos }: { photos: string[] }) {
   const settings = {
@@ -597,6 +598,8 @@ function DaycareCentreDetails(data: DDCView) {
   const router = useRouter()
   const avgReview = data.reviews.reduce((acc, cur) => acc + cur.rating, 0) / data.reviews.length
 
+  const applicationDetails = "- You will need to get a referral from a hospital, polyclinic or GP who is familiar with your loved ones’ condition and needs. You may also contact the service provider for a discussion. \n\n - For further assistance, contact the Agency for Integrated Care (AIC) at [1800 650 6060](tel:18006506060), email [enquiries@aic.sg](mailto:enquiries@aic.sg) or walk in to a nearby [AIC Link](https://www.aic.sg/about-us/aic-link-locations/)."
+
   function handleClick() {
     router.back()
   }
@@ -606,6 +609,19 @@ function DaycareCentreDetails(data: DDCView) {
       <Button variant="link" leftIcon={<BxChevronLeft fontSize="1.5rem" />} marginRight="auto" onClick={handleClick}>Back</Button>
       <PhotoSlider photos={data.photos} />
       <h1 className="text-xl font-semibold">{data.name}</h1>
+      <Accordion allowToggle>
+        <AccordionItem>
+            <AccordionButton>
+              <Box as='span' flex='1' textAlign='left'>
+                How to apply?
+              </Box>
+              <AccordionIcon />
+            </AccordionButton>
+          <AccordionPanel pb={4}>
+            <CustomMarkdown content={applicationDetails} />
+          </AccordionPanel>
+        </AccordionItem>
+      </Accordion>
       <div className="flex flex-col gap-4 text-sm">
         <div className="flex flex-col">
           <span><b>Operating hours: </b></span>
