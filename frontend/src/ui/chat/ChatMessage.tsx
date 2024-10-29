@@ -1,4 +1,4 @@
-import { BotResponse, BotResponseComponentID, BotResponseType, Message, MessageRole } from "@/types/chat";
+import { BotResponse, BotResponseCardAction, BotResponseComponentID, BotResponseType, Message, MessageRole } from "@/types/chat";
 import { Avatar } from "@chakra-ui/react";
 import { Button, BxRightArrowAlt } from "@opengovsg/design-system-react";
 import Markdown from "react-markdown";
@@ -7,6 +7,9 @@ import { parse } from "partial-json";
 import { Drawer } from 'vaul';
 import CareServiceRecommender from "../drawer/careservice";
 import { usePathname, useRouter } from "next/navigation";
+import { useChatQuery } from "@/util/hooks/useChatQuery";
+import { useCurrentThreadStore } from "@/stores/currentThread";
+import CustomMarkdown from "../CustomMarkdown";
 
 export default function ChatMessage({ message }: { message: Message }) {
   return (
@@ -29,7 +32,7 @@ export default function ChatMessage({ message }: { message: Message }) {
 function UserMessage({ content }: { content: string }) {
   return (
     <div className="flex flex-col gap-0 p-0 m-0">
-      <Markdown remarkPlugins={[remarkGfm]} className="prose prose-sm leading-tight">{content}</Markdown>
+      <CustomMarkdown content={content} />
     </div>
   );
 }
@@ -37,6 +40,8 @@ function UserMessage({ content }: { content: string }) {
 function AssistantMessage({ content }: { content: string }) {
   const router = useRouter();
   const pathname = usePathname();
+  const currentChatId = useCurrentThreadStore(state => state.thread.id);
+  const { handleSubmitPrompt } = useChatQuery(currentChatId)
   
   // Parse the JSON string into a BotResponse object
   content = content.replaceAll(/\\"/g, '\"');
@@ -56,7 +61,31 @@ function AssistantMessage({ content }: { content: string }) {
         response.content = response.content.replaceAll(/\\n/g, '\n');
 
         if (response.type === BotResponseType.Markdown) {
-          return <Markdown key={index} remarkPlugins={[remarkGfm]} className="prose prose-sm leading-tight">{response.content}</Markdown>
+          return <CustomMarkdown key={index} content={response.content} />;
+        } else if (response.type === BotResponseType.Prompt) {
+          return (
+            <form 
+              key={index}
+              className="w-full"
+              onSubmit={(e) => {
+                handleSubmitPrompt(e, response.content);
+              }}
+            >
+              <button className="border border-gray-400 rounded w-full py-2 px-4 shadow-sm text-left text-sm leading-tight hover:bg-gray-50">
+                {response.content}
+              </button>
+            </form>
+          )
+        } else if (response.type === BotResponseType.Card) {
+          return (
+            <div className="flex p-4 bg-white border border-gray-200 rounded-md gap-2 place-items-start place-content-start text-left shadow-sm">
+              <div className="flex flex-col gap-2">
+                <span className="font-semibold">{response.header}</span>
+                <span className="text-sm">{response.content}</span>
+                {parseActionMarkup(response.action)}
+              </div>
+            </div>
+          );
         } else if (response.type === BotResponseType.Button) {
           if (response.id === BotResponseComponentID.CareserviceRecommender) {
             return <WorkflowTrigger key={index} WorkflowComponent={CareServiceRecommender} triggerText={response.content} />
@@ -72,6 +101,18 @@ function AssistantMessage({ content }: { content: string }) {
                 variant="outline"
                 paddingY={6}
                 onClick={() => router.push('/dashboard')}
+              >
+                {response.content}
+              </Button>);
+          } else if (response.id === BotResponseComponentID.TrainingRecommender) {
+            return (
+              <Button
+                key={index}
+                size="sm"
+                rightIcon={<BxRightArrowAlt />}
+                variant="outline"
+                paddingY={6}
+                onClick={() => router.push('/programmes')}
               >
                 {response.content}
               </Button>);
@@ -108,3 +149,33 @@ function WorkflowTrigger({ WorkflowComponent, triggerText }: { WorkflowComponent
   );
 }
 
+function parseActionMarkup(action: string) {
+  if (!action) {
+    return null;
+  }
+  // [link](/page) -> navigate to /page in the current app
+  // [phone](12345678) -> <a href="tel:12345678">phone</a>
+  // [web](https://example.com) -> <a href="https://example.com">web</a>
+
+  const router = useRouter();
+
+  // Validate the action string
+  const actionTypes = Object.values(BotResponseCardAction);
+  const regexPattern = new RegExp(`\\[(${actionTypes.join('|')})\\]\\(([^)]+)\\)`);
+
+  const match = action.match(regexPattern);
+
+  if (match) {
+    const actionType = match[1];
+    const actionVal = match[2];
+    if (actionType === BotResponseCardAction.Link) {
+      return <a href={actionVal} target="_blank" className="text-sm text-blue-500 underline">{actionVal}</a>;
+    } else if (actionType === BotResponseCardAction.Web) {
+      return <button className="text-blue-500 underline" onClick={() => router.push(actionVal)}>Click to learn more</button>;
+    } else if (actionType === BotResponseCardAction.Phone) {
+      return <a href={`tel:${actionVal}`} className="text-sm text-blue-500 underline">Call {actionVal}</a>
+    }
+  }
+  
+  return null;
+}

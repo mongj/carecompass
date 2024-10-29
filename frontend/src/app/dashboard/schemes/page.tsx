@@ -1,6 +1,7 @@
 "use client";
 
 import { EligibilityCriteria, SchemeData } from "@/types/scheme";
+import CustomMarkdown from "@/ui/CustomMarkdown";
 import LoadingSpinner from "@/ui/loading";
 import { Text } from "@chakra-ui/react";
 import { BxsCheckCircle } from "@opengovsg/design-system-react";
@@ -54,14 +55,7 @@ function SupportDetails() {
         <h3 className="font-semibold text-lg">Next steps</h3>
         <div className="flex flex-col p-4 bg-white border border-gray-200 rounded-md gap-2 place-items-start place-content-start text-left">
           <div className="flex flex-col text-sm gap-3">
-            <Markdown
-              remarkPlugins={[remarkGfm]}
-              components={{
-                a: props => <a {...props} className="text-blue-400 underline" target="_blank" />,
-              }}
-            >
-              {scheme.nextSteps}
-            </Markdown>
+            <CustomMarkdown content={scheme.nextSteps} />
           </div>
         </div>
       </section>

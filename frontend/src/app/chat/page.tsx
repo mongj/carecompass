@@ -32,6 +32,10 @@ const chatPrompts: ChatPrompt[] = [
   {
     label: "💵 What support might I be eligible for?",
     query: "What support might I be eligible for?",
+  },
+  {
+    label: "🙌 Where can I go for help and support?",
+    query: "Where can I go for help and support?",
   }
 ];
 

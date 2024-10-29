@@ -21,12 +21,14 @@ export type Message = {
 }
 
 export type BotResponse = {
-  output: (BotResponseMarkdown | BotResponseUI)[],
+  output: (BotResponseMarkdown | BotResponsePromptUI | BotResponseButtonUI | BotResponseCardUI)[],
 }
 
 export enum BotResponseType {
   Markdown = "markdown",
+  Prompt = "prompt",
   Button = "button",
+  Card = "card",
 }
 
 export type BotResponseMarkdown = {
@@ -34,16 +36,35 @@ export type BotResponseMarkdown = {
   content: string,
 }
 
+export type BotResponsePromptUI = {
+  type: BotResponseType.Prompt,
+  content: string,
+}
+
 export enum BotResponseComponentID {
   CareserviceRecommender = "careservice-recommender",
   DaycareRecommender = "daycare-recommender",
   SchemesRecommender = "schemes-recommender",
+  TrainingRecommender = "training-recommender",
 }
 
-export type BotResponseUI = {
+export type BotResponseButtonUI = {
   type: BotResponseType.Button,
   id: BotResponseComponentID,
   content: string,
+}
+
+export enum BotResponseCardAction {
+  Link = "link",
+  Web = "web",
+  Phone = "phone",
+}
+
+export type BotResponseCardUI = {
+  type: BotResponseType.Card,
+  header: string,
+  content: string,
+  action: string,
 }
 
 
