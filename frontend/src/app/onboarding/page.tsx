@@ -153,6 +153,7 @@ function PersonalDetailsForm() {
           </RadioGroup>
         </Stack>
         <Button isLoading={isSubmitting} loadingText="Submitting" variant="solid" type="submit" rightIcon={<BxRightArrowAlt />}>{'Next'}</Button>
+        <Button isLoading={isSubmitting} loadingText="Submitting" variant="outline" type="submit" rightIcon={<BxRightArrowAlt />}>{'Skip for now'}</Button>
       </form>
     </main>
   )
