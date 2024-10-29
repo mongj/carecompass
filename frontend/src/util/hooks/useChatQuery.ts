@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCurrentThreadStore } from "@/stores/currentThread";
-import { BotResponse, CreateThreadResponse, MessageRole } from "@/types/chat";
-import { parse } from "partial-json";
+import { CreateThreadResponse, MessageRole } from "@/types/chat";
 
 export function useChatQuery(currentChatId?: string) {
   const router = useRouter();

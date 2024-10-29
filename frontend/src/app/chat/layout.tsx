@@ -12,16 +12,13 @@ import { useDisclosure, Drawer, DrawerOverlay, DrawerContent, Divider } from "@c
 
 import { Button, IconButton } from "@opengovsg/design-system-react";
 import { ArrowRight, LogOutIcon, MenuIcon, SquarePenIcon } from "lucide-react";
-import { SignOutButton, useAuth, useUser } from "@clerk/nextjs";
 import UserProfileCard from "./UserProfileCard";
-import LoadingSpinner from "@/ui/loading";
-import { useAuthStore } from "@/stores/auth";
 
 export default function ChatLayout({ children }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const auth = useAuth();
-  const { user } = useUser()
+  // const auth = useAuth();
+  // const { user } = useUser()
   const router = useRouter();
   const params = useParams<{ chatId: string }>();
   const [chats, setChats] = useState<Thread[]>([]);

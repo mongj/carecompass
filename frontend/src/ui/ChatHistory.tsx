@@ -1,6 +1,5 @@
 'use client';
 
-import { useUserStore } from "@/stores/user";
 import { GetUserThreadResponse } from "@/types/chat";
 import { Skeleton, Stack } from "@chakra-ui/react";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";

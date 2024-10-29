@@ -7,8 +7,6 @@ import { Text } from "@chakra-ui/react";
 import { BxsCheckCircle } from "@opengovsg/design-system-react";
 import { useSearchParams } from "next/navigation";
 import { useState, useEffect, Suspense } from "react";
-import Markdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
 
 function SupportDetails() {
   const param = useSearchParams();

@@ -1,8 +1,6 @@
 import { BotResponse, BotResponseCardAction, BotResponseComponentID, BotResponseType, Message, MessageRole } from "@/types/chat";
 import { Avatar } from "@chakra-ui/react";
 import { Button, BxRightArrowAlt } from "@opengovsg/design-system-react";
-import Markdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 import { parse } from "partial-json";
 import { Drawer } from 'vaul';
 import CareServiceRecommender from "../drawer/careservice";
@@ -10,6 +8,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useChatQuery } from "@/util/hooks/useChatQuery";
 import { useCurrentThreadStore } from "@/stores/currentThread";
 import CustomMarkdown from "../CustomMarkdown";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 export default function ChatMessage({ message }: { message: Message }) {
   return (
@@ -78,11 +77,11 @@ function AssistantMessage({ content }: { content: string }) {
           )
         } else if (response.type === BotResponseType.Card) {
           return (
-            <div className="flex p-4 bg-white border border-gray-200 rounded-md gap-2 place-items-start place-content-start text-left shadow-sm">
+            <div key={index} className="flex p-4 bg-white border border-gray-200 rounded-md gap-2 place-items-start place-content-start text-left shadow-sm">
               <div className="flex flex-col gap-2">
                 <span className="font-semibold">{response.header}</span>
                 <span className="text-sm">{response.content}</span>
-                {parseActionMarkup(response.action)}
+                {parseActionMarkup(response.action, router)}
               </div>
             </div>
           );
@@ -149,15 +148,13 @@ function WorkflowTrigger({ WorkflowComponent, triggerText }: { WorkflowComponent
   );
 }
 
-function parseActionMarkup(action: string) {
+function parseActionMarkup(action: string, router: AppRouterInstance) {
   if (!action) {
     return null;
   }
   // [link](/page) -> navigate to /page in the current app
   // [phone](12345678) -> <a href="tel:12345678">phone</a>
   // [web](https://example.com) -> <a href="https://example.com">web</a>
-
-  const router = useRouter();
 
   // Validate the action string
   const actionTypes = Object.values(BotResponseCardAction);

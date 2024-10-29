@@ -1,6 +1,5 @@
 'use client'
 
-import { SignInButton } from '@clerk/nextjs'
 import { Button } from "@opengovsg/design-system-react";
 import Image from "next/image";
 import { useRouter } from 'next/navigation';

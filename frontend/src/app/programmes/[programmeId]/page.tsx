@@ -1,18 +1,11 @@
 "use client";
 
 import { ProgrammeData } from "@/types/programme";
-import { EligibilityCriteria } from "@/types/scheme";
 import CustomMarkdown from "@/ui/CustomMarkdown";
 import LoadingSpinner from "@/ui/loading";
-import { Text } from "@chakra-ui/react";
-import { BxsCheckCircle } from "@opengovsg/design-system-react";
-import { useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
-import Markdown, { defaultUrlTransform } from 'react-markdown'
-import remarkGfm from 'remark-gfm'
 
 export default function ProgrammeDetails({ params }: { params: { programmeId: string }}) {
-  const param = useSearchParams();
   const [programmeData, setProgrammeData] = useState<ProgrammeData>();
 
   useEffect(() => {
@@ -21,7 +14,7 @@ export default function ProgrammeDetails({ params }: { params: { programmeId: st
       .then((json) => {
         setProgrammeData(json.find((programme) => programme.id === params.programmeId));
       });
-  }, [param]);
+  }, [params.programmeId]);
 
   if (!programmeData) {
     return <LoadingSpinner />;
@@ -47,15 +40,6 @@ export default function ProgrammeDetails({ params }: { params: { programmeId: st
           </div>
         </div>
       </section>
-    </div>
-  );
-}
-
-function CriteriaIndicator({ criteria }: { criteria: EligibilityCriteria }) {
-  return (
-    <div className="flex gap-2 place-items-start">
-      <BxsCheckCircle color={criteria.satisfied ? "green" : "default"} fontSize="1.5rem" className="flex-none" />
-      <span className="text-sm place-self-center">{criteria.description}</span>
     </div>
   );
 }
