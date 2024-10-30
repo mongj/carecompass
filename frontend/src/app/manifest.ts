@@ -2,8 +2,8 @@ import type { MetadataRoute } from 'next'
  
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'CareCompass+',
-    short_name: 'CareCompass+',
+    name: 'CareCompass',
+    short_name: 'CareCompass',
     description: 'A personalized care recommender for caregivers',
     start_url: '/',
     display: 'standalone',
