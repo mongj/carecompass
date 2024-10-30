@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuthStore } from '@/stores/auth';
 import LoadingSpinner from '@/ui/loading';
 import { useChatQuery } from '@/util/hooks/useChatQuery';
 import { useRouter } from 'next/navigation';
@@ -28,7 +29,7 @@ const chatPrompts: ChatPrompt[] = [
 
 function ChatIntro() {
   const router = useRouter();
-  // const user = useAuthStore(state => state.currentUser);
+  const user = useAuthStore(state => state.currentUser);
   const { handleSubmitPrompt } = useChatQuery()
 
   // get name from localstorage
@@ -40,8 +41,7 @@ function ChatIntro() {
   return (
     <div className="flex flex-col h-full w-full place-items-center place-content-between">
       <div className="flex flex-col place-items-center h-full place-content-center text-center gap-2">
-        <span className="text-xl md:text-3xl font-bold">{`Welcome!`}</span>
-        {/* <span className="text-xl md:text-3xl font-bold">{`Welcome, ${user.firstName}`}</span> */}
+        <span className="text-xl md:text-3xl font-bold">{(user && user.firstName) ? `Welcome, ${user.firstName}` : "Welcome!"}</span>
         <span>CareCompass is a care recommender that provides you recommendations based on your caregiving needs.</span>
       </div>
       <div className="flex flex-col gap-2 w-full">

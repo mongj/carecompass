@@ -10,6 +10,7 @@ import { ReadonlyURLSearchParams, useRouter, useSearchParams } from 'next/naviga
 import LoadingSpinner from "../loading";
 import Slider from "react-slick";
 import CustomMarkdown from "../CustomMarkdown";
+import { SignInButton, useAuth } from "@clerk/nextjs";
 
 function PhotoSlider({ photos }: { photos: string[] }) {
   const settings = {
@@ -476,6 +477,7 @@ function DaycareRecommendations({ stepper, data, param } : DrawerSectionProps) {
   const [homeLat, setHomeLat] = useState(0)
   const [homeLng, setHomeLng] = useState(0)
   const [searchSaved, setSearchSaved] = useState(false)
+  const auth = useAuth();
 
   useEffect(() => {
     const homePostalCode = parseInt(param.value.get('home') || DEFAULT_POSTAL_CODE.toString())
@@ -559,7 +561,13 @@ function DaycareRecommendations({ stepper, data, param } : DrawerSectionProps) {
       <div className="flex flex-col gap-4">
         {recommendations.map((centre, index) => <DaycareRecommendationCard key={index} centre={centre} param={param} />)}
       </div>
-      <Button onClick={() => setSearchSaved(true)} isDisabled={searchSaved}>{searchSaved ? 'Saved!' : 'Save search'}</Button>
+      {
+        auth.isSignedIn ?
+        <Button onClick={() => setSearchSaved(true)} isDisabled={searchSaved}>{searchSaved ? 'Saved!' : 'Save search'}</Button> :
+        <SignInButton>
+          <Button variant="solid" colorScheme="blue">Sign in to save search result</Button>
+        </SignInButton>
+      }
       <Button variant="outline" onClick={handleShowAll}>Show me the full list of centres</Button>
     </section>
   )

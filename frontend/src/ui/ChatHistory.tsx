@@ -1,29 +1,35 @@
 'use client';
 
 import { GetUserThreadResponse } from "@/types/chat";
+import getUserId from "@/util/getUserId";
 import { Skeleton, Stack } from "@chakra-ui/react";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useEffect, useState } from "react";
 
 export default function ChatHistory({ router, onClose }: { router: AppRouterInstance, onClose?: () => void }) {
-  // const userId = useUserStore((state) => state.user.clerk_id);
-  const userId = typeof window !== "undefined" ? window.localStorage.getItem('cc-userId') : null;
+  const userId = getUserId();
   const [chats, setChats] = useState<GetUserThreadResponse[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setIsLoading(true);
-    fetch(`${process.env.NEXT_PUBLIC_APP_BACKEND_URL}/users/${userId}/threads`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      }
-    }).then((res) => {
-      if (res.ok) {
-        res.json().then((data) => setChats(data));
-      }
-    }).finally(() => setIsLoading(false));
+    if (userId) {
+      setIsLoading(true);
+      fetch(`${process.env.NEXT_PUBLIC_APP_BACKEND_URL}/users/${userId}/threads`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        }
+      }).then((res) => {
+        if (res.ok) {
+          res.json().then((data) => setChats(data));
+        }
+      }).finally(() => setIsLoading(false));
+    }
   }, [userId]);
+
+  if (!userId) {
+    return <span className="font-semibold">Chat History is not available</span>
+  }
 
   return (
     <div className="flex flex-col grow gap-4 h-full">

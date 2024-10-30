@@ -13,47 +13,36 @@ import { useDisclosure, Drawer, DrawerOverlay, DrawerContent, Divider } from "@c
 import { Button, IconButton } from "@opengovsg/design-system-react";
 import { ArrowRight, LogOutIcon, MenuIcon, SquarePenIcon } from "lucide-react";
 import UserProfileCard from "./UserProfileCard";
+import getUserId from "@/util/getUserId";
+import { SignInButton, SignOutButton, useAuth, useUser } from "@clerk/nextjs";
+import LoadingSpinner from "@/ui/loading";
 
 export default function ChatLayout({ children }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // const auth = useAuth();
-  // const { user } = useUser()
   const router = useRouter();
   const params = useParams<{ chatId: string }>();
   const [chats, setChats] = useState<Thread[]>([]);
 
-  // useLayoutEffect(() => {
-  //   if(!auth.isSignedIn){
-  //     redirect("/")
-  //   }
-  // }, [auth.isSignedIn])
+  const userId = getUserId();
 
   useLayoutEffect(() => {
-    const userId = typeof window !== "undefined" ? window.localStorage.getItem('cc-userId') : null;
     if(!userId){
       redirect("/")
     }
-  }, [])
+  }, [userId])
   
   function handleNewThread() {
     router.replace(`/chat`);
   }
 
-  // if (!user) {
-  //   return (
-  //     <main className="flex w-full h-full place-content-center place-items-center">
-  //       <LoadingSpinner />
-  //     </main>
-  //   );
-  // }
-
-  // useAuthStore.setState((state) => {
-  //   return {
-  //     ...state,
-  //     currentUser: user,
-  //   };
-  // })
+  if (!userId) {
+    return (
+      <main className="flex w-full h-full place-content-center place-items-center">
+        <LoadingSpinner />
+      </main>
+    );
+  }
 
   return (
     <ChatContext.Provider value={{ chats, setChats }}>
@@ -101,6 +90,7 @@ function LeftDrawer() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = useRef(null)
   const router = useRouter();
+  const auth = useAuth();
 
   return (
     <>
@@ -115,17 +105,24 @@ function LeftDrawer() {
       >
         <DrawerOverlay />
         <DrawerContent className="flex flex-col p-6 gap-4">
-          <UserProfileCard />
-          <Divider />
+          {
+            auth.isSignedIn && 
+            <>
+              <UserProfileCard />
+              <Divider />
+            </>
+          }
           <ChatHistory router={router} onClose={onClose} />
           <Divider />
-          <Button className="w-full" variant="solid" rightIcon={<LogOutIcon />} onClick={() => {
-            window.localStorage.removeItem('cc-userId');
-            router.push("/");
-          }}>Log out</Button>
-          {/* <SignOutButton>
-            <Button className="w-full" variant="solid" rightIcon={<LogOutIcon />}>Log out</Button>
-          </SignOutButton> */}
+          {
+            auth.isSignedIn ?
+            <SignOutButton>
+              <Button className="w-full" variant="solid" rightIcon={<LogOutIcon />}>Log out</Button>
+            </SignOutButton> :
+            <SignInButton>
+              <Button className="w-full" onClick={() => {window.localStorage.removeItem('cc-userId')}}>Sign In</Button>
+            </SignInButton>
+          }
         </DrawerContent>
       </Drawer>
     </>

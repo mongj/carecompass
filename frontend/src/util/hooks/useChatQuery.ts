@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCurrentThreadStore } from "@/stores/currentThread";
 import { CreateThreadResponse, MessageRole } from "@/types/chat";
+import getUserId from "../getUserId";
 
 export function useChatQuery(currentChatId?: string) {
   const router = useRouter();
@@ -73,14 +74,18 @@ export function useChatQuery(currentChatId?: string) {
 
 async function createThread() {
   try {
+    const userId = getUserId();
+    console.log('userId:', userId);
+    if (!userId) {
+      throw new Error('User ID is missing');
+    }
     const response = await fetch(`${process.env.NEXT_PUBLIC_APP_BACKEND_URL}/threads`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        // user_id: useUserStore.getState().user.clerk_id
-        user_id: typeof window !== "undefined" ? window.localStorage.getItem('cc-userId') : null
+        user_id: userId
       }),
     });
     if (!response.ok) {

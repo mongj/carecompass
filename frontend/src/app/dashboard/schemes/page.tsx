@@ -3,7 +3,8 @@
 import { EligibilityCriteria, SchemeData } from "@/types/scheme";
 import CustomMarkdown from "@/ui/CustomMarkdown";
 import LoadingSpinner from "@/ui/loading";
-import { Text } from "@chakra-ui/react";
+import { Button, Text } from "@chakra-ui/react";
+import { SignInButton, useAuth } from "@clerk/nextjs";
 import { BxsCheckCircle } from "@opengovsg/design-system-react";
 import { useSearchParams } from "next/navigation";
 import { useState, useEffect, Suspense } from "react";
@@ -11,6 +12,7 @@ import { useState, useEffect, Suspense } from "react";
 function SupportDetails() {
   const param = useSearchParams();
   const [scheme, setScheme] = useState<SchemeData>();
+  const auth = useAuth();
 
   useEffect(() => {
     fetch('/data/schemes.json')
@@ -25,7 +27,7 @@ function SupportDetails() {
   }
 
   const numCriteria = scheme.eligibility.length
-  const numFulfilledCriteria = scheme.eligibility.filter((criteria) => criteria.satisfied).length
+  const numFulfilledCriteria = auth.isSignedIn ? scheme.eligibility.filter((criteria) => criteria.satisfied).length : 0;
 
   return (
     <div className="flex flex-col h-full w-full gap-4 py-6">
@@ -43,7 +45,13 @@ function SupportDetails() {
       <section className="flex flex-col gap-2">
         <h3 className="font-semibold text-lg">Eligibility</h3>
         <div className="flex flex-col p-4 bg-white border border-gray-200 rounded-md gap-3 place-items-start place-content-start text-left">
-        <Text color="green" fontSize="sm" fontWeight="semibold">{numFulfilledCriteria} of {numCriteria} eligibility criteria met</Text>
+          {
+            auth.isSignedIn ? 
+            <Text fontSize="sm" fontWeight="semibold">{numFulfilledCriteria} of {numCriteria} eligibility criteria met</Text> :
+            <section className="px-4 py-2 bg-brand-primary-100 rounded border border-brand-primary-300 w-full">
+              <p className="text-brand-primary-900 text-sm">Sign in to use eligibility checker</p>
+            </section>
+          }
           <div className="flex flex-col gap-3">
             {scheme.eligibility.map((criteria, index) => <CriteriaIndicator key={index} criteria={criteria} />)}
           </div>
@@ -62,6 +70,11 @@ function SupportDetails() {
 }
 
 function CriteriaIndicator({ criteria }: { criteria: EligibilityCriteria }) {
+  const auth = useAuth();
+  if (!auth.isSignedIn) {
+    criteria.satisfied = false;
+  }
+
   return (
     <div className="flex gap-2 place-items-start">
       <BxsCheckCircle color={criteria.satisfied ? "green" : "default"} fontSize="1.5rem" className="flex-none" />
