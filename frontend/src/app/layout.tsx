@@ -1,7 +1,6 @@
 "use client";
 
 import "./globals.css";
-import "inter-ui/inter.css";
 import Providers from "./providers";
 import { Toaster } from "sonner";
 import Image from "next/image";
