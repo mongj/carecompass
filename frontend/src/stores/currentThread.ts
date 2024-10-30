@@ -13,18 +13,19 @@ interface CurrentThreadActions {
 
 const initialState: CurrentThreadState = {
   thread: {
-    id: '',
-    title: '',
+    id: "",
+    title: "",
     messages: [],
   },
   isWaitingForResponse: false,
 };
 
-export const useCurrentThreadStore = create<CurrentThreadState & CurrentThreadActions>()(
-  (set) => ({
-      ...initialState,
+export const useCurrentThreadStore = create<
+  CurrentThreadState & CurrentThreadActions
+>()((set) => ({
+  ...initialState,
 
-      setIsWaitingForResponse: (isWaitingForResponse: boolean) => set({ isWaitingForResponse }),
-      reset: () => set(initialState),
-  }),
-);
+  setIsWaitingForResponse: (isWaitingForResponse: boolean) =>
+    set({ isWaitingForResponse }),
+  reset: () => set(initialState),
+}));

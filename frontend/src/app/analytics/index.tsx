@@ -1,9 +1,9 @@
-import MicrosoftClarity from "./MicrosoftClarity"
+import MicrosoftClarity from "./MicrosoftClarity";
 
 const Analytics = () => (
-    <>
-        <MicrosoftClarity />
-    </>
-)
+  <>
+    <MicrosoftClarity />
+  </>
+);
 
-export default Analytics
+export default Analytics;

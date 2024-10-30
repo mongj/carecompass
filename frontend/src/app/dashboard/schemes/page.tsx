@@ -15,10 +15,10 @@ function SupportDetails() {
   const auth = useAuth();
 
   useEffect(() => {
-    fetch('/data/schemes.json')
+    fetch("/data/schemes.json")
       .then((response) => response.json() as Promise<SchemeData[]>)
       .then((json) => {
-        setScheme(json.find((scheme) => scheme.id === param.get('id')));
+        setScheme(json.find((scheme) => scheme.id === param.get("id")));
       });
   }, [param]);
 
@@ -26,41 +26,49 @@ function SupportDetails() {
     return <LoadingSpinner />;
   }
 
-  const numCriteria = scheme.eligibility.length
-  const numFulfilledCriteria = auth.isSignedIn ? scheme.eligibility.filter((criteria) => criteria.satisfied).length : 0;
+  const numCriteria = scheme.eligibility.length;
+  const numFulfilledCriteria = auth.isSignedIn
+    ? scheme.eligibility.filter((criteria) => criteria.satisfied).length
+    : 0;
 
   return (
-    <div className="flex flex-col h-full w-full gap-4 py-6">
+    <div className="flex h-full w-full flex-col gap-4 py-6">
       <section className="flex flex-col gap-2">
-        <h3 className="font-semibold text-lg">{scheme.name}</h3>
-        <div className="flex p-4 bg-white border border-gray-200 rounded-md gap-2 place-items-start place-content-start text-left">
+        <h3 className="text-lg font-semibold">{scheme.name}</h3>
+        <div className="flex place-content-start place-items-start gap-2 rounded-md border border-gray-200 bg-white p-4 text-left">
           <div className="flex flex-col gap-2">
-            <span className="font-semibold text-sm">Overview</span>
-            <span className="text-sm mb-4">{scheme.description}</span>
-            <span className="font-semibold text-sm">Benefits</span>
+            <span className="text-sm font-semibold">Overview</span>
+            <span className="mb-4 text-sm">{scheme.description}</span>
+            <span className="text-sm font-semibold">Benefits</span>
             <span className="text-sm">{scheme.benefits}</span>
           </div>
         </div>
       </section>
       <section className="flex flex-col gap-2">
-        <h3 className="font-semibold text-lg">Eligibility</h3>
-        <div className="flex flex-col p-4 bg-white border border-gray-200 rounded-md gap-3 place-items-start place-content-start text-left">
-          {
-            auth.isSignedIn ? 
-            <Text fontSize="sm" fontWeight="semibold">{numFulfilledCriteria} of {numCriteria} eligibility criteria met</Text> :
-            <section className="px-4 py-2 bg-brand-primary-100 rounded border border-brand-primary-300 w-full">
-              <p className="text-brand-primary-900 text-sm">Sign in to use eligibility checker</p>
+        <h3 className="text-lg font-semibold">Eligibility</h3>
+        <div className="flex flex-col place-content-start place-items-start gap-3 rounded-md border border-gray-200 bg-white p-4 text-left">
+          {auth.isSignedIn ? (
+            <Text fontSize="sm" fontWeight="semibold">
+              {numFulfilledCriteria} of {numCriteria} eligibility criteria met
+            </Text>
+          ) : (
+            <section className="w-full rounded border border-brand-primary-300 bg-brand-primary-100 px-4 py-2">
+              <p className="text-sm text-brand-primary-900">
+                Sign in to use eligibility checker
+              </p>
             </section>
-          }
+          )}
           <div className="flex flex-col gap-3">
-            {scheme.eligibility.map((criteria, index) => <CriteriaIndicator key={index} criteria={criteria} />)}
+            {scheme.eligibility.map((criteria, index) => (
+              <CriteriaIndicator key={index} criteria={criteria} />
+            ))}
           </div>
         </div>
       </section>
       <section className="flex flex-col gap-2 pb-6">
-        <h3 className="font-semibold text-lg">Next steps</h3>
-        <div className="flex flex-col p-4 bg-white border border-gray-200 rounded-md gap-2 place-items-start place-content-start text-left">
-          <div className="flex flex-col text-sm gap-3">
+        <h3 className="text-lg font-semibold">Next steps</h3>
+        <div className="flex flex-col place-content-start place-items-start gap-2 rounded-md border border-gray-200 bg-white p-4 text-left">
+          <div className="flex flex-col gap-3 text-sm">
             <CustomMarkdown content={scheme.nextSteps} />
           </div>
         </div>
@@ -76,9 +84,13 @@ function CriteriaIndicator({ criteria }: { criteria: EligibilityCriteria }) {
   }
 
   return (
-    <div className="flex gap-2 place-items-start">
-      <BxsCheckCircle color={criteria.satisfied ? "green" : "default"} fontSize="1.5rem" className="flex-none" />
-      <span className="text-sm place-self-center">{criteria.description}</span>
+    <div className="flex place-items-start gap-2">
+      <BxsCheckCircle
+        color={criteria.satisfied ? "green" : "default"}
+        fontSize="1.5rem"
+        className="flex-none"
+      />
+      <span className="place-self-center text-sm">{criteria.description}</span>
     </div>
   );
 }

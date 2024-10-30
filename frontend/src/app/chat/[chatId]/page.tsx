@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import ChatMessage from "@/ui/chat/ChatMessage";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -8,11 +8,10 @@ import { useCurrentThreadStore } from "@/stores/currentThread";
 import { Avatar } from "@chakra-ui/react";
 import { PulseLoader } from "react-spinners";
 
-export default function Chat({ params }: { params: { chatId: string }}) {
+export default function Chat({ params }: { params: { chatId: string } }) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const isNew = searchParams.get('new') === 'true'
-  
+  const isNew = searchParams.get("new") === "true";
 
   const [isLoading, setIsLoading] = useState(true);
   const currentThread = useCurrentThreadStore((state) => state.thread);
@@ -21,10 +20,12 @@ export default function Chat({ params }: { params: { chatId: string }}) {
   useEffect(() => {
     if (isNew) {
       setIsLoading(false);
-      return
+      return;
     }
-    
-    fetch(`${process.env.NEXT_PUBLIC_APP_BACKEND_URL}/threads/${params.chatId}/messages`)
+
+    fetch(
+      `${process.env.NEXT_PUBLIC_APP_BACKEND_URL}/threads/${params.chatId}/messages`,
+    )
       .then((response) => {
         if (response.ok) {
           response.json().then((data) => {
@@ -62,24 +63,24 @@ export default function Chat({ params }: { params: { chatId: string }}) {
     }
   }, [isLoading, currentThread.messages]);
 
-
   if (isLoading) {
     return <LoadingSpinner />;
   }
 
   return (
-    <section className="flex flex-col gap-4 w-full h-[calc(100dvh-184px)] place-content-start overflow-y-auto">
+    <section className="flex h-[calc(100dvh-184px)] w-full flex-col place-content-start gap-4 overflow-y-auto">
       {currentThread.messages.map((message) => (
         <ChatMessage key={message.id} message={message} />
       ))}
       <div id="msg-bottom" />
-      {useCurrentThreadStore.getState().isWaitingForResponse && 
-      <div className="flex place-items-start gap-2 md:gap-4">
-        <Avatar className="mt-2 sticky" src="/img/logo.svg" size="xs" />
-        <div className="w-[calc(100%-40px)] md:w-[calc(100%-48px)] flex flex-col bg-white p-4 border rounded-lg">
-          <PulseLoader color="#1361F0" size={8} />
+      {useCurrentThreadStore.getState().isWaitingForResponse && (
+        <div className="flex place-items-start gap-2 md:gap-4">
+          <Avatar className="sticky mt-2" src="/img/logo.svg" size="xs" />
+          <div className="flex w-[calc(100%-40px)] flex-col rounded-lg border bg-white p-4 md:w-[calc(100%-48px)]">
+            <PulseLoader color="#1361F0" size={8} />
+          </div>
         </div>
-      </div>}
+      )}
     </section>
   );
 }

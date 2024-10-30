@@ -13,10 +13,8 @@ const initialState: ThreadState = {
   threads: [],
 };
 
-export const useThreadStore = create<ThreadState & ThreadActions>()(
-  (set) => ({
-      ...initialState,
+export const useThreadStore = create<ThreadState & ThreadActions>()((set) => ({
+  ...initialState,
 
-      reset: () => set(initialState),
-  }),
-);
+  reset: () => set(initialState),
+}));

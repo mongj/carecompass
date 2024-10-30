@@ -39,4 +39,3 @@ export interface DDCView extends DDCData {
   price: number;
   distanceFromHome: number;
 }
-

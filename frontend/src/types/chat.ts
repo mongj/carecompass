@@ -1,13 +1,13 @@
 export type GetUserThreadResponse = {
   thread_id: string;
   title: string;
-}
+};
 
 export type Thread = {
   id: string;
   title?: string;
   messages: Message[];
-}
+};
 
 export enum MessageRole {
   User = "user",
@@ -18,11 +18,16 @@ export type Message = {
   id: string;
   role: MessageRole;
   content: string;
-}
+};
 
 export type BotResponse = {
-  output: (BotResponseMarkdown | BotResponsePromptUI | BotResponseButtonUI | BotResponseCardUI)[],
-}
+  output: (
+    | BotResponseMarkdown
+    | BotResponsePromptUI
+    | BotResponseButtonUI
+    | BotResponseCardUI
+  )[];
+};
 
 export enum BotResponseType {
   Markdown = "markdown",
@@ -32,14 +37,14 @@ export enum BotResponseType {
 }
 
 export type BotResponseMarkdown = {
-  type: BotResponseType.Markdown,
-  content: string,
-}
+  type: BotResponseType.Markdown;
+  content: string;
+};
 
 export type BotResponsePromptUI = {
-  type: BotResponseType.Prompt,
-  content: string,
-}
+  type: BotResponseType.Prompt;
+  content: string;
+};
 
 export enum BotResponseComponentID {
   CareserviceRecommender = "careservice-recommender",
@@ -49,10 +54,10 @@ export enum BotResponseComponentID {
 }
 
 export type BotResponseButtonUI = {
-  type: BotResponseType.Button,
-  id: BotResponseComponentID,
-  content: string,
-}
+  type: BotResponseType.Button;
+  id: BotResponseComponentID;
+  content: string;
+};
 
 export enum BotResponseCardAction {
   Link = "link",
@@ -61,13 +66,12 @@ export enum BotResponseCardAction {
 }
 
 export type BotResponseCardUI = {
-  type: BotResponseType.Card,
-  header: string,
-  content: string,
-  action: string,
-}
-
+  type: BotResponseType.Card;
+  header: string;
+  content: string;
+  action: string;
+};
 
 export type CreateThreadResponse = {
-  thread_id: string
-}
+  thread_id: string;
+};

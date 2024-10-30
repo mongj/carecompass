@@ -13,10 +13,8 @@ const initialState: UserState = {
   user: {} as UserData,
 };
 
-export const useUserStore = create<UserState & UserActions>()(
-  (set) => ({
-      ...initialState,
+export const useUserStore = create<UserState & UserActions>()((set) => ({
+  ...initialState,
 
-      reset: () => set(initialState),
-  }),
-);
+  reset: () => set(initialState),
+}));

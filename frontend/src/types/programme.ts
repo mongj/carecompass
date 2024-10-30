@@ -6,7 +6,7 @@ export type ProgrammeData = {
   description: string;
   content?: string;
   actionable?: string;
-  reviews?: Review[]
+  reviews?: Review[];
   link?: string;
 };
 

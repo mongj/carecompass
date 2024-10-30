@@ -13,7 +13,10 @@ export function useChatQuery(currentChatId?: string) {
     setPrompt(e.target.value);
   };
 
-  const handleSubmitPrompt = async (e: React.FormEvent<HTMLFormElement>, input?: string) => {
+  const handleSubmitPrompt = async (
+    e: React.FormEvent<HTMLFormElement>,
+    input?: string,
+  ) => {
     e.preventDefault();
 
     // Override prompt if input is provided
@@ -75,21 +78,24 @@ export function useChatQuery(currentChatId?: string) {
 async function createThread() {
   try {
     const userId = getUserId();
-    console.log('userId:', userId);
+    console.log("userId:", userId);
     if (!userId) {
-      throw new Error('User ID is missing');
+      throw new Error("User ID is missing");
     }
-    const response = await fetch(`${process.env.NEXT_PUBLIC_APP_BACKEND_URL}/threads`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_APP_BACKEND_URL}/threads`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id: userId,
+        }),
       },
-      body: JSON.stringify({
-        user_id: userId
-      }),
-    });
+    );
     if (!response.ok) {
-      throw new Error('Failed to create thread');
+      throw new Error("Failed to create thread");
     }
     const data: CreateThreadResponse = await response.json();
     return data.thread_id;
@@ -101,17 +107,22 @@ async function createThread() {
 async function getResponse(threadId: string, query: string) {
   useCurrentThreadStore.getState().setIsWaitingForResponse(true);
 
-  const response = await fetch(`${process.env.NEXT_PUBLIC_APP_BACKEND_URL}/threads/${threadId}/messages`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_APP_BACKEND_URL}/threads/${threadId}/messages`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query,
+      }),
     },
-    body: JSON.stringify({
-      query,
-    }),
-  });
+  );
   let combined = "";
-  const messageId = "NEW_ASST_MESSAGE" + useCurrentThreadStore.getState().thread.messages.length;
+  const messageId =
+    "NEW_ASST_MESSAGE" +
+    useCurrentThreadStore.getState().thread.messages.length;
 
   if (response.body) {
     const reader = response.body.getReader();
@@ -130,7 +141,9 @@ async function getResponse(threadId: string, query: string) {
       if (parsedChunk) {
         combined += parsedChunk;
         useCurrentThreadStore.setState((state) => {
-          if (!state.thread.messages.find((message) => message.id === messageId)) {
+          if (
+            !state.thread.messages.find((message) => message.id === messageId)
+          ) {
             return {
               thread: {
                 ...state.thread,
@@ -150,8 +163,12 @@ async function getResponse(threadId: string, query: string) {
                 ...state.thread,
                 messages: state.thread.messages.map((message) =>
                   message.id === messageId
-                    ? { ...message, role: MessageRole.Assistant, content: combined }
-                    : message
+                    ? {
+                        ...message,
+                        role: MessageRole.Assistant,
+                        content: combined,
+                      }
+                    : message,
                 ),
               },
             };
@@ -172,7 +189,7 @@ function parseEventStream(input: string): string {
   }
 
   result = result.replace(/\\u([0-9a-fA-F]{4})/g, (_, unicode) =>
-    String.fromCharCode(parseInt(unicode, 16))
+    String.fromCharCode(parseInt(unicode, 16)),
   );
 
   return result;

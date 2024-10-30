@@ -1,9 +1,11 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import { ClerkProvider } from "@clerk/nextjs";
-import { ThemeProvider } from '@opengovsg/design-system-react';
+import { ThemeProvider } from "@opengovsg/design-system-react";
 import { CSPostHogProvider } from "./posthog";
 
-export default function Providers({ children }: Readonly<{
+export default function Providers({
+  children,
+}: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
