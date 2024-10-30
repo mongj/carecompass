@@ -2,13 +2,10 @@
 
 import './globals.css';
 import 'inter-ui/inter.css';
-import { ClerkProvider } from '@clerk/nextjs'
-import { ThemeProvider } from '@opengovsg/design-system-react';
-import { ChakraProvider } from '@chakra-ui/react';
+import Providers from './providers';
 import { Toaster } from 'sonner'
 import Image from 'next/image';
 import Analytics from './analytics';
-import { CSPostHogProvider } from './posthog';
 
 export default function RootLayout({ children }: Readonly<{
   children: React.ReactNode;
@@ -33,16 +30,3 @@ export default function RootLayout({ children }: Readonly<{
   );
 }
 
-function Providers({ children }: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <CSPostHogProvider>
-      <ClerkProvider>
-        <ChakraProvider>
-          <ThemeProvider>{children}</ThemeProvider>
-        </ChakraProvider>
-      </ClerkProvider>
-    </CSPostHogProvider>
-  );
-}
