@@ -8,6 +8,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { Toaster } from 'sonner'
 import Image from 'next/image';
 import Analytics from './analytics';
+import { CSPostHogProvider } from './posthog';
 
 export default function RootLayout({ children }: Readonly<{
   children: React.ReactNode;
@@ -36,10 +37,12 @@ function Providers({ children }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
-      <ChakraProvider>
-        <ThemeProvider>{children}</ThemeProvider>
-      </ChakraProvider>
-    </ClerkProvider>
+    <CSPostHogProvider>
+      <ClerkProvider>
+        <ChakraProvider>
+          <ThemeProvider>{children}</ThemeProvider>
+        </ChakraProvider>
+      </ClerkProvider>
+    </CSPostHogProvider>
   );
 }

@@ -29,6 +29,7 @@
     "lucide-react": "^0.441.0",
     "next": "14.2.11",
     "partial-json": "^0.1.7",
+    "posthog-js": "^1.178.0",
     "react": "^18",
     "react-dom": "^18",
     "react-markdown": "^9.0.1",
@@ -42,7 +43,7 @@
     "zustand": "^5.0.0"
   },
   "devDependencies": {
-    "@types/node": "^20",
+    "@types/node": "^20.17.3",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/react-slick": "^0.23.13",
