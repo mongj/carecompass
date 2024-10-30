@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
-    "prepare": "husky"
+    "prepare": "cd .. && husky frontend/.husky"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.1.1",
