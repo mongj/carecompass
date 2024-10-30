@@ -3,8 +3,8 @@
 import { EligibilityCriteria, SchemeData } from "@/types/scheme";
 import CustomMarkdown from "@/ui/CustomMarkdown";
 import LoadingSpinner from "@/ui/loading";
-import { Button, Text } from "@chakra-ui/react";
-import { SignInButton, useAuth } from "@clerk/nextjs";
+import { Text } from "@chakra-ui/react";
+import { useAuth } from "@clerk/nextjs";
 import { BxsCheckCircle } from "@opengovsg/design-system-react";
 import { useSearchParams } from "next/navigation";
 import { useState, useEffect, Suspense } from "react";

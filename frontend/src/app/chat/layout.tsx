@@ -14,7 +14,7 @@ import { Button, IconButton } from "@opengovsg/design-system-react";
 import { ArrowRight, LogOutIcon, MenuIcon, SquarePenIcon } from "lucide-react";
 import UserProfileCard from "./UserProfileCard";
 import getUserId from "@/util/getUserId";
-import { SignInButton, SignOutButton, useAuth, useUser } from "@clerk/nextjs";
+import { SignInButton, SignOutButton, useAuth } from "@clerk/nextjs";
 import LoadingSpinner from "@/ui/loading";
 
 export default function ChatLayout({ children }: Readonly<{
