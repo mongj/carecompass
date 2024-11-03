@@ -11,6 +11,7 @@ sse-starlette = "*"
 sqlmodel = "*"
 psycopg2-binary = "*"
 sqlalchemy = "*"
+alembic = "*"
 
 [dev-packages]
 
