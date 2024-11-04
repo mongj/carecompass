@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import List, Optional
 from fastapi import APIRouter, HTTPException
 from sse_starlette.sse import EventSourceResponse
 from openai import OpenAI
@@ -89,3 +89,12 @@ async def create_message(thread_id: str, req: ChatCompletionRequest, db: db_depe
 
     return EventSourceResponse(stream_chat_responses(thread_id, req.query))
 
+
+@router.get('/users/{user_id}/threads', response_model=List[ThreadReadResponse])
+async def read_user_threads(user_id: str, db: db_dependency):
+    user = db.query(User).filter(User.clerk_id == user_id).first()
+
+    if not user:
+        raise HTTPException(status_code=404, detail="user not found")
+
+    return user.threads
