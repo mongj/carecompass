@@ -1,8 +1,39 @@
-export interface UserData {
-  citizenship: string;
-  care_recipient_age: number;
-  care_recipient_citizenship: string;
-  care_recipient_residence: number;
-  care_recipient_relationship: string;
+// TODO: Enum types should be fetched from the backend
+export enum Residence {
+  HOME = "HOME",
+  NURSING_HOME_LTCF = "NURSING_HOME_LTCF",
+  OTHER = "OTHER",
+}
+
+export enum Citizenship {
+  CITIZEN = "CITIZEN",
+  PR = "PR",
+  OTHER = "OTHER",
+}
+
+// Note: may want to align with singpass codes in the future
+export enum Relationship {
+  PARENT = "PARENT",
+  SPOUSE = "SPOUSE",
+  OTHER_FAMILY = "OTHER_FAMILY",
+  NON_FAMILY = "NON_FAMILY",
+}
+
+export interface UserDataBase {
   clerk_id: string;
+  citizenship: Citizenship;
+  care_recipient_age: number;
+  care_recipient_citizenship: Citizenship;
+  care_recipient_residence: Residence;
+  care_recipient_relationship: Relationship;
+}
+
+export interface UserData extends UserDataBase {
+  id: number;
+  threads: UserThreadData[];
+}
+
+export interface UserThreadData {
+  title: string;
+  thread_id: string;
 }

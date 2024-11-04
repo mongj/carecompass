@@ -1,6 +1,11 @@
 "use client";
 
-import { UserData } from "@/types/user";
+import {
+  Citizenship,
+  Relationship,
+  Residence,
+  UserDataBase,
+} from "@/types/user";
 import LoadingSpinner from "@/ui/loading";
 import { Stack } from "@chakra-ui/react";
 import {
@@ -15,38 +20,39 @@ import { RadioGroup } from "@chakra-ui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, Suspense, useState } from "react";
 import { toast } from "sonner";
+import { OptionalEnumFields } from "@/types/util";
 
 const citizenshipOptions = [
   {
     label: "Singapore Citizen",
-    value: "Singapore Citizen",
+    value: Citizenship.CITIZEN,
   },
   {
     label: "Permanent Resident",
-    value: "Permanent Resident",
+    value: Citizenship.PR,
   },
   {
-    label: "Foreigner",
-    value: "Foreigner",
+    label: "Other",
+    value: Citizenship.OTHER,
   },
 ];
 
 const relationshipOptions = [
   {
     label: "Parent",
-    value: "Parent",
+    value: Relationship.PARENT,
   },
   {
     label: "Spouse",
-    value: "Spouse",
+    value: Relationship.SPOUSE,
   },
   {
     label: "Other family",
-    value: "Other family",
+    value: Relationship.OTHER_FAMILY,
   },
   {
     label: "Non-family member",
-    value: "Non-family member",
+    value: Relationship.NON_FAMILY,
   },
 ];
 
@@ -54,18 +60,20 @@ function PersonalDetailsForm() {
   const router = useRouter();
   const params = useSearchParams();
 
-  const [personalDetails, setPersonalDetails] = useState<UserData>({
-    citizenship: " ",
-    care_recipient_age: 65,
+  const [personalDetails, setPersonalDetails] = useState<
+    OptionalEnumFields<UserDataBase>
+  >({
+    citizenship: "",
+    care_recipient_age: 0,
     care_recipient_citizenship: "",
-    care_recipient_residence: 0,
+    care_recipient_residence: Residence.HOME,
     care_recipient_relationship: "",
     clerk_id: params.get("id") || "",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const submitDisabled = Object.values(personalDetails).some((v) => v === "");
 
-  // TODO: Add validation
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setIsSubmitting(true);
@@ -115,7 +123,10 @@ function PersonalDetailsForm() {
             name="citizenship"
             items={citizenshipOptions}
             onChange={(e) =>
-              setPersonalDetails({ ...personalDetails, citizenship: e })
+              setPersonalDetails({
+                ...personalDetails,
+                citizenship: e as Citizenship,
+              })
             }
           />
         </Stack>
@@ -129,7 +140,7 @@ function PersonalDetailsForm() {
             onChange={(e) =>
               setPersonalDetails({
                 ...personalDetails,
-                care_recipient_relationship: e,
+                care_recipient_relationship: e as Relationship,
               })
             }
           />
@@ -144,7 +155,7 @@ function PersonalDetailsForm() {
             onChange={(e) =>
               setPersonalDetails({
                 ...personalDetails,
-                care_recipient_citizenship: e,
+                care_recipient_citizenship: e as Citizenship,
               })
             }
           />
@@ -170,24 +181,25 @@ function PersonalDetailsForm() {
             onChange={(e) =>
               setPersonalDetails({
                 ...personalDetails,
-                care_recipient_residence: Number(e),
+                care_recipient_residence: e as Residence,
               })
             }
             value={personalDetails.care_recipient_residence.toString()}
           >
-            <Radio value="0" allowDeselect>
+            <Radio value={Residence.HOME} allowDeselect>
               My loved one stays with me
             </Radio>
-            <Radio value="1" allowDeselect>
+            <Radio value={Residence.NURSING_HOME_LTCF} allowDeselect>
               My loved one stays in a nursing home or residential long-term care
               facility
             </Radio>
-            <Radio value="2" allowDeselect>
+            <Radio value={Residence.OTHER} allowDeselect>
               Others
             </Radio>
           </RadioGroup>
         </Stack>
         <Button
+          isDisabled={submitDisabled}
           isLoading={isSubmitting}
           loadingText="Submitting"
           variant="solid"
@@ -195,15 +207,6 @@ function PersonalDetailsForm() {
           rightIcon={<BxRightArrowAlt />}
         >
           {"Next"}
-        </Button>
-        <Button
-          isLoading={isSubmitting}
-          loadingText="Submitting"
-          variant="outline"
-          type="submit"
-          rightIcon={<BxRightArrowAlt />}
-        >
-          {"Skip for now"}
         </Button>
       </form>
     </main>

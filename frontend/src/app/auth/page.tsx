@@ -1,5 +1,6 @@
 "use client";
 
+import { Citizenship, Relationship, Residence } from "@/types/user";
 import { SignInButton } from "@clerk/nextjs";
 import { Button } from "@opengovsg/design-system-react";
 import Image from "next/image";
@@ -18,12 +19,13 @@ export default function Auth() {
 
     setIsSubmitting(true);
 
+    // TODO: Remove dummy user hack. Unauthenticated user should not have an account
     const personalDetails = {
-      citizenship: " ",
-      care_recipient_age: 65,
-      care_recipient_citizenship: "",
-      care_recipient_residence: 0,
-      care_recipient_relationship: "",
+      citizenship: Citizenship.CITIZEN,
+      care_recipient_age: 80,
+      care_recipient_citizenship: Citizenship.CITIZEN,
+      care_recipient_residence: Residence.HOME,
+      care_recipient_relationship: Relationship.PARENT,
       clerk_id: userId,
     };
 
