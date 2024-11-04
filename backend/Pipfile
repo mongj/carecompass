@@ -6,14 +6,14 @@ name = "pypi"
 [packages]
 openai = "*"
 python-dotenv = "*"
-fastapi = "*"
 sse-starlette = "*"
-sqlmodel = "*"
-psycopg2-binary = "*"
 sqlalchemy = "*"
 alembic = "*"
+psycopg2-binary = "*"
+pydantic-sqlalchemy = "*"
+fastapi = {extras = ["standard"], version = "*"}
 
 [dev-packages]
 
 [requires]
-python_version = "3.*"
+python_version = "3.12"
