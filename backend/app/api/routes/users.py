@@ -43,9 +43,9 @@ def create_user(userToAdd: UserCreate, db: db_dependency) -> UserResponse:
     return user
 
 
-@router.get("/users/{id}", response_model=UserResponse)
-def read_user(id: str, db: db_dependency):
-    user = db.query(User).filter(User.clerk_id == id).first()
+@router.get("/users/{user_id}", response_model=UserResponse)
+def read_user(user_id: str, db: db_dependency):
+    user = db.query(User).filter(User.clerk_id == user_id).first()
 
     if not user:
         raise HTTPException(status_code=404, detail="user not found")
