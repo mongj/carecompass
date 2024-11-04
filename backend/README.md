@@ -11,6 +11,7 @@ cp .env.template .env
 DB_USER=
 DB_PASSWORD=
 DB_HOST=
+DB_PORT=
 DB_NAME=
 DB_SSLMODE=
 ```
