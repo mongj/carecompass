@@ -10,7 +10,6 @@ sse-starlette = "*"
 sqlalchemy = "*"
 alembic = "*"
 psycopg2-binary = "*"
-pydantic-sqlalchemy = "*"
 fastapi = {extras = ["standard"], version = "*"}
 
 [dev-packages]
