@@ -52,8 +52,8 @@ function SchemeButton({ scheme }: { scheme: SchemeData }) {
   return (
     <div className="flex place-content-start place-items-start gap-2 rounded-md border border-gray-200 bg-white p-4 text-left">
       <div className="flex flex-col gap-2">
-        <span className="text-sm font-semibold">{scheme.name}</span>
-        <span className="text-sm">{scheme.description}</span>
+        <span className="text-lg font-semibold">{scheme.name}</span>
+        <span>{scheme.description}</span>
         <Button
           variant="clear"
           size="sm"

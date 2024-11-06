@@ -231,8 +231,8 @@ type DrawerSectionProps = { stepper: Stepper; data: DDCData[]; param: Params };
 function CareServiceOverview({ stepper, data, param }: DrawerSectionProps) {
   return (
     <section className="flex flex-col">
-      <span className="leading-tight">
-        {`These are your caregiving options recommended based on your loved one's medical profile.`}
+      <span className="text-lg leading-tight">
+        {`These are your caregiving options recommended based on your loved one's profile.`}
       </span>
       <div className="mt-4 flex flex-col gap-2">
         {careServices.map((service, index) => (
@@ -262,8 +262,8 @@ function CareServiceButton({
     >
       <Image src={service.icon} alt="ds" width={40} height={40} />
       <div className="flex flex-col gap-2">
-        <span className="text-sm font-semibold">{service.title}</span>
-        <span className="text-sm">{service.description}</span>
+        <span className="text-lg font-semibold">{service.title}</span>
+        <span>{service.description}</span>
         {service.eligibleForSubsidies && (
           <Badge
             colorScheme={service.enabled ? "success" : "neutral"}
@@ -273,7 +273,7 @@ function CareServiceButton({
           </Badge>
         )}
         {!service.enabled && (
-          <span className="text-xs italic">
+          <span className="text-sm italic">
             This recommender is not yet available
           </span>
         )}
@@ -811,8 +811,8 @@ function DaycareRecommendationCard({
 
   return (
     <div className="flex flex-col gap-4 rounded-md border border-gray-200 p-4">
-      <span className="font-semibold">{centre.name}</span>
-      <div className="flex flex-col gap-2 text-sm">
+      <span className="text-lg font-semibold">{centre.name}</span>
+      <div className="flex flex-col gap-2">
         {/* <span><b>Price per day: </b>${centre.price}</span> */}
         {homePostalCode && (
           <span>
@@ -871,7 +871,7 @@ function DaycareCentreDetails(data: DDCView) {
           </AccordionPanel>
         </AccordionItem>
       </Accordion>
-      <div className="flex flex-col gap-4 text-sm">
+      <div className="flex flex-col gap-4">
         <div className="flex flex-col">
           <span>
             <b>Operating hours: </b>

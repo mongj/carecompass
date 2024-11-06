@@ -32,8 +32,8 @@ export default function ProgrammeDetails({
         <h3 className="text-lg font-semibold">{programmeData.name}</h3>
         <div className="flex place-content-start place-items-start gap-2 rounded-md border border-gray-200 bg-white p-4 text-left">
           <div className="flex flex-col gap-2">
-            <span className="font-semibold">Overview</span>
-            <span className="mb-4 text-sm">{programmeData.description}</span>
+            <span className="text-lg font-semibold">Overview</span>
+            <span className="mb-4">{programmeData.description}</span>
             {programmeData.content && (
               <CustomMarkdown content={programmeData.content} />
             )}
@@ -43,7 +43,7 @@ export default function ProgrammeDetails({
       <section className="flex flex-col gap-2 pb-6">
         <h3 className="text-lg font-semibold">Next steps</h3>
         <div className="flex flex-col place-content-start place-items-start gap-2 rounded-md border border-gray-200 bg-white p-4 text-left">
-          <div className="flex flex-col gap-3 text-sm">
+          <div className="flex flex-col gap-3">
             {programmeData.actionable && (
               <CustomMarkdown content={programmeData.actionable} />
             )}

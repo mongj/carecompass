@@ -52,7 +52,7 @@ function ChatIntro() {
         </span>
       </div>
       <div className="flex w-full flex-col gap-2">
-        <span className="text-sm font-semibold">How can I help you today?</span>
+        <span className="font-semibold">How can I help you today?</span>
         <div className="flex flex-col gap-2 sm:flex-row sm:gap-4">
           {chatPrompts.map((chatPrompt, index) => (
             <form
@@ -64,7 +64,7 @@ function ChatIntro() {
             >
               <button
                 key={index}
-                className="min-h-12 w-full rounded-md border border-[rgb(191,194,200)] bg-white px-4 py-2 text-sm leading-tight duration-100 ease-in hover:bg-gray-50"
+                className="min-h-12 w-full rounded-md border border-[rgb(191,194,200)] bg-white px-4 py-2 leading-tight duration-100 ease-in hover:bg-gray-50"
                 type="submit"
               >
                 {chatPrompt.label}

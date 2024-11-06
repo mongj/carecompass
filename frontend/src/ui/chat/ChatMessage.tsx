@@ -76,7 +76,7 @@ function AssistantMessage({ content }: { content: string }) {
                 handleSubmitPrompt(e, response.content);
               }}
             >
-              <button className="w-full rounded border border-gray-400 px-4 py-2 text-left text-sm leading-tight shadow-sm hover:bg-gray-50">
+              <button className="w-full rounded border border-gray-400 px-4 py-2 text-left text-base leading-tight shadow-sm hover:bg-gray-50">
                 {response.content}
               </button>
             </form>
@@ -89,7 +89,7 @@ function AssistantMessage({ content }: { content: string }) {
             >
               <div className="flex flex-col gap-2">
                 <span className="font-semibold">{response.header}</span>
-                <span className="text-sm">{response.content}</span>
+                <span className="text-base">{response.content}</span>
                 {parseActionMarkup(response.action, router)}
               </div>
             </div>
@@ -99,7 +99,6 @@ function AssistantMessage({ content }: { content: string }) {
             return (
               <Button
                 key={index}
-                size="sm"
                 rightIcon={<BxRightArrowAlt />}
                 variant="outline"
                 paddingY={6}
@@ -115,7 +114,6 @@ function AssistantMessage({ content }: { content: string }) {
             return (
               <Button
                 key={index}
-                size="sm"
                 rightIcon={<BxRightArrowAlt />}
                 variant="outline"
                 paddingY={6}
@@ -130,7 +128,6 @@ function AssistantMessage({ content }: { content: string }) {
             return (
               <Button
                 key={index}
-                size="sm"
                 rightIcon={<BxRightArrowAlt />}
                 variant="outline"
                 paddingY={6}
@@ -145,7 +142,6 @@ function AssistantMessage({ content }: { content: string }) {
             return (
               <Button
                 key={index}
-                size="sm"
                 rightIcon={<BxRightArrowAlt />}
                 variant="outline"
                 paddingY={6}
