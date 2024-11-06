@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+
+// This component is very hacky and will be deprecated soon
 "use client";
 
 import { DDCData, DDCView } from "@/types/ddc";
@@ -9,13 +11,6 @@ import {
   AccordionItem,
   AccordionPanel,
   Box,
-  Popover,
-  PopoverArrow,
-  PopoverBody,
-  PopoverCloseButton,
-  PopoverContent,
-  PopoverHeader,
-  PopoverTrigger,
   RangeSlider,
   RangeSliderFilledTrack,
   RangeSliderMark,
@@ -99,7 +94,7 @@ type Params = {
   remove: (name: string) => URLSearchParams;
 };
 
-const DEFAULT_POSTAL_CODE = 520362;
+const DEFAULT_POSTAL_CODE = 319398;
 const DEFAULT_MIN_PRICE = 10;
 const DEFAULT_MAX_PRICE = 50;
 
@@ -342,7 +337,8 @@ function DaycarePreferenceOverview({
         >
           Location
         </Checkbox>
-        <Checkbox
+        {/* temporarily removed because these 2 filters are not implemented yet */}
+        {/* <Checkbox
           onChange={handleCheckPrice}
           isChecked={param.value.has("prefPrice")}
         >
@@ -353,7 +349,7 @@ function DaycarePreferenceOverview({
           isChecked={param.value.has("prefPickupDropoff")}
         >
           Pick-up / drop-off service
-        </Checkbox>
+        </Checkbox> */}
         <Checkbox.OthersWrapper>
           <Checkbox.OthersCheckbox
             onChange={handleCheckOthers}
@@ -388,12 +384,6 @@ function DaycareLocationPreference({
 }: DrawerSectionProps) {
   const router = useRouter();
 
-  if (!param.value.has("home")) {
-    const p = new URLSearchParams(param.value.toString());
-    p.set("home", String(DEFAULT_POSTAL_CODE));
-    router.replace("?" + p.toString());
-  }
-
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     const p = new URLSearchParams(param.value.toString());
     p.set("home", e.target.value);
@@ -408,30 +398,14 @@ function DaycareLocationPreference({
   return (
     <section className="flex flex-col gap-4">
       <h1 className="text-xl font-semibold">Daycare Services</h1>
-      <div className="flex flex-col gap-4">
-        <span className="leading-tight">
-          Okay, based on your choices, please answer the following questions.
-        </span>
-        <span className="leading-tight">
-          <b>
-            Are you searching for centres close to you and your Father’s home
-            address?
-          </b>
-        </span>
-        <span className="leading-tight">
-          Feel free to update your postal code below.
-        </span>
-      </div>
+      <span className="leading-tight">
+        What is your home address?
+      </span>
       <Input
-        placeholder="Your home postal code"
-        defaultValue={param.value.get("home") || DEFAULT_POSTAL_CODE}
+        placeholder="e.g. 510296"
+        defaultValue={param.value.get("home") || undefined}
         onChange={handleInputChange}
       />
-      {!isPostalCodeValid() && (
-        <span className="text-sm font-semibold text-red-500">
-          Please enter a valid postal code
-        </span>
-      )}
       <div className="mt-4 flex w-full gap-2">
         <Button
           onClick={stepper.decrement}
@@ -442,16 +416,8 @@ function DaycareLocationPreference({
         </Button>
         <Button
           className="w-[calc(50%-4px)]"
-          disabled={!param.value.has("home") || !isPostalCodeValid()}
-          onClick={() => {
-            stepper.increment();
-            if (!param.value.has("home")) {
-              const p = new URLSearchParams(param.value.toString());
-              router.push(
-                "?" + p.set("home", String(DEFAULT_POSTAL_CODE).toString()),
-              );
-            }
-          }}
+          isDisabled={!param.value.has("home") || !isPostalCodeValid()}
+          onClick={() => stepper.increment()}
         >
           Next
         </Button>
@@ -692,19 +658,20 @@ function DaycareRecommendations({ stepper, data, param }: DrawerSectionProps) {
   const [searchSaved, setSearchSaved] = useState(false);
   const auth = useAuth();
 
+  const homePostalCode = param.value.get("home")
+
   useEffect(() => {
-    const homePostalCode = parseInt(
-      param.value.get("home") || DEFAULT_POSTAL_CODE.toString(),
-    );
-    fetch(
-      `https://www.onemap.gov.sg/api/common/elastic/search?searchVal=${homePostalCode}&returnGeom=Y&getAddrDetails=Y&pageNum=1`,
-    )
-      .then((res) => res.json())
-      .then((addr) => {
-        setHomeLat(parseFloat(addr.results[0].LATITUDE));
-        setHomeLng(parseFloat(addr.results[0].LONGITUDE));
-      });
-  }, [param]);
+    if (homePostalCode) {
+      fetch(
+        `https://www.onemap.gov.sg/api/common/elastic/search?searchVal=${homePostalCode}&returnGeom=Y&getAddrDetails=Y&pageNum=1`,
+      )
+        .then((res) => res.json())
+        .then((addr) => {
+          setHomeLat(parseFloat(addr.results[0].LATITUDE));
+          setHomeLng(parseFloat(addr.results[0].LONGITUDE));
+        });
+    }
+  }, [homePostalCode]);
 
   const views: DDCView[] = data.map((c) => {
     return {
@@ -742,18 +709,13 @@ function DaycareRecommendations({ stepper, data, param }: DrawerSectionProps) {
       return v.price >= minp && v.price <= maxp;
     });
 
-  // sort by price and distance from home
   const sortedViews = filteredViews.sort((a, b) => {
-    // Weight factors (you can adjust these based on your priority)
-    const distanceWeight = 0.9; // prioritize distance
-    const priceWeight = 0.1; // prioritize price
-
-    // Calculate score for a and b
-    const scoreA = a.distanceFromHome * distanceWeight + a.price * priceWeight;
-    const scoreB = b.distanceFromHome * distanceWeight + b.price * priceWeight;
-
-    // Sort by the calculated score (lower score is better)
-    return scoreA - scoreB;
+    // we sort by distance if that's available, else sort by name
+    if (homePostalCode) {
+      return a.distanceFromHome - b.distanceFromHome;
+    } else {
+      return a.display_name.localeCompare(b.display_name);
+    }
   });
 
   const recommendations = sortedViews.slice(0, 3);
@@ -846,6 +808,8 @@ function DaycareRecommendationCard({
   param: Params;
 }) {
   const router = useRouter();
+  const homePostalCode = param.value.get("home")
+
   const avgReview =
     centre.reviews.reduce((acc, cur) => acc + cur.rating, 0) /
     centre.reviews.length;
@@ -861,10 +825,10 @@ function DaycareRecommendationCard({
       <span className="font-semibold">{centre.name}</span>
       <div className="flex flex-col gap-2 text-sm">
         {/* <span><b>Price per day: </b>${centre.price}</span> */}
-        <span>
+        {homePostalCode && <span>
           <b>Location: </b>
           {centre.distanceFromHome}km from home
-        </span>
+        </span>}
         {/* <span className="flex gap-1 place-items-center">
           <b>Pickup/Dropoff: </b>
           <div className="flex gap-2">
