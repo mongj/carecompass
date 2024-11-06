@@ -232,8 +232,7 @@ function CareServiceOverview({ stepper, data, param }: DrawerSectionProps) {
   return (
     <section className="flex flex-col">
       <span className="leading-tight">
-        These are your caregiving options recommended based on your Father’s
-        medical profile.
+        {`These are your caregiving options recommended based on your loved one's medical profile.`}
       </span>
       <div className="mt-4 flex flex-col gap-2">
         {careServices.map((service, index) => (
