@@ -216,7 +216,7 @@ export default function CareServiceRecommender() {
   const SectionComponent = sections[step];
 
   return (
-    <div className="h-full w-full overflow-auto p-8 bg-white">
+    <div className="h-full w-full overflow-auto bg-white p-8">
       {data.length > 0 ? (
         <SectionComponent stepper={stepper} data={data} param={param} />
       ) : (
@@ -850,7 +850,7 @@ function DaycareCentreDetails(data: DDCView) {
     data.reviews.reduce((acc, cur) => acc + cur.rating, 0) /
     data.reviews.length;
 
-    // TODO: move all constant strings to a separate data file
+  // TODO: move all constant strings to a separate data file
   const applicationDetails =
     "- You will need to get a referral from a hospital, polyclinic or GP who is familiar with your loved ones’ condition and needs. You may also contact the service provider for a discussion. \n\n - For further assistance, contact the Agency for Integrated Care (AIC) at [1800 650 6060](tel:18006506060), email [enquiries@aic.sg](mailto:enquiries@aic.sg) or walk in to a nearby [AIC Link](https://www.aic.sg/about-us/aic-link-locations/).";
 

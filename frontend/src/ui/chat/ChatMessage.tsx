@@ -163,7 +163,6 @@ function AssistantMessage({ content }: { content: string }) {
   );
 }
 
-
 function parseActionMarkup(action: string, router: AppRouterInstance) {
   if (!action) {
     return null;
