@@ -398,9 +398,7 @@ function DaycareLocationPreference({
   return (
     <section className="flex flex-col gap-4">
       <h1 className="text-xl font-semibold">Daycare Services</h1>
-      <span className="leading-tight">
-        What is your home address?
-      </span>
+      <span className="leading-tight">What is your home address?</span>
       <Input
         placeholder="e.g. 510296"
         defaultValue={param.value.get("home") || undefined}
@@ -658,7 +656,7 @@ function DaycareRecommendations({ stepper, data, param }: DrawerSectionProps) {
   const [searchSaved, setSearchSaved] = useState(false);
   const auth = useAuth();
 
-  const homePostalCode = param.value.get("home")
+  const homePostalCode = param.value.get("home");
 
   useEffect(() => {
     if (homePostalCode) {
@@ -808,7 +806,7 @@ function DaycareRecommendationCard({
   param: Params;
 }) {
   const router = useRouter();
-  const homePostalCode = param.value.get("home")
+  const homePostalCode = param.value.get("home");
 
   const avgReview =
     centre.reviews.reduce((acc, cur) => acc + cur.rating, 0) /
@@ -825,10 +823,12 @@ function DaycareRecommendationCard({
       <span className="font-semibold">{centre.name}</span>
       <div className="flex flex-col gap-2 text-sm">
         {/* <span><b>Price per day: </b>${centre.price}</span> */}
-        {homePostalCode && <span>
-          <b>Location: </b>
-          {centre.distanceFromHome}km from home
-        </span>}
+        {homePostalCode && (
+          <span>
+            <b>Location: </b>
+            {centre.distanceFromHome}km from home
+          </span>
+        )}
         {/* <span className="flex gap-1 place-items-center">
           <b>Pickup/Dropoff: </b>
           <div className="flex gap-2">
