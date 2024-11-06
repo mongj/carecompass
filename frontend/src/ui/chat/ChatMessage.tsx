@@ -9,8 +9,6 @@ import {
 import { Avatar } from "@chakra-ui/react";
 import { Button, BxRightArrowAlt } from "@opengovsg/design-system-react";
 import { parse } from "partial-json";
-import { Drawer } from "vaul";
-import CareServiceRecommender from "../drawer/careservice";
 import { usePathname, useRouter } from "next/navigation";
 import { useChatQuery } from "@/util/hooks/useChatQuery";
 import { useCurrentThreadStore } from "@/stores/currentThread";
@@ -99,22 +97,32 @@ function AssistantMessage({ content }: { content: string }) {
         } else if (response.type === BotResponseType.Button) {
           if (response.id === BotResponseComponentID.CareserviceRecommender) {
             return (
-              <WorkflowTrigger
+              <Button
                 key={index}
-                WorkflowComponent={CareServiceRecommender}
-                triggerText={response.content}
-              />
+                size="sm"
+                rightIcon={<BxRightArrowAlt />}
+                variant="outline"
+                paddingY={6}
+                onClick={() => router.push("/careservice")}
+              >
+                {response.content}
+              </Button>
             );
           } else if (
             response.id === BotResponseComponentID.DaycareRecommender
           ) {
             router.push(`${pathname}?step=1`);
             return (
-              <WorkflowTrigger
+              <Button
                 key={index}
-                WorkflowComponent={CareServiceRecommender}
-                triggerText={response.content}
-              />
+                size="sm"
+                rightIcon={<BxRightArrowAlt />}
+                variant="outline"
+                paddingY={6}
+                onClick={() => router.push("/careservice?step=1")}
+              >
+                {response.content}
+              </Button>
             );
           } else if (
             response.id === BotResponseComponentID.SchemesRecommender
@@ -155,35 +163,6 @@ function AssistantMessage({ content }: { content: string }) {
   );
 }
 
-function WorkflowTrigger({
-  WorkflowComponent,
-  triggerText,
-}: {
-  WorkflowComponent: React.ComponentType;
-  triggerText: string;
-}) {
-  return (
-    <Drawer.Root shouldScaleBackground>
-      <Drawer.Trigger asChild>
-        <Button
-          size="sm"
-          rightIcon={<BxRightArrowAlt />}
-          variant="outline"
-          paddingY={6}
-        >
-          {triggerText}
-        </Button>
-      </Drawer.Trigger>
-      <Drawer.Overlay className="fixed inset-0 bg-black/40" />
-      <Drawer.Portal>
-        <Drawer.Content className="border-b-none fixed bottom-0 left-0 right-0 mx-[-1px] flex h-full max-h-[100dvh] flex-col rounded-t-[10px] border border-gray-200 bg-white">
-          <Drawer.Handle className="my-4" />
-          <WorkflowComponent />
-        </Drawer.Content>
-      </Drawer.Portal>
-    </Drawer.Root>
-  );
-}
 
 function parseActionMarkup(action: string, router: AppRouterInstance) {
   if (!action) {
