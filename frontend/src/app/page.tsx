@@ -51,8 +51,6 @@ function UserInfoChecker() {
     };
   });
 
-  console.log(user);
-
   // Fetch user data
   fetch(`${process.env.NEXT_PUBLIC_APP_BACKEND_URL}/users/${user.id}`).then(
     (res) => {

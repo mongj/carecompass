@@ -78,7 +78,6 @@ export function useChatQuery(currentChatId?: string) {
 async function createThread() {
   try {
     const userId = getUserId();
-    console.log("userId:", userId);
     if (!userId) {
       throw new Error("User ID is missing");
     }
