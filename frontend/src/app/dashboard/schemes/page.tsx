@@ -37,10 +37,10 @@ function SupportDetails() {
         <h3 className="text-lg font-semibold">{scheme.name}</h3>
         <div className="flex place-content-start place-items-start gap-2 rounded-md border border-gray-200 bg-white p-4 text-left">
           <div className="flex flex-col gap-2">
-            <span className="text-sm font-semibold">Overview</span>
-            <span className="mb-4 text-sm">{scheme.description}</span>
-            <span className="text-sm font-semibold">Benefits</span>
-            <span className="text-sm">{scheme.benefits}</span>
+            <span className="text-lg font-semibold">Overview</span>
+            <span className="mb-4">{scheme.description}</span>
+            <span className="text-lg font-semibold">Benefits</span>
+            <span>{scheme.benefits}</span>
           </div>
         </div>
       </section>
@@ -48,12 +48,12 @@ function SupportDetails() {
         <h3 className="text-lg font-semibold">Eligibility</h3>
         <div className="flex flex-col place-content-start place-items-start gap-3 rounded-md border border-gray-200 bg-white p-4 text-left">
           {auth.isSignedIn ? (
-            <Text fontSize="sm" fontWeight="semibold">
+            <Text fontSize="medium" fontWeight="semibold">
               {numFulfilledCriteria} of {numCriteria} eligibility criteria met
             </Text>
           ) : (
             <section className="w-full rounded border border-brand-primary-300 bg-brand-primary-100 px-4 py-2">
-              <p className="text-sm text-brand-primary-900">
+              <p className="text-brand-primary-900">
                 Sign in to use eligibility checker
               </p>
             </section>
@@ -68,7 +68,7 @@ function SupportDetails() {
       <section className="flex flex-col gap-2 pb-6">
         <h3 className="text-lg font-semibold">Next steps</h3>
         <div className="flex flex-col place-content-start place-items-start gap-2 rounded-md border border-gray-200 bg-white p-4 text-left">
-          <div className="flex flex-col gap-3 text-sm">
+          <div className="flex flex-col gap-3">
             <CustomMarkdown content={scheme.nextSteps} />
           </div>
         </div>
@@ -90,7 +90,7 @@ function CriteriaIndicator({ criteria }: { criteria: EligibilityCriteria }) {
         fontSize="1.5rem"
         className="flex-none"
       />
-      <span className="place-self-center text-sm">{criteria.description}</span>
+      <span className="place-self-center">{criteria.description}</span>
     </div>
   );
 }

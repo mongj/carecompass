@@ -4,7 +4,7 @@ import remarkGfm from "remark-gfm";
 export default function CustomMarkdown(props: { content: string }) {
   return (
     <Markdown
-      className="prose prose-sm leading-tight"
+      className="prose prose-sm text-base leading-tight"
       remarkPlugins={[remarkGfm]}
       urlTransform={(url) =>
         url.startsWith("tel:") || url.startsWith("mailto:")

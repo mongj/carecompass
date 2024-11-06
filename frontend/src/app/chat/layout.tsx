@@ -75,7 +75,6 @@ export default function ChatLayout({
             variant="clear"
             aria-label="Support Dashboard"
             rightIcon={<ArrowRight size={16} />}
-            size="sm"
             className="font-semibold"
             onClick={() => {
               router.push(`/dashboard`);

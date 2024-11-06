@@ -34,9 +34,9 @@ import {
   useRouter,
   useSearchParams,
 } from "next/navigation";
-import LoadingSpinner from "../loading";
+import LoadingSpinner from "@/ui/loading";
 import Slider from "react-slick";
-import CustomMarkdown from "../CustomMarkdown";
+import CustomMarkdown from "@/ui/CustomMarkdown";
 import { SignInButton, useAuth } from "@clerk/nextjs";
 
 function PhotoSlider({ photos }: { photos: string[] }) {
@@ -216,7 +216,7 @@ export default function CareServiceRecommender() {
   const SectionComponent = sections[step];
 
   return (
-    <div className="h-full w-full place-content-center overflow-auto px-8 pb-8">
+    <div className="h-full w-full overflow-auto bg-white p-8">
       {data.length > 0 ? (
         <SectionComponent stepper={stepper} data={data} param={param} />
       ) : (
@@ -231,9 +231,8 @@ type DrawerSectionProps = { stepper: Stepper; data: DDCData[]; param: Params };
 function CareServiceOverview({ stepper, data, param }: DrawerSectionProps) {
   return (
     <section className="flex flex-col">
-      <span className="leading-tight">
-        These are your caregiving options recommended based on your Father’s
-        medical profile.
+      <span className="text-lg leading-tight">
+        {`These are your caregiving options recommended based on your loved one's profile.`}
       </span>
       <div className="mt-4 flex flex-col gap-2">
         {careServices.map((service, index) => (
@@ -263,8 +262,8 @@ function CareServiceButton({
     >
       <Image src={service.icon} alt="ds" width={40} height={40} />
       <div className="flex flex-col gap-2">
-        <span className="text-sm font-semibold">{service.title}</span>
-        <span className="text-sm">{service.description}</span>
+        <span className="text-lg font-semibold">{service.title}</span>
+        <span>{service.description}</span>
         {service.eligibleForSubsidies && (
           <Badge
             colorScheme={service.enabled ? "success" : "neutral"}
@@ -274,7 +273,7 @@ function CareServiceButton({
           </Badge>
         )}
         {!service.enabled && (
-          <span className="text-xs italic">
+          <span className="text-sm italic">
             This recommender is not yet available
           </span>
         )}
@@ -759,14 +758,6 @@ function DaycareRecommendations({ stepper, data, param }: DrawerSectionProps) {
     </section>
   ) : (
     <section className="flex flex-col gap-4">
-      <Button
-        onClick={stepper.decrement}
-        className="w-[calc(50%-4px)]"
-        variant="link"
-        leftIcon={<BxChevronLeft fontSize="1.5rem" />}
-      >
-        Back
-      </Button>
       <h1 className="text-xl font-semibold">Daycare Services</h1>
       <span className="leading-tight">
         Thank you! Based on your inputs, I recommend the following:
@@ -820,8 +811,8 @@ function DaycareRecommendationCard({
 
   return (
     <div className="flex flex-col gap-4 rounded-md border border-gray-200 p-4">
-      <span className="font-semibold">{centre.name}</span>
-      <div className="flex flex-col gap-2 text-sm">
+      <span className="text-lg font-semibold">{centre.name}</span>
+      <div className="flex flex-col gap-2">
         {/* <span><b>Price per day: </b>${centre.price}</span> */}
         {homePostalCode && (
           <span>
@@ -859,23 +850,12 @@ function DaycareCentreDetails(data: DDCView) {
     data.reviews.reduce((acc, cur) => acc + cur.rating, 0) /
     data.reviews.length;
 
+  // TODO: move all constant strings to a separate data file
   const applicationDetails =
     "- You will need to get a referral from a hospital, polyclinic or GP who is familiar with your loved ones’ condition and needs. You may also contact the service provider for a discussion. \n\n - For further assistance, contact the Agency for Integrated Care (AIC) at [1800 650 6060](tel:18006506060), email [enquiries@aic.sg](mailto:enquiries@aic.sg) or walk in to a nearby [AIC Link](https://www.aic.sg/about-us/aic-link-locations/).";
 
-  function handleClick() {
-    router.back();
-  }
-
   return (
     <section className="flex flex-col gap-4">
-      <Button
-        variant="link"
-        leftIcon={<BxChevronLeft fontSize="1.5rem" />}
-        marginRight="auto"
-        onClick={handleClick}
-      >
-        Back
-      </Button>
       <PhotoSlider photos={data.photos} />
       <h1 className="text-xl font-semibold">{data.name}</h1>
       <Accordion allowToggle>
@@ -891,7 +871,7 @@ function DaycareCentreDetails(data: DDCView) {
           </AccordionPanel>
         </AccordionItem>
       </Accordion>
-      <div className="flex flex-col gap-4 text-sm">
+      <div className="flex flex-col gap-4">
         <div className="flex flex-col">
           <span>
             <b>Operating hours: </b>
