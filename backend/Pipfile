@@ -10,7 +10,8 @@ sse-starlette = "*"
 sqlalchemy = "*"
 alembic = "*"
 psycopg2-binary = "*"
-fastapi = {extras = ["standard"], version = "*"}
+fastapi = {extras = ["all"], version = "*"}
+exceptiongroup = "*"
 
 [dev-packages]
 
