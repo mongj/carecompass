@@ -1,5 +1,6 @@
 # util functions for dealing with OpenAI's assistant API
 
+import asyncio
 import json
 import os
 import re
@@ -37,6 +38,10 @@ async def stream_chat_responses(thread_id: str, query: str) -> AsyncGenerator[st
     for event in stream:
         async for token in process_event(event):
             yield json.dumps({ "token": token })
+            # let the event loop actually send the token before processing the next.
+            # this prevents tokens from being buffered because they're processed
+            # in the same event loop.
+            await asyncio.sleep(0)
         
 
 async def process_event(event):
