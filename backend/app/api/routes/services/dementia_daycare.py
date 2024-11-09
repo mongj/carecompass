@@ -22,7 +22,7 @@ class DementiaDaycareBase(BaseModel):
     website: Optional[str] = None
     lat: float
     lng: float
-    operating_hours: List[str]
+    operating_hours: List[str] = []
     building_name: Optional[str] = None
     block: Optional[str] = None
     postal_code: str
@@ -48,6 +48,18 @@ class ReviewBase(BaseModel):
 
 class DementiaDaycareCreate(DementiaDaycareBase):
     pass
+
+class DementiaDaycarePatch(DementiaDaycareBase):
+    model_config = ConfigDict(from_attributes=True)
+
+    # Override all fields to be optional
+    friendly_id: Optional[str] = None
+    name: Optional[str] = None
+    lat: Optional[float] = None
+    lng: Optional[float] = None
+    operating_hours: Optional[List[str]] = None
+    postal_code: Optional[str] = None
+    photos: Optional[List[str]] = None
 
 class DementiaDaycareResponse(DementiaDaycareBase):
     id: int
@@ -134,7 +146,72 @@ def create_daycare_center(
             detail="A center with this friendly_id already exists"
         )
 
-# TODO: Update dementia daycare center
+# Update dementia daycare center
+@router.patch("/{center_id}", response_model=DementiaDaycareResponse)
+async def update_daycare_center(
+    center_id: int,
+    update_data: DementiaDaycarePatch,
+    db: db_dependency,
+    override: bool = False
+):
+    """
+    Update dementia daycare center with the given ID, using the provided update data.
+    If `override` is set to True, existing values will be replaced with the update data.
+    By default, `override` is False, and the update will only apply to empty fields.
+    """
+    # Get existing center
+    center = db.query(DementiaDaycare).filter(
+        DementiaDaycare.id == center_id
+    ).first()
+    
+    if not center:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Dementia daycare center not found"
+        )
+
+    # Convert update data to dict, excluding None values
+    update_dict = update_data.model_dump(exclude_none=True)
+
+    try:
+        # Update each field based on override flag and None values
+        for field, new_value in update_dict.items():
+            existing_value = getattr(center, field)
+            
+            # Determine whether to update the field
+            should_update = override or not existing_value
+   
+            if should_update:
+                setattr(center, field, new_value)
+
+        db.commit()
+        db.refresh(center)
+
+        # Fetch reviews for the response
+        reviews = db.query(Review).filter(
+            and_(
+                Review.target_type == ReviewableType.DEMENTIA_DAY_CARE,
+                Review.target_id == center.id
+            )
+        ).all()
+
+        return DementiaDaycareResponse(
+            **center.__dict__,
+            reviews=[ReviewBase.model_validate(review) for review in reviews]
+        )
+
+    except IntegrityError as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Database integrity error occurred"
+        )
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e)
+        )
 
 # Upsert dementia daycare center
 @router.put("/", response_model=DementiaDaycareResponse)
