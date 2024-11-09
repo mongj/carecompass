@@ -1,7 +1,6 @@
-from typing import List, Optional, Type, TypeVar, Any
-from requests import post, Response, RequestException, put
+from typing import TypeVar
+from requests import Response, put
 from pydantic import BaseModel
-import json
 
 T = TypeVar('T', bound=BaseModel)
 
