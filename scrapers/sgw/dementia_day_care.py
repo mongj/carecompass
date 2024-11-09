@@ -1,3 +1,4 @@
+import os
 import requests
 
 from typing import List, Optional
@@ -75,4 +76,5 @@ def fetch_and_sync_daycare_data():
     daycares = fetch_daycare_data()
     for i, daycare in enumerate(daycares):
         print(f"Syncing dementia daycare ({i + 1}/{len(daycares)}): {daycare.name}")
-        sync("http://127.0.0.1:8000/services/dementia-daycare", daycare)
+        # TODO: move to config
+        sync(f"{os.getenv("BACKEND_URL")}/services/dementia-daycare", daycare)
