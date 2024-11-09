@@ -34,7 +34,7 @@ class Review(Base):
     target_type: Mapped[ReviewableType] = mapped_column(
         SQLAlchemyEnum(ReviewableType, values_callable=use_enum_values)
     )
-    content: Mapped[str] = mapped_column(String)
+    content: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     overall_rating: Mapped[int] = mapped_column(Integer)
     # Attributions
     author_id: Mapped[Optional[str]] = mapped_column(String, nullable=True) # in-app id

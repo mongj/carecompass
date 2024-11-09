@@ -13,8 +13,8 @@ class ReviewBase(BaseModel):
     review_source: ReviewSource
     target_id: int
     target_type: ReviewableType
-    content: str
     overall_rating: int
+    content: Optional[str] = None
     author_id: Optional[str] = None
     google_author_name: Optional[str] = None
     google_author_url: Optional[str] = None
