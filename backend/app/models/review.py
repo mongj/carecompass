@@ -38,6 +38,7 @@ class Review(Base):
     overall_rating: Mapped[int] = mapped_column(Integer)
     # Attributions
     author_id: Mapped[Optional[str]] = mapped_column(String, nullable=True) # in-app id
+    google_review_id: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     google_author_name: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     google_author_url: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     google_author_photo_url: Mapped[Optional[str]] = mapped_column(String, nullable=True)

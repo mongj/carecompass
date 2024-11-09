@@ -1,8 +1,8 @@
 """add dementia daycare and review models
 
-Revision ID: ffbaeb9b619a
+Revision ID: 3db15ef2f181
 Revises: da7410cd3ba2
-Create Date: 2024-11-09 23:34:53.224697
+Create Date: 2024-11-10 00:16:48.707592
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision: str = 'ffbaeb9b619a'
+revision: str = '3db15ef2f181'
 down_revision: Union[str, None] = 'da7410cd3ba2'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -50,6 +50,7 @@ def upgrade() -> None:
     sa.Column('content', sa.String(), nullable=True),
     sa.Column('overall_rating', sa.Integer(), nullable=False),
     sa.Column('author_id', sa.String(), nullable=True),
+    sa.Column('google_review_id', sa.String(), nullable=True),
     sa.Column('google_author_name', sa.String(), nullable=True),
     sa.Column('google_author_url', sa.String(), nullable=True),
     sa.Column('google_author_photo_url', sa.String(), nullable=True),

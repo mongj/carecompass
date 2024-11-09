@@ -1,4 +1,3 @@
-from datetime import datetime
 from typing import List, Optional
 from fastapi import APIRouter, HTTPException, Response, status
 from pydantic import BaseModel, ConfigDict
@@ -7,7 +6,8 @@ from sqlalchemy.exc import IntegrityError
 
 from app.core.database import db_dependency
 from app.models.dementia_daycare import DementiaDaycare
-from app.models.review import Review, ReviewSource, ReviewableType
+from app.models.review import Review, ReviewableType
+from app.api.routes.reviews import ReviewBase
 
 router = APIRouter(prefix="/dementia-daycare", tags=["dementia-daycare"])
 
@@ -31,20 +31,6 @@ class DementiaDaycareBase(BaseModel):
     availability: Optional[str] = None
     google_map_place_id: Optional[str] = None
     photos: List[str] = []
-
-class ReviewBase(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
-
-    target_type: ReviewableType
-    target_id: int
-    review_source: ReviewSource
-    content: str
-    overall_rating: int
-    author_id: Optional[str] = None
-    google_author_name: Optional[str] = None
-    google_author_url: Optional[str] = None
-    google_author_photo_url: Optional[str] = None
-    published_time: datetime
 
 class DementiaDaycareCreate(DementiaDaycareBase):
     pass
