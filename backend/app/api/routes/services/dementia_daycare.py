@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import List, Optional
-from fastapi import APIRouter, HTTPException, status
-from pydantic import BaseModel, EmailStr, HttpUrl, ConfigDict, parse_obj_as
+from fastapi import APIRouter, HTTPException, Response, status
+from pydantic import BaseModel, ConfigDict
 from sqlalchemy import and_
 from sqlalchemy.exc import IntegrityError
 
@@ -17,7 +17,6 @@ class DementiaDaycareBase(BaseModel):
 
     friendly_id: str
     name: str
-    display_name: str
     phone: Optional[str] = None
     email: Optional[str] = None
     website: Optional[str] = None
@@ -30,7 +29,7 @@ class DementiaDaycareBase(BaseModel):
     street_name: Optional[str] = None
     unit_no: Optional[str] = None
     availability: Optional[str] = None
-    google_map_place_id: str
+    google_map_place_id: Optional[str] = None
     photos: List[str] = []
 
 class ReviewBase(BaseModel):
@@ -133,6 +132,65 @@ def create_daycare_center(
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="A center with this friendly_id already exists"
+        )
+
+# TODO: Update dementia daycare center
+
+# Upsert dementia daycare center
+@router.put("/", response_model=DementiaDaycareResponse)
+async def upsert_daycare_center(
+    center: DementiaDaycareCreate,
+    db: db_dependency
+):
+    # Check if center exists with the given friendly_id
+    existing_center = db.query(DementiaDaycare).filter(
+        DementiaDaycare.friendly_id == center.friendly_id
+    ).first()
+
+    try:
+        if existing_center:
+            # Update existing center
+            for key, value in center.model_dump(exclude_unset=True).items():
+                setattr(existing_center, key, value)
+            db_center = existing_center
+        else:
+            # Create new center
+            db_center = DementiaDaycare(**center.model_dump())
+            db.add(db_center)
+        
+        db.commit()
+        db.refresh(db_center)
+
+        # Fetch reviews for the response
+        reviews = db.query(Review).filter(
+            and_(
+                Review.target_type == ReviewableType.DEMENTIA_DAY_CARE,
+                Review.target_id == db_center.id
+            )
+        ).all()
+
+        response = DementiaDaycareResponse(
+            **db_center.__dict__,
+            reviews=[ReviewBase.model_validate(review) for review in reviews]
+        )
+
+        return Response(
+            status_code=status.HTTP_201_CREATED if not existing_center else status.HTTP_200_OK,
+            content=response.model_dump_json(),
+            media_type="application/json"
+        )
+
+    except IntegrityError as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Database integrity error occurred"
+        )
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e)
         )
 
 # DELETE dementia daycare center
