@@ -1,11 +1,8 @@
-from typing import List, Optional, TYPE_CHECKING
+from typing import List, Optional
 from sqlalchemy import Float, Integer, String
 from sqlalchemy.dialects.postgresql import ARRAY
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column
 from app.models.base import Base
-
-if TYPE_CHECKING:
-    from app.models.review import Review  # Import only for type checking
 
 class DementiaDaycare(Base):
     __tablename__ = "dementia_daycare"
@@ -35,5 +32,3 @@ class DementiaDaycare(Base):
     google_map_place_id: Mapped[str] = mapped_column(String)
     photos: Mapped[List[str]] = mapped_column(ARRAY(String))
     
-    # Relationship with Review model
-    reviews: Mapped[List["Review"]] = relationship("Review", back_populates="dementia_daycare")

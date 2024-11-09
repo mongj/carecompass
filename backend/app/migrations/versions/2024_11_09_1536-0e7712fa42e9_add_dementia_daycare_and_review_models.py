@@ -1,8 +1,8 @@
 """add dementia daycare and review models
 
-Revision ID: f838cdfa6d82
+Revision ID: 0e7712fa42e9
 Revises: da7410cd3ba2
-Create Date: 2024-11-08 13:04:38.000031
+Create Date: 2024-11-09 15:36:24.781930
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision: str = 'f838cdfa6d82'
+revision: str = '0e7712fa42e9'
 down_revision: Union[str, None] = 'da7410cd3ba2'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -45,13 +45,16 @@ def upgrade() -> None:
     op.create_index(op.f('ix_dementia_daycare_id'), 'dementia_daycare', ['id'], unique=True)
     op.create_table('reviews',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
-    sa.Column('review_target', sa.Enum('CARESERVICE::DEMENTIA_DAYCARE', name='reviewable'), nullable=False),
-    sa.Column('review_target_id', sa.Integer(), nullable=False),
     sa.Column('review_source', sa.Enum('GOOGLE', 'IN_APP', name='reviewsource'), nullable=False),
-    sa.Column('author_name', sa.String(), nullable=False),
+    sa.Column('target_id', sa.Integer(), nullable=False),
+    sa.Column('target_type', sa.Enum('CARESERVICE::DEMENTIA_DAY_CARE', 'CARESERVICE::DEMENTIA_HOME_CARE', name='reviewabletype'), nullable=False),
     sa.Column('content', sa.String(), nullable=False),
     sa.Column('overall_rating', sa.Integer(), nullable=False),
-    sa.Column('published_time', sa.DateTime(), nullable=False),
+    sa.Column('author_id', sa.String(), nullable=True),
+    sa.Column('google_author_name', sa.String(), nullable=True),
+    sa.Column('google_author_url', sa.String(), nullable=True),
+    sa.Column('google_author_photo_url', sa.String(), nullable=True),
+    sa.Column('published_time', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_reviews_id'), 'reviews', ['id'], unique=True)
@@ -64,6 +67,6 @@ def downgrade() -> None:
     op.drop_table('reviews')
     op.drop_index(op.f('ix_dementia_daycare_id'), table_name='dementia_daycare')
     op.drop_table('dementia_daycare')
+    op.execute('DROP TYPE reviewabletype')
     op.execute('DROP TYPE reviewsource')
-    op.execute('DROP TYPE reviewable')
     # ### end Alembic commands ###
