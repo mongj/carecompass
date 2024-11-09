@@ -65,6 +65,11 @@ class DementiaDaycareResponse(DementiaDaycareBase):
     id: int
     reviews: List[ReviewBase]
 
+class DementiaDaycareAddress(BaseModel):
+    id: int
+    name: str
+    address: str
+
 
 # Routes
 # List all dementia daycare centers
@@ -97,9 +102,23 @@ async def get_all_daycare_centers(
     
     return response
 
+# List all dementia daycare centre addresses for the scraper
+@router.get("/addresses", response_model=List[DementiaDaycareAddress])
+async def get_all_daycare_addresses(db: db_dependency):
+    centers = db.query(DementiaDaycare).all()
+    addresses = []
+    for center in centers:
+        address_parts = [center.block, center.street_name, center.building_name, center.unit_no, center.postal_code]
+        addresses.append(DementiaDaycareAddress(
+            id=center.id,
+            name=center.name,
+            address=" ".join([part for part in address_parts if part])
+        ))
+    return addresses
+
 # Get specific dementia daycare center by ID
 @router.get("/{center_id}", response_model=DementiaDaycareResponse)
-def get_daycare_center(
+async def get_daycare_center(
     center_id: int,
     db: db_dependency
 ):
