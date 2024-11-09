@@ -55,7 +55,6 @@ class Photo(BaseModel):
 class Place(BaseModel):
     id: str
     addressComponents: List[AddressComponent]
-    rating: Optional[float] = None
     nationalPhoneNumber: Optional[str] = None
     websiteUri: Optional[HttpUrl] = None
     regularOpeningHours: Optional[RegularOpeningHours] = None

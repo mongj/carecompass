@@ -68,7 +68,7 @@ def fetch_place_details(query: str) -> Optional[Place]:
     headers = {
         'Content-Type': 'application/json',
         'X-Goog-Api-Key': api_key,
-        'X-Goog-FieldMask': 'places.id,places.addressComponents,places.regularOpeningHours,places.regularSecondaryOpeningHours,places.nationalPhoneNumber,places.websiteUri,places.rating,places.reviews,places.photos'
+        'X-Goog-FieldMask': 'places.id,places.addressComponents,places.regularOpeningHours,places.nationalPhoneNumber,places.websiteUri,places.reviews,places.photos'
     }
     
     data = {
