@@ -1,17 +1,8 @@
-import os
-import sys
-
-import requests
-
-# Add the project root to Python path
-project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../"))
-sys.path.append(project_root)
+from dementia_day_care import fetch_and_sync_daycare_data
 
 def main():
-    from sgw.scraper import fetch_schemes
-
-    schemes = fetch_schemes()
-    print(schemes)
+    # Jobs
+    fetch_and_sync_daycare_data()
 
 if __name__ == "__main__":
     main()
