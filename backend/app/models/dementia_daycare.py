@@ -16,7 +16,6 @@ class DementiaDaycare(Base):
     )
     friendly_id: Mapped[str] = mapped_column(String, unique=True)
     name: Mapped[str] = mapped_column(String)
-    display_name: Mapped[str] = mapped_column(String)
     phone: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     email: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     website: Mapped[Optional[str]] = mapped_column(String, nullable=True)
@@ -29,6 +28,6 @@ class DementiaDaycare(Base):
     street_name: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     unit_no: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     availability: Mapped[Optional[str]] = mapped_column(String, nullable=True)
-    google_map_place_id: Mapped[str] = mapped_column(String)
+    google_map_place_id: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     photos: Mapped[List[str]] = mapped_column(ARRAY(String))
     

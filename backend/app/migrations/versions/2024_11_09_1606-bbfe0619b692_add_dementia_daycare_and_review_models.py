@@ -1,8 +1,8 @@
 """add dementia daycare and review models
 
-Revision ID: 0e7712fa42e9
+Revision ID: bbfe0619b692
 Revises: da7410cd3ba2
-Create Date: 2024-11-09 15:36:24.781930
+Create Date: 2024-11-09 16:06:52.885157
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision: str = '0e7712fa42e9'
+revision: str = 'bbfe0619b692'
 down_revision: Union[str, None] = 'da7410cd3ba2'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -24,7 +24,6 @@ def upgrade() -> None:
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('friendly_id', sa.String(), nullable=False),
     sa.Column('name', sa.String(), nullable=False),
-    sa.Column('display_name', sa.String(), nullable=False),
     sa.Column('phone', sa.String(), nullable=True),
     sa.Column('email', sa.String(), nullable=True),
     sa.Column('website', sa.String(), nullable=True),
@@ -37,7 +36,7 @@ def upgrade() -> None:
     sa.Column('street_name', sa.String(), nullable=True),
     sa.Column('unit_no', sa.String(), nullable=True),
     sa.Column('availability', sa.String(), nullable=True),
-    sa.Column('google_map_place_id', sa.String(), nullable=False),
+    sa.Column('google_map_place_id', sa.String(), nullable=True),
     sa.Column('photos', postgresql.ARRAY(sa.String()), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('friendly_id')
@@ -67,6 +66,6 @@ def downgrade() -> None:
     op.drop_table('reviews')
     op.drop_index(op.f('ix_dementia_daycare_id'), table_name='dementia_daycare')
     op.drop_table('dementia_daycare')
-    op.execute('DROP TYPE reviewabletype')
     op.execute('DROP TYPE reviewsource')
+    op.execute('DROP TYPE reviewabletype')
     # ### end Alembic commands ###
