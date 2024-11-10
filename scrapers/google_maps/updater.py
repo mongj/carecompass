@@ -51,8 +51,8 @@ def sync(method: str, url: str, model: BaseModel) -> Response:
         raise
 
 def sync_ddc(centre_id: int, model: DementiaDaycare) -> Response:
-    sync('PATCH', f"{os.getenv("BACKEND_URL")}/services/dementia-daycare/{centre_id}", model)
+    sync('PATCH', f"{os.getenv('BACKEND_URL')}/services/dementia-daycare/{centre_id}", model)
 
 def sync_reviews(reviews: List[Review]) -> Response:
     for review in reviews:
-        sync('PUT', f"{os.getenv("BACKEND_URL")}/reviews/google-reviews/{review.google_review_id}", review)
+        sync('PUT', f"{os.getenv('BACKEND_URL')}/reviews/google-reviews/{review.google_review_id}", review)

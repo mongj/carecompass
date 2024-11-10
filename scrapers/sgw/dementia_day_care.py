@@ -77,4 +77,4 @@ def fetch_and_sync_daycare_data():
     for i, daycare in enumerate(daycares):
         print(f"Syncing dementia daycare ({i + 1}/{len(daycares)}): {daycare.name}")
         # TODO: move to config
-        sync(f"{os.getenv("BACKEND_URL")}/services/dementia-daycare", daycare)
+        sync(f"{os.getenv('BACKEND_URL')}/services/dementia-daycare", daycare)
