@@ -1,14 +1,14 @@
 import os
 import requests
 
-from typing import Tuple
+from typing import Tuple, Union
 from pydantic import BaseModel
 
 from googlemaps import Client as GoogleMapsClient
 
 # TODO: Add return type hints
 
-def getCoordFromAddress(address: str) -> Tuple[float, float] | None:
+def getCoordFromAddress(address: str) -> Union[Tuple[float, float], None]:
     """
     Get the latitude and longitude of an address using OneMap API.
 
@@ -33,16 +33,16 @@ class RouteDistance(BaseModel):
 
 # TODO: make this async
 def getRouteDistance(
-    origin: str | Tuple[float, float],
-    destination: str | Tuple[float, float],
+    origin: Union[str, Tuple[float, float]],
+    destination: Union[str, Tuple[float, float]],
     mode: str = "driving"
 ) -> RouteDistance:
     """
     Get the distance between two locations using Google Maps API.
 
     Args:
-        - origin (str | Tuple[float, float]): The origin location (address or lat/lng coordinates)
-        - destination (str | Tuple[float, float]): The destination location (address or lat/lng coordinates)
+        - origin (Union[str, Tuple[float, float]]): The origin location (address or lat/lng coordinates)
+        - destination (Union[str, Tuple[float, float]]): The destination location (address or lat/lng coordinates)
         - mode (str): The mode of transport to use when calculating directions.
         Valid values are "driving", "walking", "transit" or "bicycling". Defaults to "driving"
 
