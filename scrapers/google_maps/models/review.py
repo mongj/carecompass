@@ -9,7 +9,7 @@ class Review(BaseModel):
     content: Optional[str] = None
     overall_rating: int
     google_review_id: str
-    google_author_name: str
+    author_name: str
     google_author_url: HttpUrl
     google_author_photo_url: HttpUrl
     published_time: datetime

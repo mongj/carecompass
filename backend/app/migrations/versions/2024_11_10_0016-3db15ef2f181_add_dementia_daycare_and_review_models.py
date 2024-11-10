@@ -51,7 +51,7 @@ def upgrade() -> None:
     sa.Column('overall_rating', sa.Integer(), nullable=False),
     sa.Column('author_id', sa.String(), nullable=True),
     sa.Column('google_review_id', sa.String(), nullable=True),
-    sa.Column('google_author_name', sa.String(), nullable=True),
+    sa.Column('author_name', sa.String(), nullable=True),
     sa.Column('google_author_url', sa.String(), nullable=True),
     sa.Column('google_author_photo_url', sa.String(), nullable=True),
     sa.Column('published_time', sa.DateTime(), server_default=sa.text('now()'), nullable=False),

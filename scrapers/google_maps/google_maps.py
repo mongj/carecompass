@@ -167,7 +167,7 @@ def process_place(place: Place, centre_id: int) -> DementiaDaycare:
                 content=review_data.text.text if review_data.text else None,
                 overall_rating=review_data.rating,
                 google_review_id=review_data.name.split('/')[-1],
-                google_author_name=review_data.authorAttribution.displayName,
+                author_name=review_data.authorAttribution.displayName,
                 google_author_url=review_data.authorAttribution.uri,
                 google_author_photo_url=review_data.authorAttribution.photoUri,
                 published_time=review_data.publishTime

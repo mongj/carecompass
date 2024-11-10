@@ -24,7 +24,7 @@ class ReviewBase(BaseModel):
     content: Optional[str] = None
     author_id: Optional[str] = None
     google_review_id: Optional[str] = None
-    google_author_name: Optional[str] = None
+    author_name: Optional[str] = None
     google_author_url: Optional[str] = None
     google_author_photo_url: Optional[str] = None
     published_time: Optional[datetime] = None
@@ -35,7 +35,7 @@ class ReviewCreate(ReviewBase):
 class GoogleReviewCreate(ReviewBase):
     review_source: ReviewSource = Field(default=ReviewSource.GOOGLE, frozen=True)
     google_review_id: str
-    google_author_name: str
+    author_name: str
     google_author_url: str
     google_author_photo_url: str
 
