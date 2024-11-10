@@ -1,6 +1,7 @@
 from typing import List, Optional
 from fastapi import APIRouter, HTTPException, Response, status
 from pydantic import BaseModel, ConfigDict
+from pydantic.alias_generators import to_camel
 from sqlalchemy import and_
 from sqlalchemy.exc import IntegrityError
 from heapq import nsmallest
@@ -16,7 +17,11 @@ router = APIRouter(prefix="/dementia-daycare", tags=["dementia-daycare"])
 
 # Pydantic models for request/response validation
 class DementiaDaycareBase(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(
+        alias_generator=to_camel,
+        populate_by_name=True,
+        from_attributes=True
+    )
 
     friendly_id: str
     name: str
@@ -65,16 +70,22 @@ class DementiaDaycareBaseResponse(DementiaDaycareBase):
 class DementiaDaycareDetailResponse(DementiaDaycareDetails):
     id: int
 
-    reviewCount: int
-    averageRating: float
+    review_count: int
+    average_rating: float
     reviews: List[ReviewBase]
 
 class DementiaDaycareRecommendation(DementiaDaycareDetailResponse):
-    distanceFromHome: Optional[float] = None
-    drivingDuration: Optional[int] = None
-    transitDuration: Optional[int] = None
+    distance_from_home: Optional[float] = None
+    driving_duration: Optional[int] = None
+    transit_duration: Optional[int] = None
 
 class DementiaDaycareAddress(BaseModel):
+    model_config = ConfigDict(
+        alias_generator=to_camel,
+        populate_by_name=True,
+        from_attributes=True
+    )
+
     id: int
     name: str
     address: str
@@ -145,23 +156,23 @@ async def rank_daycare_centers(
 
         center_response = DementiaDaycareRecommendation(
             **center.__dict__,
-            reviewCount=len(reviews),
-            averageRating=round(sum([review.overall_rating for review in reviews]) / len(reviews), 1) if reviews else 0,
+            review_count=len(reviews),
+            average_rating=round(sum([review.overall_rating for review in reviews]) / len(reviews), 1) if reviews else 0,
             reviews=[ReviewBase.model_validate(review) for review in reviews]
         )
 
         if home_coords:
             driving_dist = getRouteDistance(home_coords, (center.lat, center.lng), "driving")
             transit_dist = getRouteDistance(home_coords, (center.lat, center.lng), "transit")
-            center_response.distanceFromHome = driving_dist.distance
-            center_response.drivingDuration = driving_dist.duration
-            center_response.transitDuration = transit_dist.duration
+            center_response.distance_from_home = driving_dist.distance
+            center_response.driving_duration = driving_dist.duration
+            center_response.transit_duration = transit_dist.duration
         
         response.append(center_response)
 
     # Sort centers again by distance from home (with more accurate values from gmaps)
     if pref.location:
-        response.sort(key=lambda x: x.distanceFromHome)
+        response.sort(key=lambda x: x.distance_from_home)
     
     return response
 
@@ -192,8 +203,8 @@ async def get_daycare_center(
 
     return DementiaDaycareDetailResponse(
         **center.__dict__,
-        reviewCount=len(reviews),
-        averageRating=round(sum([review.overall_rating for review in reviews]) / len(reviews), 1) if reviews else 0,
+        review_count=len(reviews),
+        average_rating=round(sum([review.overall_rating for review in reviews]) / len(reviews), 1) if reviews else 0,
         reviews=[ReviewBase.model_validate(review) for review in reviews]
     )
 
@@ -267,8 +278,8 @@ async def update_daycare_center(
 
         return DementiaDaycareDetailResponse(
             **center.__dict__,
-            reviewCount=len(reviews),
-            averageRating=round(sum([review.overall_rating for review in reviews]) / len(reviews), 1) if reviews else 0,
+            review_count=len(reviews),
+            average_rating=round(sum([review.overall_rating for review in reviews]) / len(reviews), 1) if reviews else 0,
             reviews=[ReviewBase.model_validate(review) for review in reviews]
         )
 
@@ -320,8 +331,8 @@ async def upsert_daycare_center(
 
         response = DementiaDaycareDetailResponse(
             **db_center.__dict__,
-            reviewCount=len(reviews),
-            averageRating=round(sum([review.overall_rating for review in reviews]) / len(reviews), 1) if reviews else 0,
+            review_count=len(reviews),
+            average_rating=round(sum([review.overall_rating for review in reviews]) / len(reviews), 1) if reviews else 0,
             reviews=[ReviewBase.model_validate(review) for review in reviews]
         )
 
