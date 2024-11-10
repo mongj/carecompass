@@ -12,6 +12,8 @@ alembic = "*"
 psycopg2-binary = "*"
 fastapi = {extras = ["all"], version = "*"}
 exceptiongroup = "*"
+haversine = "*"
+googlemaps = "*"
 
 [dev-packages]
 

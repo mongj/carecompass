@@ -3,11 +3,14 @@ from fastapi import APIRouter, HTTPException, Response, status
 from pydantic import BaseModel, ConfigDict
 from sqlalchemy import and_
 from sqlalchemy.exc import IntegrityError
+from heapq import nsmallest
+from haversine import haversine
 
 from app.core.database import db_dependency
 from app.models.dementia_daycare import DementiaDaycare
 from app.models.review import Review, ReviewableType
 from app.api.routes.reviews import ReviewBase
+from app.util.maps import getCoordFromAddress, getRouteDistance
 
 router = APIRouter(prefix="/dementia-daycare", tags=["dementia-daycare"])
 
@@ -17,25 +20,31 @@ class DementiaDaycareBase(BaseModel):
 
     friendly_id: str
     name: str
+    lat: float
+    lng: float
+    postal_code: str
+    operating_hours: List[str] = []
+
+    # Optional fields
     phone: Optional[str] = None
     email: Optional[str] = None
     website: Optional[str] = None
-    lat: float
-    lng: float
-    operating_hours: List[str] = []
     building_name: Optional[str] = None
     block: Optional[str] = None
-    postal_code: str
     street_name: Optional[str] = None
     unit_no: Optional[str] = None
     availability: Optional[str] = None
     google_map_place_id: Optional[str] = None
+
+class DementiaDaycareDetails(DementiaDaycareBase):
+    model_config = ConfigDict(from_attributes=True)
+
     photos: List[str] = []
 
-class DementiaDaycareCreate(DementiaDaycareBase):
+class DementiaDaycareCreate(DementiaDaycareDetails):
     pass
 
-class DementiaDaycarePatch(DementiaDaycareBase):
+class DementiaDaycarePatch(DementiaDaycareDetails):
     model_config = ConfigDict(from_attributes=True)
 
     # Override all fields to be optional
@@ -43,23 +52,36 @@ class DementiaDaycarePatch(DementiaDaycareBase):
     name: Optional[str] = None
     lat: Optional[float] = None
     lng: Optional[float] = None
-    operating_hours: Optional[List[str]] = None
     postal_code: Optional[str] = None
+    operating_hours: Optional[List[str]] = None
     photos: Optional[List[str]] = None
 
-class DementiaDaycareResponse(DementiaDaycareBase):
+class DementiaDaycarePreference(BaseModel):
+    location: Optional[str] = None
+
+class DementiaDaycareBaseResponse(DementiaDaycareBase):
     id: int
+
+class DementiaDaycareDetailResponse(DementiaDaycareDetails):
+    id: int
+
+    reviewCount: int
+    averageRating: float
     reviews: List[ReviewBase]
+
+class DementiaDaycareRecommendation(DementiaDaycareDetailResponse):
+    distanceFromHome: Optional[float] = None
+    drivingDuration: Optional[int] = None
+    transitDuration: Optional[int] = None
 
 class DementiaDaycareAddress(BaseModel):
     id: int
     name: str
     address: str
 
-
 # Routes
 # List all dementia daycare centers
-@router.get("/", response_model=List[DementiaDaycareResponse])
+@router.get("/", response_model=List[DementiaDaycareBaseResponse])
 async def get_all_daycare_centers(
     db: db_dependency,
     skip: Optional[int] = None,
@@ -69,24 +91,7 @@ async def get_all_daycare_centers(
         DementiaDaycare
     ).offset(skip).limit(limit).all()
 
-    # For each center, fetch its reviews
-    response = []
-    for center in centers:
-        reviews = db.query(Review).filter(
-            and_(
-                Review.target_type == ReviewableType.DEMENTIA_DAY_CARE,
-                Review.target_id == center.id
-            )
-        ).all()
-        
-        # Create response object with center data and reviews
-        center_response = DementiaDaycareResponse(
-            **center.__dict__,
-            reviews=[ReviewBase.model_validate(review) for review in reviews]
-        )
-        response.append(center_response)
-    
-    return response
+    return centers
 
 # List all dementia daycare centre addresses for the scraper
 @router.get("/addresses", response_model=List[DementiaDaycareAddress])
@@ -102,8 +107,66 @@ async def get_all_daycare_addresses(db: db_dependency):
         ))
     return addresses
 
+# Rank all dementia daycare centers based on user preferences
+@router.post("/recommendations", response_model=List[DementiaDaycareRecommendation])
+async def rank_daycare_centers(
+    pref: DementiaDaycarePreference,
+    db: db_dependency,
+    limit: int = 3,
+):
+    # Fetch centers
+    centers = db.query(DementiaDaycare).all()
+
+    # Get lat and lng of provided address
+    home_coords = None
+    if pref.location:
+        home_coords = getCoordFromAddress(pref.location)
+        if not home_coords:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Invalid address provided"
+            )
+
+    # Get top k closest centers
+    centers = nsmallest(
+        limit, 
+        centers, 
+        key=lambda c: haversine((home_coords[0], home_coords[1]), (c.lat, c.lng))
+    ) if pref.location else centers[:limit]
+
+    response: List[DementiaDaycareRecommendation] = []
+    for center in centers:
+        reviews = db.query(Review).filter(
+            and_(
+                Review.target_type == ReviewableType.DEMENTIA_DAY_CARE,
+                Review.target_id == center.id
+            )
+        ).all()
+
+        center_response = DementiaDaycareRecommendation(
+            **center.__dict__,
+            reviewCount=len(reviews),
+            averageRating=round(sum([review.overall_rating for review in reviews]) / len(reviews), 1) if reviews else 0,
+            reviews=[ReviewBase.model_validate(review) for review in reviews]
+        )
+
+        if home_coords:
+            driving_dist = getRouteDistance(home_coords, (center.lat, center.lng), "driving")
+            transit_dist = getRouteDistance(home_coords, (center.lat, center.lng), "transit")
+            center_response.distanceFromHome = driving_dist.distance
+            center_response.drivingDuration = driving_dist.duration
+            center_response.transitDuration = transit_dist.duration
+        
+        response.append(center_response)
+
+    # Sort centers again by distance from home (with more accurate values from gmaps)
+    if pref.location:
+        response.sort(key=lambda x: x.distanceFromHome)
+    
+    return response
+
 # Get specific dementia daycare center by ID
-@router.get("/{center_id}", response_model=DementiaDaycareResponse)
+@router.get("/{center_id}", response_model=DementiaDaycareDetailResponse)
 async def get_daycare_center(
     center_id: int,
     db: db_dependency
@@ -127,8 +190,10 @@ async def get_daycare_center(
         )
     ).all()
 
-    return DementiaDaycareResponse(
+    return DementiaDaycareDetailResponse(
         **center.__dict__,
+        reviewCount=len(reviews),
+        averageRating=round(sum([review.overall_rating for review in reviews]) / len(reviews), 1) if reviews else 0,
         reviews=[ReviewBase.model_validate(review) for review in reviews]
     )
 
@@ -152,7 +217,7 @@ def create_daycare_center(
         )
 
 # Update dementia daycare center
-@router.patch("/{center_id}", response_model=DementiaDaycareResponse)
+@router.patch("/{center_id}", response_model=DementiaDaycareDetailResponse)
 async def update_daycare_center(
     center_id: int,
     update_data: DementiaDaycarePatch,
@@ -200,8 +265,10 @@ async def update_daycare_center(
             )
         ).all()
 
-        return DementiaDaycareResponse(
+        return DementiaDaycareDetailResponse(
             **center.__dict__,
+            reviewCount=len(reviews),
+            averageRating=round(sum([review.overall_rating for review in reviews]) / len(reviews), 1) if reviews else 0,
             reviews=[ReviewBase.model_validate(review) for review in reviews]
         )
 
@@ -219,7 +286,7 @@ async def update_daycare_center(
         )
 
 # Upsert dementia daycare center
-@router.put("/", response_model=DementiaDaycareResponse)
+@router.put("/", response_model=DementiaDaycareDetailResponse)
 async def upsert_daycare_center(
     center: DementiaDaycareCreate,
     db: db_dependency
@@ -251,8 +318,10 @@ async def upsert_daycare_center(
             )
         ).all()
 
-        response = DementiaDaycareResponse(
+        response = DementiaDaycareDetailResponse(
             **db_center.__dict__,
+            reviewCount=len(reviews),
+            averageRating=round(sum([review.overall_rating for review in reviews]) / len(reviews), 1) if reviews else 0,
             reviews=[ReviewBase.model_validate(review) for review in reviews]
         )
 
