@@ -58,6 +58,10 @@ def getRouteDistance(
     )
 
     route = dist.get('rows')[0].get('elements')[0]
+
+    if route.get('status') != "OK":
+        return RouteDistance(distance=0, duration=0)
+
     return RouteDistance(
         distance=route.get('distance').get('value'),
         duration=route.get('duration').get('value')
