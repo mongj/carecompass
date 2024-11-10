@@ -1,41 +1,35 @@
 // Types for dementia daycare centre data
-export type Review = {
-  author: string;
-  rating: number;
-  review_text: string;
-  relative_time: string;
-  publish_time: string;
-  author_photo: string;
-  author_uri: string;
-};
 
-export type DDCData = {
+import { Review } from "./review";
+
+export interface DDCBase {
+  id: number;
   friendlyId: string;
-  buildingName: string | null;
-  email: string | null;
+  name: string;
   lat: number;
   lng: number;
-  name: string;
-  operatingHours: string[];
-  phone: string | null;
   postalCode: string;
-  streetName: string | null;
-  unitNo: string | null;
-  website: string | null;
-  availability: string | null;
-  block: string | null;
-  priceNoTransport: number;
-  priceWithOneWayTransport: number;
-  priceWithTwoWayTransport: number;
-  dropoffPickupAvailability: string[];
-  place_id: string;
-  display_name: string;
-  rating_count: number;
-  reviews: Review[];
-  photos: string[];
-};
+  operatingHours: string[];
 
-export interface DDCView extends DDCData {
-  price: number;
-  distanceFromHome: number;
+  phone?: string;
+  email?: string;
+  website?: string;
+  buildingName?: string;
+  block?: string;
+  streetName?: string;
+  unitNo?: string;
+  availability?: string;
+  googleMapPlaceId?: string;
+}
+export interface DDCDetail extends DDCBase {
+  photos: string[];
+  reviewCount: number;
+  averageRating: number;
+  reviews: Review[];
+}
+
+export interface DDCRecommendation extends DDCDetail {
+  distanceFromHome?: number;
+  drivingDuration?: number;
+  transitDuration?: number;
 }
