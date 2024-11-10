@@ -55,5 +55,9 @@ To autogenerate migrations based on the latest models
 alembic revision --autogenerate -m <migration-name>
 ```
 
+Note: alembic does not work very well with enums. Specifically:
+- it does not drop the enum type when migrating downwards
+- it does not update enum when new values are added
+
 ## Deployment
 todo

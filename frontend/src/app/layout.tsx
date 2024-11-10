@@ -5,6 +5,7 @@ import Providers from "./providers";
 import { Toaster } from "sonner";
 import Image from "next/image";
 import Analytics from "./analytics";
+import "@smastrom/react-rating/style.css";
 
 export default function RootLayout({
   children,

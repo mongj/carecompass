@@ -1,11 +1,13 @@
 from fastapi import APIRouter, HTTPException
 
-from app.api.routes import users, threads
+from app.api.routes import users, threads, reviews, services
 
 router = APIRouter()
 
 router.include_router(users.router)
 router.include_router(threads.router)
+router.include_router(reviews.router)
+router.include_router(services.router)
 
 @router.get("/")
 async def root():

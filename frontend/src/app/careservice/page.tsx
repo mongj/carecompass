@@ -3,7 +3,7 @@
 // This component is very hacky and will be deprecated soon
 "use client";
 
-import { DDCData, DDCView } from "@/types/ddc";
+import { DDCRecommendation } from "@/types/ddc";
 import {
   Accordion,
   AccordionButton,
@@ -38,42 +38,8 @@ import LoadingSpinner from "@/ui/loading";
 import Slider from "react-slick";
 import CustomMarkdown from "@/ui/CustomMarkdown";
 import { SignInButton, useAuth } from "@clerk/nextjs";
-
-function PhotoSlider({ photos }: { photos: string[] }) {
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
-  return (
-    <>
-      <link
-        rel="stylesheet"
-        type="text/css"
-        href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
-      />
-      <link
-        rel="stylesheet"
-        type="text/css"
-        href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
-      />
-      <Slider {...settings} className="mb-6">
-        {photos.map((photo, index) => (
-          <Image
-            key={index}
-            src={photo}
-            alt="ds"
-            width={400}
-            height={200}
-            className="max-h-48 rounded-md"
-          />
-        ))}
-      </Slider>
-    </>
-  );
-}
+import { api } from "@/api";
+import { Rating } from "@smastrom/react-rating";
 
 type CareServicesData = {
   title: string;
@@ -141,7 +107,6 @@ const sections = [
 ];
 
 export default function CareServiceRecommender() {
-  const [data, setData] = useState<DDCData[]>([]);
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -166,12 +131,6 @@ export default function CareServiceRecommender() {
     append: appendQueryParam,
     remove: removeQueryParam,
   };
-
-  useEffect(() => {
-    fetch("/data/ddc.json")
-      .then((response) => response.json())
-      .then((json) => setData(json));
-  }, []);
 
   const incrementIndex = () => {
     const p = new URLSearchParams(param.value.toString());
@@ -217,18 +176,14 @@ export default function CareServiceRecommender() {
 
   return (
     <div className="h-full w-full overflow-auto bg-white p-8">
-      {data.length > 0 ? (
-        <SectionComponent stepper={stepper} data={data} param={param} />
-      ) : (
-        <LoadingSpinner />
-      )}
+      <SectionComponent stepper={stepper} param={param} />
     </div>
   );
 }
 
-type DrawerSectionProps = { stepper: Stepper; data: DDCData[]; param: Params };
+type DrawerSectionProps = { stepper: Stepper; param: Params };
 
-function CareServiceOverview({ stepper, data, param }: DrawerSectionProps) {
+function CareServiceOverview({ stepper, param }: DrawerSectionProps) {
   return (
     <section className="flex flex-col">
       <span className="text-lg leading-tight">
@@ -282,11 +237,7 @@ function CareServiceButton({
   );
 }
 
-function DaycarePreferenceOverview({
-  stepper,
-  data,
-  param,
-}: DrawerSectionProps) {
+function DaycarePreferenceOverview({ stepper, param }: DrawerSectionProps) {
   const router = useRouter();
 
   function handleCheckLocation(e: React.ChangeEvent<HTMLInputElement>) {
@@ -376,11 +327,7 @@ function DaycarePreferenceOverview({
   );
 }
 
-function DaycareLocationPreference({
-  stepper,
-  data,
-  param,
-}: DrawerSectionProps) {
+function DaycareLocationPreference({ stepper, param }: DrawerSectionProps) {
   const router = useRouter();
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -425,7 +372,6 @@ function DaycareLocationPreference({
 
 function DaycarePickupDropoffPreference({
   stepper,
-  data,
   param,
 }: DrawerSectionProps) {
   const router = useRouter();
@@ -478,11 +424,7 @@ function DaycarePickupDropoffPreference({
   );
 }
 
-function DaycarePickupDropoffLocation({
-  stepper,
-  data,
-  param,
-}: DrawerSectionProps) {
+function DaycarePickupDropoffLocation({ stepper, param }: DrawerSectionProps) {
   const router = useRouter();
 
   function updateParam(key: string, value: string) {
@@ -549,7 +491,7 @@ function DaycarePickupDropoffLocation({
   );
 }
 
-function DaycarePricePreference({ stepper, data, param }: DrawerSectionProps) {
+function DaycarePricePreference({ stepper, param }: DrawerSectionProps) {
   const router = useRouter();
 
   if (!param.value.has("minp")) {
@@ -627,136 +569,44 @@ function DaycarePricePreference({ stepper, data, param }: DrawerSectionProps) {
   );
 }
 
-function haversineDistance(
-  lat1: number,
-  lon1: number,
-  lat2: number,
-  lon2: number,
-) {
-  function toRad(value: number) {
-    return (value * Math.PI) / 180;
-  }
-
-  const R = 6371; // Radius of the Earth in kilometers
-  const c = Math.acos(
-    Math.sin(toRad(lat1)) * Math.sin(toRad(lat2)) +
-      Math.cos(toRad(lat1)) *
-        Math.cos(toRad(lat2)) *
-        Math.cos(toRad(lon2) - toRad(lon1)),
-  );
-
-  return parseFloat((R * c).toFixed(1)); // Distance in kilometers
-}
-
-function DaycareRecommendations({ stepper, data, param }: DrawerSectionProps) {
+function DaycareRecommendations({ stepper, param }: DrawerSectionProps) {
   const router = useRouter();
-  const [homeLat, setHomeLat] = useState(0);
-  const [homeLng, setHomeLng] = useState(0);
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [recommendations, setRecommendations] = useState<DDCRecommendation[]>(
+    [],
+  );
   const [searchSaved, setSearchSaved] = useState(false);
   const auth = useAuth();
 
   const homePostalCode = param.value.get("home");
 
   useEffect(() => {
-    if (homePostalCode) {
-      fetch(
-        `https://www.onemap.gov.sg/api/common/elastic/search?searchVal=${homePostalCode}&returnGeom=Y&getAddrDetails=Y&pageNum=1`,
-      )
-        .then((res) => res.json())
-        .then((addr) => {
-          setHomeLat(parseFloat(addr.results[0].LATITUDE));
-          setHomeLng(parseFloat(addr.results[0].LONGITUDE));
-        });
-    }
+    api
+      .post("/services/dementia-daycare/recommendations", {
+        // API handles the case where homePostalCode is null
+        location: homePostalCode,
+      })
+      .then((response) => {
+        setRecommendations(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, [homePostalCode]);
 
-  const views: DDCView[] = data.map((c) => {
-    return {
-      ...c,
-      distanceFromHome: haversineDistance(homeLat, homeLng, c.lat, c.lng),
-      price:
-        param.value.has("pickup") && param.value.has("dropoff")
-          ? c.priceWithTwoWayTransport
-          : param.value.has("dropoff") || param.value.has("pickup")
-            ? c.priceWithOneWayTransport
-            : c.priceNoTransport,
-    };
-  });
+  const handleShowAll = () => {
+    router.push("/careservice/dementia-daycare");
+  };
 
-  // filter out centres that do not have pickup/dropoff services (if required) and price range
-  const filteredViews = views
-    .filter((v) => {
-      if (
-        param.value.has("pickup") &&
-        !v.dropoffPickupAvailability.includes("Pickup")
-      ) {
-        return false;
-      }
-      if (
-        param.value.has("dropoff") &&
-        !v.dropoffPickupAvailability.includes("Dropoff")
-      ) {
-        return false;
-      }
-      return true;
-    })
-    .filter((v) => {
-      const minp = parseInt(param.value.get("minp") || "0");
-      const maxp = parseInt(param.value.get("maxp") || "1000000");
-      return v.price >= minp && v.price <= maxp;
-    });
-
-  const sortedViews = filteredViews.sort((a, b) => {
-    // we sort by distance if that's available, else sort by name
-    if (homePostalCode) {
-      return a.distanceFromHome - b.distanceFromHome;
-    } else {
-      return a.display_name.localeCompare(b.display_name);
-    }
-  });
-
-  const recommendations = sortedViews.slice(0, 3);
-
-  const centreId = param.value.get("centre");
-  const display = param.value.get("show");
-  const selectedCentres = views.filter((c) => c.friendlyId === centreId);
-
-  function handleShowAll() {
-    const p = param.append("show", "all");
-    router.push("?" + p.toString());
+  if (isLoading) {
+    return <LoadingSpinner />;
   }
 
-  function handleShowRecommendations() {
-    const p = param.append("show", "recommendations");
-    router.push("?" + p.toString());
-  }
-
-  return selectedCentres.length > 0 ? (
-    <DaycareCentreDetails {...selectedCentres[0]} />
-  ) : display === "all" ? (
-    <section className="flex flex-col gap-4">
-      <Button
-        variant="link"
-        leftIcon={<BxChevronLeft fontSize="1.5rem" />}
-        marginRight="auto"
-        onClick={() => router.back()}
-      >
-        Back
-      </Button>
-      <span className="leading-tight">
-        List of all dementia daycare centres:
-      </span>
-      <div className="flex flex-col gap-4">
-        {sortedViews.map((centre, index) => (
-          <DaycareRecommendationCard
-            key={index}
-            centre={centre}
-            param={param}
-          />
-        ))}
-      </div>
-    </section>
-  ) : (
+  return (
     <section className="flex flex-col gap-4">
       <h1 className="text-xl font-semibold">Daycare Services</h1>
       <span className="leading-tight">
@@ -764,11 +614,7 @@ function DaycareRecommendations({ stepper, data, param }: DrawerSectionProps) {
       </span>
       <div className="flex flex-col gap-4">
         {recommendations.map((centre, index) => (
-          <DaycareRecommendationCard
-            key={index}
-            centre={centre}
-            param={param}
-          />
+          <DaycareRecommendationCard key={index} centre={centre} />
         ))}
       </div>
       {auth.isSignedIn ? (
@@ -789,215 +635,59 @@ function DaycareRecommendations({ stepper, data, param }: DrawerSectionProps) {
   );
 }
 
-function DaycareRecommendationCard({
-  centre,
-  param,
-}: {
-  centre: DDCView;
-  param: Params;
-}) {
+function DaycareRecommendationCard({ centre }: { centre: DDCRecommendation }) {
   const router = useRouter();
-  const homePostalCode = param.value.get("home");
 
-  const avgReview =
-    centre.reviews.reduce((acc, cur) => acc + cur.rating, 0) /
-    centre.reviews.length;
+  const parseDistance = (distance: number) => {
+    return `${(distance / 1000).toFixed(1)}km`;
+  };
 
-  function handleClick() {
-    const p = new URLSearchParams(param.value.toString());
-    p.set("centre", centre.friendlyId);
-    router.push(`?${p.toString()}`);
-  }
+  const parseDuration = (duration: number) => {
+    const minutes = Math.floor(duration / 60);
+    return `${minutes} min`;
+  };
+
+  const handleViewDetails = () => {
+    router.push(`/careservice/dementia-daycare/${centre.id}`);
+  };
+
+  const address = `${centre.block} ${centre.streetName} ${centre.buildingName} ${centre.postalCode}`;
+  const distance =
+    centre.distanceFromHome || centre.distanceFromHome == 0
+      ? `(${parseDistance(centre.distanceFromHome)} away from home)`
+      : "";
 
   return (
     <div className="flex flex-col gap-4 rounded-md border border-gray-200 p-4">
       <span className="text-lg font-semibold">{centre.name}</span>
+      {centre.reviewCount > 0 && (
+        <div className="flex gap-2">
+          <Rating readOnly value={centre.averageRating} className="max-w-24" />
+          <span>(from {centre.reviewCount} reviews)</span>
+        </div>
+      )}
       <div className="flex flex-col gap-2">
-        {/* <span><b>Price per day: </b>${centre.price}</span> */}
-        {homePostalCode && (
-          <span>
-            <b>Location: </b>
-            {centre.distanceFromHome}km from home
-          </span>
-        )}
-        {/* <span className="flex gap-1 place-items-center">
-          <b>Pickup/Dropoff: </b>
-          <div className="flex gap-2">
-            {centre.dropoffPickupAvailability.map((e, i) => <Badge key={i} colorScheme="success" variant="subtle">{e}</Badge>)}
-          </div>
-        </span> */}
-        {!isNaN(avgReview) && (
-          <span>
-            <b>Google Reviews:</b> {avgReview} ⭐
-          </span>
-        )}
+        <span>
+          {address} {distance}
+        </span>
+        {centre.distanceFromHome !== undefined &&
+          centre.distanceFromHome > 0 && (
+            <div className="flex flex-col rounded border border-brand-primary-400 bg-brand-primary-50 p-4">
+              <span>
+                <b>{parseDuration(centre.drivingDuration!)}</b> by car, or{" "}
+                <b>{parseDuration(centre.transitDuration!)}</b> by bus/MRT
+              </span>
+            </div>
+          )}
       </div>
       <Button
         variant="clear"
         rightIcon={<BxRightArrowAlt fontSize="1.5rem" />}
         marginLeft="auto"
-        onClick={handleClick}
+        onClick={handleViewDetails}
       >
         More Info
       </Button>
     </div>
-  );
-}
-
-function DaycareCentreDetails(data: DDCView) {
-  const router = useRouter();
-  const avgReview =
-    data.reviews.reduce((acc, cur) => acc + cur.rating, 0) /
-    data.reviews.length;
-
-  // TODO: move all constant strings to a separate data file
-  const applicationDetails =
-    "- You will need to get a referral from a hospital, polyclinic or GP who is familiar with your loved ones’ condition and needs. You may also contact the service provider for a discussion. \n\n - For further assistance, contact the Agency for Integrated Care (AIC) at [1800 650 6060](tel:18006506060), email [enquiries@aic.sg](mailto:enquiries@aic.sg) or walk in to a nearby [AIC Link](https://www.aic.sg/about-us/aic-link-locations/).";
-
-  return (
-    <section className="flex flex-col gap-4">
-      <PhotoSlider photos={data.photos} />
-      <h1 className="text-xl font-semibold">{data.name}</h1>
-      <Accordion allowToggle>
-        <AccordionItem>
-          <AccordionButton>
-            <Box as="span" flex="1" textAlign="left">
-              How to apply?
-            </Box>
-            <AccordionIcon />
-          </AccordionButton>
-          <AccordionPanel pb={4}>
-            <CustomMarkdown content={applicationDetails} />
-          </AccordionPanel>
-        </AccordionItem>
-      </Accordion>
-      <div className="flex flex-col gap-4">
-        <div className="flex flex-col">
-          <span>
-            <b>Operating hours: </b>
-          </span>
-          <span>{data.operatingHours.join(", \n")}</span>
-        </div>
-        {/* <div className="flex flex-col">
-          <span><b>Price per day: </b><Popover>
-            <PopoverTrigger>
-              <a className="underline">(how is this calculated?)</a>
-            </PopoverTrigger>
-            <PopoverContent>
-              <PopoverArrow />
-              <PopoverCloseButton />
-              <PopoverHeader>Price estimation</PopoverHeader>
-              <PopoverBody>
-                <span className="whitespace-pre-line">
-                  {`We calculated your Monthly Household Income per Capita to be S$2,600 using information from Singpass.\n
-                  Based on this, you may be eligible for a 50% subsidy under MOH’s Subsidy for Non-Residential Long-Term Care Services.\n
-                  To accurately determine the price you will pay, please complete the Household Means Testing via the HOMES Portal.`}
-                </span>
-              </PopoverBody>
-            </PopoverContent>
-          </Popover></span>
-          <span>${data.price.toFixed(2)}</span>
-        </div> */}
-        {/* <span className="flex gap-1 place-items-center">
-          <b>Pickup/Dropoff: </b>
-          <div className="flex gap-2">
-            {data.dropoffPickupAvailability.map((e, i) => <Badge key={i} colorScheme="success" variant="subtle">{e}</Badge>)}
-          </div>
-        </span> */}
-        {!isNaN(avgReview) && (
-          <span>
-            <b>Google Reviews:</b> {avgReview} ⭐
-          </span>
-        )}
-        <div className="my-2 flex flex-col gap-2">
-          <span className="text-lg">
-            <b>Contact Details</b>
-          </span>
-          <div className="flex flex-col gap-2">
-            {data.phone && (
-              <span>
-                <b>Phone: </b>
-                <a
-                  href={`tel:+65${data.phone}`}
-                  target="_blank"
-                  className="text-blue-500 underline"
-                >
-                  {data.phone}
-                </a>
-              </span>
-            )}
-            {data.email && (
-              <span>
-                <b>Email: </b>
-                <a
-                  href={`mailto:${data.email}`}
-                  target="_blank"
-                  className="text-blue-500 underline"
-                >
-                  {data.email}
-                </a>
-              </span>
-            )}
-            {data.website && (
-              <span>
-                <b>Website: </b>
-                <a
-                  href={data.website}
-                  target="_blank"
-                  className="text-blue-500 underline"
-                >
-                  {data.website}
-                </a>
-              </span>
-            )}
-          </div>
-        </div>
-        <div className="my-2 flex flex-col gap-2">
-          <span className="text-lg">
-            <b>Address</b>
-          </span>
-          <div className="flex flex-col">
-            {data.buildingName && <span>{data.buildingName}</span>}
-            <span>
-              {data.block} {data.streetName} {data.unitNo}, {data.postalCode}
-            </span>
-          </div>
-        </div>
-      </div>
-      <div id="embed-map-canvas" className="w-full">
-        <iframe
-          // api key from https://www.embed-map.com/
-          src={`https://www.google.com/maps/embed/v1/place?q=${data.name.replace(" ", "+")}&key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8`}
-          allowFullScreen
-          className="h-96 w-full rounded-md border border-gray-200 shadow"
-        />
-      </div>
-      <ReviewSection reviews={data.reviews} />
-    </section>
-  );
-}
-
-function ReviewSection({ reviews }: { reviews: DDCView["reviews"] }) {
-  return (
-    <section className="flex flex-col gap-4">
-      <h1 className="text-xl font-semibold">Reviews</h1>
-      <div className="flex flex-col gap-4">
-        {reviews.map((review, index) => (
-          <div
-            key={index}
-            className="flex flex-col gap-2 rounded-md border border-gray-200 p-4"
-          >
-            <span className="font-semibold">{review.author}</span>
-            <div className="flex gap-2">
-              <span>
-                {review.rating} {"⭐".repeat(Math.round(review.rating))}
-              </span>
-              <span>{review.relative_time}</span>
-            </div>
-            <span>{review.review_text}</span>
-          </div>
-        ))}
-      </div>
-    </section>
   );
 }
