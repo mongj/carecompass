@@ -21,10 +21,10 @@ class ReviewBase(BaseModel):
     target_id: int
     target_type: ReviewableType
     overall_rating: int
+    author_name: str = "Anonymous"
     content: Optional[str] = None
     author_id: Optional[str] = None
     google_review_id: Optional[str] = None
-    author_name: Optional[str] = None
     google_author_url: Optional[str] = None
     google_author_photo_url: Optional[str] = None
     published_time: Optional[datetime] = None
