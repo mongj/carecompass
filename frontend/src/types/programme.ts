@@ -1,4 +1,4 @@
-import { Review } from "./ddc";
+import { Review } from "./review";
 
 export type ProgrammeData = {
   id: string;
