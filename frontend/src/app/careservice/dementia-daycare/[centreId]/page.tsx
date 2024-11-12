@@ -29,6 +29,7 @@ import moment from "moment";
 import { Drawer } from "vaul";
 import { ArrowLeft } from "lucide-react";
 import { mapReviewSource } from "@/util/review";
+import { constructAddress } from "@/util/address";
 
 export default function DaycareCentreDetails({
   params,
@@ -143,11 +144,13 @@ export default function DaycareCentreDetails({
             <b>Address</b>
           </span>
           <div className="flex flex-col">
-            {centre.buildingName && <span>{centre.buildingName}</span>}
-            <span>
-              {centre.block} {centre.streetName} {centre.unitNo},{" "}
-              {centre.postalCode}
-            </span>
+            {constructAddress(
+              centre.postalCode,
+              centre.block,
+              centre.streetName,
+              centre.buildingName,
+              centre.unitNo,
+            )}
           </div>
         </div>
       </div>
@@ -253,7 +256,9 @@ function NewReviewDrawer({ centreId }: { centreId: number }) {
               />
             </div>
             <div>
-              <FormLabel className="mt-2">Review</FormLabel>
+              <FormLabel className="mt-2">
+                Please share more about why you chose this rating
+              </FormLabel>
               <Textarea
                 value={review.content}
                 onChange={(e) =>
@@ -262,6 +267,10 @@ function NewReviewDrawer({ centreId }: { centreId: number }) {
                 placeholder="Share your experience with us"
               />
             </div>
+            <span className="text-sm">
+              By submitting this review, I declare that I have used this service
+              and my review is based on my actual experiences.
+            </span>
             <Button
               className="mt-4 w-full"
               onClick={submitReview}

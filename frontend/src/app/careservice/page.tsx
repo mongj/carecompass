@@ -40,6 +40,7 @@ import CustomMarkdown from "@/ui/CustomMarkdown";
 import { SignInButton, useAuth } from "@clerk/nextjs";
 import { api } from "@/api";
 import { Rating } from "@smastrom/react-rating";
+import { constructAddress } from "@/util/address";
 
 type CareServicesData = {
   title: string;
@@ -651,7 +652,14 @@ function DaycareRecommendationCard({ centre }: { centre: DDCRecommendation }) {
     router.push(`/careservice/dementia-daycare/${centre.id}`);
   };
 
-  const address = `${centre.block} ${centre.streetName} ${centre.buildingName} ${centre.postalCode}`;
+  const address = constructAddress(
+    centre.postalCode,
+    centre.block,
+    centre.streetName,
+    centre.buildingName,
+    centre.unitNo,
+  );
+
   const distance =
     centre.distanceFromHome || centre.distanceFromHome == 0
       ? `(${parseDistance(centre.distanceFromHome)} away from home)`

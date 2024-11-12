@@ -3,6 +3,7 @@
 import { api } from "@/api";
 import { DDCBase } from "@/types/ddc";
 import LoadingSpinner from "@/ui/loading";
+import { constructAddress } from "@/util/address";
 import { Button } from "@chakra-ui/react";
 import { BxRightArrowAlt, Input } from "@opengovsg/design-system-react";
 import { useRouter } from "next/navigation";
@@ -65,7 +66,13 @@ function CentreCard({ centre }: { centre: DDCBase }) {
     router.push(`/careservice/dementia-daycare/${centre.id}`);
   };
 
-  const address = `${centre.block} ${centre.streetName} ${centre.buildingName} ${centre.postalCode}`;
+  const address = constructAddress(
+    centre.postalCode,
+    centre.block,
+    centre.streetName,
+    centre.buildingName,
+    centre.unitNo,
+  );
 
   return (
     <div className="flex flex-col gap-4 py-4">
