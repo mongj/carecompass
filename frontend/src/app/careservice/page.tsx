@@ -1,16 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-// This component is very hacky and will be deprecated soon
 "use client";
 
 import { DDCRecommendation } from "@/types/ddc";
 import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Box,
   RangeSlider,
   RangeSliderFilledTrack,
   RangeSliderMark,
@@ -21,7 +12,6 @@ import {
 import {
   Badge,
   Button,
-  BxChevronLeft,
   BxRightArrowAlt,
   Checkbox,
   FormLabel,
@@ -35,8 +25,6 @@ import {
   useSearchParams,
 } from "next/navigation";
 import LoadingSpinner from "@/ui/loading";
-import Slider from "react-slick";
-import CustomMarkdown from "@/ui/CustomMarkdown";
 import { SignInButton, useAuth } from "@clerk/nextjs";
 import { api } from "@/api";
 import { Rating } from "@smastrom/react-rating";
@@ -184,7 +172,7 @@ export default function CareServiceRecommender() {
 
 type DrawerSectionProps = { stepper: Stepper; param: Params };
 
-function CareServiceOverview({ stepper, param }: DrawerSectionProps) {
+function CareServiceOverview({ stepper }: DrawerSectionProps) {
   return (
     <section className="flex flex-col">
       <span className="text-lg leading-tight">
@@ -244,20 +232,6 @@ function DaycarePreferenceOverview({ stepper, param }: DrawerSectionProps) {
   function handleCheckLocation(e: React.ChangeEvent<HTMLInputElement>) {
     const p = new URLSearchParams(param.value.toString());
     e.target.checked ? p.set("prefLoc", "true") : p.delete("prefLoc");
-    router.replace("?" + p.toString());
-  }
-
-  function handleCheckPrice(e: React.ChangeEvent<HTMLInputElement>) {
-    const p = new URLSearchParams(param.value.toString());
-    e.target.checked ? p.set("prefPrice", "true") : p.delete("prefPrice");
-    router.replace("?" + p.toString());
-  }
-
-  function handleCheckPickupDropoff(e: React.ChangeEvent<HTMLInputElement>) {
-    const p = new URLSearchParams(param.value.toString());
-    e.target.checked
-      ? p.set("prefPickupDropoff", "true")
-      : p.delete("prefPickupDropoff");
     router.replace("?" + p.toString());
   }
 
@@ -570,7 +544,7 @@ function DaycarePricePreference({ stepper, param }: DrawerSectionProps) {
   );
 }
 
-function DaycareRecommendations({ stepper, param }: DrawerSectionProps) {
+function DaycareRecommendations({ param }: DrawerSectionProps) {
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(true);
