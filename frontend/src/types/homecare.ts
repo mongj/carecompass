@@ -35,9 +35,11 @@ export const SERVICE_ID_TO_LABEL: { [key: string]: string } = {
   "dementia-enrichment": "Dementia Enrichment",
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function transformHomeCareData(data: any[]): HomeCareDetail[] {
   return data.map((item) => {
     // Transform reviews to match Review type
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const reviews: Review[] = item.reviews.map((review: any) => ({
       reviewSource: review.review_source as ReviewSource,
       targetId: review.target_id,
