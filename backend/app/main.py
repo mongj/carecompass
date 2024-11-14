@@ -30,6 +30,8 @@ app = FastAPI(
 origins = [
     "http://localhost:3000",
     "https://my.carecompass.sg",
+    "https://prod-frontend.carecompass.sg",
+    "https://staging-frontend.carecompass.sg",
     "https://carecompass-bfg.vercel.app"
 ]
 
