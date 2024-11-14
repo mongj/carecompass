@@ -29,7 +29,7 @@ app = FastAPI(
 # TODO: use env variables
 origins = [
     "http://localhost:3000",
-    "https://my.carecompass.sg",
+    "https://*.carecompass.sg",
     "https://carecompass-bfg.vercel.app"
 ]
 
