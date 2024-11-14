@@ -93,7 +93,9 @@
         "google_author_photo_url": "https://lh3.googleusercontent.com/a/ACg8ocKM5WOyX-DZkFXN1U5ej1mrAEjSitABEJStewLrIlqgDhjxjw=s128-c0x00000000-cc-rp-mo",
         "published_time": "2022-05-04T02:23:22.713989+00:00"
       }
-    ]
+    ],
+    "rating": 4.5,
+    "user_rating_count": 65
   },
   {
     "id": 2,
@@ -152,7 +154,9 @@
         "google_author_photo_url": "https://lh3.googleusercontent.com/a-/ALV-UjXq5Kh9IZ62PBi8pYsaLQuxMacdSjRiOhIpnVLkvMipcDwgm8o=s128-c0x00000000-cc-rp-mo",
         "published_time": "2019-12-05T07:16:49.219302+00:00"
       }
-    ]
+    ],
+    "rating": 5.0,
+    "user_rating_count": 2
   },
   {
     "id": 3,
@@ -248,7 +252,9 @@
         "google_author_photo_url": "https://lh3.googleusercontent.com/a/ACg8ocLh6lNVHPPIGrfz_-AVxqWDJjQ4Wiu0br1yOuAL5H8YcoDGhA=s128-c0x00000000-cc-rp-mo",
         "published_time": "2024-05-09T07:46:01.385073+00:00"
       }
-    ]
+    ],
+    "rating": 4.7,
+    "user_rating_count": 6
   },
   {
     "id": 4,
@@ -336,7 +342,9 @@
         "google_author_photo_url": "https://lh3.googleusercontent.com/a-/ALV-UjVXKcl85lkUfM4vkjgp9zAKcbH4MyuB-AoNilEb5NVZDrkU0X3HIg=s128-c0x00000000-cc-rp-mo",
         "published_time": "2019-01-09T01:17:37.029443+00:00"
       }
-    ]
+    ],
+    "rating": 4.4,
+    "user_rating_count": 5
   },
   {
     "id": 5,
@@ -433,7 +441,9 @@
         "google_author_photo_url": "https://lh3.googleusercontent.com/a/ACg8ocLErD1y8yL8lnyIKy2XnvEalEAxvKg1whGehZYjBKLeOMuZWw=s128-c0x00000000-cc-rp-mo",
         "published_time": "2024-06-21T14:50:14.814436+00:00"
       }
-    ]
+    ],
+    "rating": 3.0,
+    "user_rating_count": 260
   },
   {
     "id": 6,
@@ -530,7 +540,9 @@
         "google_author_photo_url": "https://lh3.googleusercontent.com/a/ACg8ocKT55eLGR6wA0ON19NQ_NfcKeBLyYMC6dSERukIb4KFrp51Tw=s128-c0x00000000-cc-rp-mo-ba3",
         "published_time": "2024-08-19T14:39:06.364741+00:00"
       }
-    ]
+    ],
+    "rating": 4.0,
+    "user_rating_count": 9
   },
   {
     "id": 7,
@@ -621,7 +633,9 @@
         "google_author_photo_url": "https://lh3.googleusercontent.com/a-/ALV-UjXvEF1g2c3ygenfaFdOz0KqpWF04MSE6KvcLqm-K85GbMQZ5XBN5A=s128-c0x00000000-cc-rp-mo",
         "published_time": "2023-06-16T08:04:34.349501+00:00"
       }
-    ]
+    ],
+    "rating": 4.4,
+    "user_rating_count": 17
   },
   {
     "id": 8,
@@ -712,7 +726,9 @@
         "google_author_photo_url": "https://lh3.googleusercontent.com/a/ACg8ocI7TiQG4gc-fwwzzbVe5CpUH_xcGhqNcRmmrj4OgVnFkBnlUg=s128-c0x00000000-cc-rp-mo",
         "published_time": "2018-01-05T07:41:25.236000+00:00"
       }
-    ]
+    ],
+    "rating": 3.4,
+    "user_rating_count": 5
   },
   {
     "id": 9,
@@ -806,7 +822,9 @@
         "google_author_photo_url": "https://lh3.googleusercontent.com/a-/ALV-UjXRyYKt0B1pgGr2bLxdNy2JP5O5KpY-japYq5Q1i21Oe77PiYUm=s128-c0x00000000-cc-rp-mo-ba3",
         "published_time": "2018-03-22T13:32:47.710000+00:00"
       }
-    ]
+    ],
+    "rating": 3.8,
+    "user_rating_count": 20
   },
   {
     "id": 10,
@@ -902,7 +920,9 @@
         "google_author_photo_url": "https://lh3.googleusercontent.com/a-/ALV-UjWoDL0sYL4auyAEsnG2aDJ2GcjIDMYOXvPl0X-djpKBkW9j3D0c=s128-c0x00000000-cc-rp-mo",
         "published_time": "2023-08-21T12:19:54.082541+00:00"
       }
-    ]
+    ],
+    "rating": 4.5,
+    "user_rating_count": 84
   },
   {
     "id": 11,
@@ -1006,7 +1026,9 @@
         "google_author_photo_url": "https://lh3.googleusercontent.com/a/ACg8ocK_mI0Zz5_ZxswKbsbzxmxaU0LDRaAqbTjMQ1Qy0ORnA-jUpA=s128-c0x00000000-cc-rp-mo-ba2",
         "published_time": "2024-08-15T08:40:08.574949+00:00"
       }
-    ]
+    ],
+    "rating": 4.3,
+    "user_rating_count": 526
   },
   {
     "id": 12,
@@ -1101,7 +1123,9 @@
         "google_author_photo_url": "https://lh3.googleusercontent.com/a/ACg8ocKwZrMenKKbwVL2WT99k_5cRATF5dgjz0C17lae5lQuSkcEyw=s128-c0x00000000-cc-rp-mo",
         "published_time": "2022-09-19T05:55:41.131517+00:00"
       }
-    ]
+    ],
+    "rating": 5.0,
+    "user_rating_count": 13
   },
   {
     "id": 13,
@@ -1203,7 +1227,9 @@
         "google_author_photo_url": "https://lh3.googleusercontent.com/a/ACg8ocJdt84aF7im50cvOKwp6jPw5R3b1SfYJetLdnPU8cID57Da7w=s128-c0x00000000-cc-rp-mo",
         "published_time": "2021-07-07T04:25:06.311160+00:00"
       }
-    ]
+    ],
+    "rating": 4.3,
+    "user_rating_count": 6
   },
   {
     "id": 14,
@@ -1293,7 +1319,9 @@
         "google_author_photo_url": "https://lh3.googleusercontent.com/a/ACg8ocIa3j8-j1-D3k7hYKLvI-dBz-ROoEMbspnukjBSrhYg7xuiTw=s128-c0x00000000-cc-rp-mo",
         "published_time": "2019-07-17T03:23:40.287987+00:00"
       }
-    ]
+    ],
+    "rating": 3.4,
+    "user_rating_count": 5
   },
   {
     "id": 15,
@@ -1390,6 +1418,8 @@
         "google_author_photo_url": "https://lh3.googleusercontent.com/a/ACg8ocIhCjJPMIyU3j_pk_XSL-gLlxOHW2UkQDme03oWFKCj_quA0ck=s128-c0x00000000-cc-rp-mo",
         "published_time": "2024-09-25T07:41:20.982132+00:00"
       }
-    ]
+    ],
+    "rating": 4.7,
+    "user_rating_count": 508
   }
 ]

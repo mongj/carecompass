@@ -23,7 +23,8 @@ export interface HomeCareDetail {
   // reviews
   reviews: Review[];
   reviewCount: number;
-  averageRating: number;
+  rating: number;
+  userRatingCount: number;
 }
 
 export const SERVICE_ID_TO_LABEL: { [key: string]: string } = {
@@ -76,12 +77,8 @@ export function transformHomeCareData(data: any[]): HomeCareDetail[] {
       googleMapPlaceId: item.google_map_place_id,
       reviews,
       reviewCount: reviews.length,
-      averageRating: Number(
-        (
-          reviews.reduce((acc, review) => acc + review.overallRating, 0) /
-            reviews.length || 0
-        ).toFixed(1),
-      ),
+      rating: item.rating,
+      userRatingCount: item.user_rating_count,
     };
   });
 }

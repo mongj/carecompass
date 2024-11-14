@@ -25,10 +25,10 @@ export function ProviderCard({ provider, baseUrl }: ProviderCardProps) {
           <div
             className="rounded p-2 text-xl font-semibold text-white"
             style={{
-              backgroundColor: getRatingColor(provider.averageRating),
+              backgroundColor: getRatingColor(provider.rating),
             }}
           >
-            {provider.averageRating?.toFixed(2) || "N/A"}
+            {provider.rating?.toFixed(2) || "N/A"}
           </div>
         </div>
         <div className="flex flex-col gap-1">
@@ -36,11 +36,11 @@ export function ProviderCard({ provider, baseUrl }: ProviderCardProps) {
             <div
               className="flex h-full items-center justify-between rounded bg-[#7D7D7D] px-2 text-sm text-white"
               style={{
-                width: `${((provider.averageRating || 0) / 5) * 100}%`,
+                width: `${((provider.rating || 0) / 5) * 100}%`,
               }}
             >
               <span>Google</span>
-              <span>{provider.averageRating?.toFixed(2) || "N/A"}</span>
+              <span>{provider.rating?.toFixed(2) || "N/A"}</span>
             </div>
           </div>
         </div>

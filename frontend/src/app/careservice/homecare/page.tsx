@@ -52,8 +52,8 @@ export default function HomeCarePage() {
         })
         // Sort providers by rating (descending), handling null/undefined ratings
         .sort((a, b) => {
-          const ratingA = a.averageRating || 0;
-          const ratingB = b.averageRating || 0;
+          const ratingA = a.rating || 0;
+          const ratingB = b.rating || 0;
           return ratingB - ratingA;
         })
     );

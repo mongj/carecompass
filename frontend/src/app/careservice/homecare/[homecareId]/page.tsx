@@ -65,10 +65,10 @@ export default function HomeCareDetailPage() {
             <div
               className="rounded p-2 text-xl font-semibold text-white"
               style={{
-                backgroundColor: getRatingColor(provider.averageRating),
+                backgroundColor: getRatingColor(provider.rating),
               }}
             >
-              {provider.averageRating?.toFixed(2) || "N/A"}
+              {provider.rating?.toFixed(2) || "N/A"}
             </div>
           </div>
           <div className="flex flex-col gap-1">
@@ -76,11 +76,11 @@ export default function HomeCareDetailPage() {
               <div
                 className="flex h-full items-center justify-between rounded bg-[#7D7D7D] px-2 text-sm text-white"
                 style={{
-                  width: `${((provider.averageRating || 0) / 5) * 100}%`,
+                  width: `${((provider.rating || 0) / 5) * 100}%`,
                 }}
               >
                 <span>Google</span>
-                <span>{provider.averageRating?.toFixed(2) || "N/A"}</span>
+                <span>{provider.rating?.toFixed(2) || "N/A"}</span>
               </div>
             </div>
           </div>
@@ -182,7 +182,11 @@ export default function HomeCareDetailPage() {
 
       {/* Reviews Section */}
       <div className="mt-1">
-        <ReviewSection reviews={provider.reviews} />
+        <ReviewSection
+          reviews={provider.reviews}
+          googleRating={provider.rating}
+          numOfGoogleRatings={provider.userRatingCount}
+        />
       </div>
     </div>
   );
@@ -245,7 +249,15 @@ const getRelativeTime = (date: string) => {
   return moment.utc(date).local().fromNow();
 };
 
-function ReviewSection({ reviews }: { reviews: Review[] }) {
+function ReviewSection({
+  reviews,
+  googleRating,
+  numOfGoogleRatings,
+}: {
+  reviews: Review[];
+  googleRating: number;
+  numOfGoogleRatings: number;
+}) {
   const sortedReviews = reviews.sort((a, b) => {
     return (
       new Date(b.publishedTime).getTime() - new Date(a.publishedTime).getTime()
@@ -253,9 +265,6 @@ function ReviewSection({ reviews }: { reviews: Review[] }) {
   });
 
   const reviewCount = reviews.length;
-  const averageRating =
-    reviews.reduce((acc, review) => acc + review.overallRating, 0) /
-    reviewCount;
 
   return (
     <section className="-mx-6 flex flex-col gap-1 bg-white">
@@ -263,13 +272,18 @@ function ReviewSection({ reviews }: { reviews: Review[] }) {
         <h1 className="text-xl font-semibold">Reviews</h1>
         {reviewCount > 0 && (
           <div className="mt-3 flex place-items-center gap-4">
-            <h3 className="text-5xl font-bold">{averageRating.toFixed(1)}</h3>
-            <Rating readOnly value={averageRating} className="max-w-36" />
+            <h3 className="text-5xl font-bold">{googleRating.toFixed(1)}</h3>
+            <Rating readOnly value={googleRating} className="max-w-36" />
           </div>
         )}
       </div>
       <div className="px-6">
         <div className="flex flex-col divide-y divide-solid">
+          {reviewCount && numOfGoogleRatings > reviewCount && (
+            <span className="mt-2 text-sm italic text-gray-500">
+              Showing 5 most recent Google reviews
+            </span>
+          )}
           {sortedReviews.map((review, index) => (
             <div key={index} className="flex flex-col gap-2 py-4">
               <span className="font-semibold">{review.authorName}</span>
