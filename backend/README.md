@@ -60,4 +60,14 @@ Note: alembic does not work very well with enums. Specifically:
 - it does not update enum when new values are added
 
 ## Deployment
-todo
+TODO: expand on this
+
+Build the container
+```
+docker build -t cc-backend .
+```
+
+Run the container
+```
+docker run -p 80:8000 --env-file .env --restart=always cc-backend
+```
