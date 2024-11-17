@@ -73,7 +73,7 @@ export default function DaycareCentreDetails({
     "- You will need to get a referral from a hospital, polyclinic or GP who is familiar with your loved ones’ condition and needs. You may also contact the service provider for a discussion. \n\n - For further assistance, contact the Agency for Integrated Care (AIC) at [1800 650 6060](tel:18006506060), email [enquiries@aic.sg](mailto:enquiries@aic.sg) or walk in to a nearby [AIC Link](https://www.aic.sg/about-us/aic-link-locations/).";
 
   return (
-    <section className="flex flex-col gap-4 bg-white p-6">
+    <section className="flex flex-col gap-4 overflow-x-hidden bg-white p-6">
       <BackButton />
       {centre.photos && <PhotoSlider photos={centre.photos} />}
       <h1 className="text-xl font-semibold">{centre.name}</h1>
