@@ -10,13 +10,18 @@ import {
   Box,
   VisuallyHidden,
 } from "@chakra-ui/react";
-import { Button, FormLabel, Textarea } from "@opengovsg/design-system-react";
+import {
+  Button,
+  FormLabel,
+  Textarea,
+  Checkbox,
+} from "@opengovsg/design-system-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import LoadingSpinner from "@/ui/loading";
 import Slider from "react-slick";
 import CustomMarkdown from "@/ui/CustomMarkdown";
-import { useUser } from "@clerk/nextjs";
+import { SignInButton, useAuth, useUser } from "@clerk/nextjs";
 import { api } from "@/api";
 import { Rating } from "@smastrom/react-rating";
 import {
@@ -207,6 +212,7 @@ function PhotoSlider({ photos }: { photos: string[] }) {
 function NewReviewDrawer({ centreId }: { centreId: number }) {
   const { user } = useUser();
   const [isOpen, setIsOpen] = useState(false);
+  const [isDeclarationChecked, setIsDeclarationChecked] = useState(false);
   const [review, setReview] = useState<ReviewCreate>({
     review_source: ReviewSource.IN_APP,
     target_id: centreId,
@@ -216,7 +222,7 @@ function NewReviewDrawer({ centreId }: { centreId: number }) {
     content: "",
   });
 
-  const canSubmit = review.overall_rating === 0;
+  const canSubmit = review.overall_rating === 0 || !isDeclarationChecked;
 
   const submitReview = () => {
     api.post("/reviews", review).then((response) => {
@@ -240,6 +246,20 @@ function NewReviewDrawer({ centreId }: { centreId: number }) {
             <Drawer.Title className="text-xl font-semibold">
               Leave a review
             </Drawer.Title>
+            <div className="flex flex-col gap-2 rounded-md border border-brand-primary-200 bg-brand-primary-50 p-4 leading-tight">
+              <span>
+                Thank you for helping other caregivers by sharing your
+                experiences. We ask that you declare below that you have indeed
+                used the daycare service, as we value genuine reviews only.
+              </span>
+              <Checkbox
+                isChecked={isDeclarationChecked}
+                onChange={(e) => setIsDeclarationChecked(e.target.checked)}
+              >
+                I declare that I have used this service and my review is based
+                on my actual experiences.
+              </Checkbox>
+            </div>
             <div>
               <FormLabel className="mt-2" isRequired>
                 Rating
@@ -267,10 +287,6 @@ function NewReviewDrawer({ centreId }: { centreId: number }) {
                 placeholder="Share your experience with us"
               />
             </div>
-            <span className="text-sm">
-              By submitting this review, I declare that I have used this service
-              and my review is based on my actual experiences.
-            </span>
             <Button
               className="mt-4 w-full"
               onClick={submitReview}
@@ -349,6 +365,8 @@ function ReviewSection({
   centreId: number;
   reviews: Review[];
 }) {
+  const auth = useAuth();
+
   const sortedReviews = reviews.sort((a, b) => {
     return (
       new Date(b.publishedTime).getTime() - new Date(a.publishedTime).getTime()
@@ -370,7 +388,15 @@ function ReviewSection({
           {/* <span>(from {reviewCount} reviews)</span> */}
         </div>
       )}
-      <NewReviewDrawer centreId={centreId} />
+      {auth.isSignedIn ? (
+        <NewReviewDrawer centreId={centreId} />
+      ) : (
+        <SignInButton>
+          <Button variant="solid" colorScheme="blue">
+            Sign in to leave a review
+          </Button>
+        </SignInButton>
+      )}
       <div className="flex flex-col divide-y divide-solid">
         {sortedReviews.map((review, index) => (
           <div key={index} className="flex flex-col gap-2 py-4">
