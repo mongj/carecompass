@@ -5,6 +5,7 @@ import { useUser } from "@clerk/nextjs";
 import { EmblaOptionsType } from "embla-carousel";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 type SlideDataType = {
   title: string;
@@ -31,9 +32,16 @@ const slideData: SlideDataType[] = [
 ];
 
 export default function Home() {
+  const router = useRouter();
   const { user } = useUser();
   const OPTIONS: EmblaOptionsType = { align: "start" };
   const greeting = user?.firstName ? `Hello ${user.firstName}` : "Hello there";
+
+  useEffect(() => {
+    router.prefetch("/careservice");
+    router.prefetch("/dashboard");
+  }, [router]);
+
   return (
     <div className="flex h-full w-full flex-col place-content-center place-items-start">
       <div className="flex h-full max-h-[80vh] w-full flex-col place-content-between gap-8">

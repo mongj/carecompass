@@ -62,7 +62,7 @@ function UserInfoChecker() {
               user: data,
             };
           });
-          router.push("/chat");
+          router.push("/home");
         });
       } else if (res.status === 404) {
         router.push(`/onboarding?id=${user.id}`);

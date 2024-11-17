@@ -9,7 +9,9 @@ export function useChatQuery(currentChatId?: string) {
   const [prompt, setPrompt] = useState("");
   const [isSending, setIsSending] = useState(false);
 
-  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInput = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     setPrompt(e.target.value);
   };
 

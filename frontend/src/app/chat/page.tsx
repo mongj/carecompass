@@ -1,6 +1,5 @@
 "use client";
 
-import { useAuthStore } from "@/stores/auth";
 import LoadingSpinner from "@/ui/loading";
 import { useChatQuery } from "@/util/hooks/useChatQuery";
 import { useRouter } from "next/navigation";
@@ -28,7 +27,6 @@ const chatPrompts: ChatPrompt[] = [
 
 function ChatIntro() {
   const router = useRouter();
-  const user = useAuthStore((state) => state.currentUser);
   const { handleSubmitPrompt } = useChatQuery();
 
   // get name from localstorage
@@ -41,37 +39,28 @@ function ChatIntro() {
   }
 
   return (
-    <div className="flex h-full w-full flex-col place-content-between place-items-center">
-      <div className="flex h-full flex-col place-content-center place-items-center gap-2 text-center">
-        <span className="text-xl font-bold md:text-3xl">
-          {user && user.firstName ? `Welcome, ${user.firstName}` : "Welcome!"}
-        </span>
-        <span>
-          CareCompass is a care recommender that provides you recommendations
-          based on your caregiving needs.
-        </span>
-      </div>
-      <div className="flex w-full flex-col gap-2">
-        <span className="font-semibold">How can I help you today?</span>
-        <div className="flex flex-col gap-2 sm:flex-row sm:gap-4">
-          {chatPrompts.map((chatPrompt, index) => (
-            <form
+    <div className="flex h-full w-full flex-col place-content-end place-items-center gap-4">
+      <span className="w-full text-left font-semibold">
+        How can I help you today?
+      </span>
+      <div className="flex w-full flex-col gap-2 sm:flex-row sm:gap-4">
+        {chatPrompts.map((chatPrompt, index) => (
+          <form
+            key={index}
+            className="w-full"
+            onSubmit={(e) => {
+              handleSubmitPrompt(e, chatPrompt.query);
+            }}
+          >
+            <button
               key={index}
-              className="w-full"
-              onSubmit={(e) => {
-                handleSubmitPrompt(e, chatPrompt.query);
-              }}
+              className="min-h-12 w-full rounded-md border border-[rgb(191,194,200)] bg-white px-4 py-2 leading-tight duration-100 ease-in hover:bg-gray-50"
+              type="submit"
             >
-              <button
-                key={index}
-                className="min-h-12 w-full rounded-md border border-[rgb(191,194,200)] bg-white px-4 py-2 leading-tight duration-100 ease-in hover:bg-gray-50"
-                type="submit"
-              >
-                {chatPrompt.label}
-              </button>
-            </form>
-          ))}
-        </div>
+              {chatPrompt.label}
+            </button>
+          </form>
+        ))}
       </div>
     </div>
   );
