@@ -1,6 +1,6 @@
 import { useChatQuery } from "@/util/hooks/useChatQuery";
-import { SearchIcon } from "@chakra-ui/icons";
 import { IconButton, Input } from "@opengovsg/design-system-react";
+import { SendHorizontalIcon } from "lucide-react";
 
 export default function Search({ currentChatId }: { currentChatId?: string }) {
   const { prompt, isSending, handleInput, handleSubmitPrompt } =
@@ -15,7 +15,7 @@ export default function Search({ currentChatId }: { currentChatId?: string }) {
         disabled={isSending}
       />
       <IconButton
-        icon={<SearchIcon />}
+        icon={<SendHorizontalIcon />}
         aria-label={"Search"}
         type="submit"
         isLoading={isSending}

@@ -32,7 +32,7 @@ export default function SupportDashboard() {
         </section>
       )}
       <section className="flex flex-col gap-2 pb-6">
-        <h3 className="text-lg font-semibold">Explore Support</h3>
+        <h3 className="py-4 text-2xl font-semibold">Explore Support</h3>
         {data.map((scheme, index) => (
           <SchemeButton key={index} scheme={scheme} />
         ))}

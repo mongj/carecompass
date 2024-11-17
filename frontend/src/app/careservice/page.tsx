@@ -57,7 +57,7 @@ const careServices: CareServicesData[] = [
   {
     title: "Daycare Services",
     description:
-      "Full day programmes offered by centres for seniors with dementia. This could be useful if your father requires supervision during the day.",
+      "Full day programmes offered by centres for seniors with dementia. This could be useful if your loved one requires supervision during the day.",
     eligibleForSubsidies: true,
     icon: "/icon/daycare.svg",
     enabled: true,
@@ -73,14 +73,14 @@ const careServices: CareServicesData[] = [
   {
     title: "Hire a Foreign Domestic Worker",
     description:
-      "Pre-trained in eldercare, they will have basic skills to care for your father.",
+      "Pre-trained in eldercare, they will have basic skills to care for your loved one.",
     icon: "/icon/careworker.svg",
     eligibleForSubsidies: false,
   },
   {
     title: "Engage a Nursing Home",
     description:
-      "Residential care facility that would assist with your father’s activities of daily living and nursing care needs.",
+      "Residential care facility that would assist with your loved one's activities of daily living and nursing care needs.",
     icon: "/icon/nursinghome.svg",
     eligibleForSubsidies: false,
   },
@@ -177,8 +177,9 @@ export default function CareServiceRecommender() {
   function CareServiceOverview({ stepper }: DrawerSectionProps) {
     return (
       <section className="flex flex-col">
-        <span className="text-lg leading-tight">
-          {`These are your caregiving options recommended based on your loved one's profile.`}
+        <span className="py-4 text-2xl font-semibold leading-tight">
+          Let me know which caregiving option you&apos;d like to get started
+          with
         </span>
         <div className="mt-4 flex flex-col gap-2">
           {careServices.map((service, index) => (

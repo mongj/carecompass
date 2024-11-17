@@ -50,7 +50,7 @@ export default function Chat({ params }: { params: { chatId: string } }) {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [params.chatId, isNew]);
+  }, [params.chatId, isNew, router]);
 
   useEffect(() => {
     if (!isLoading) {
@@ -68,7 +68,7 @@ export default function Chat({ params }: { params: { chatId: string } }) {
   }
 
   return (
-    <section className="flex h-[calc(100dvh-184px)] w-full flex-col place-content-start gap-4 overflow-y-auto">
+    <section className="flex h-full w-full flex-col place-content-start gap-4 overflow-y-auto">
       {currentThread.messages.map((message) => (
         <ChatMessage key={message.id} message={message} />
       ))}
