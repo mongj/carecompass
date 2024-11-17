@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import Image from "next/image";
@@ -55,7 +56,7 @@ export default function ChatLayout({
   return (
     <ChatContext.Provider value={{ chats, setChats }}>
       <div className="flex h-dvh max-h-dvh flex-col md:flex-row">
-        <section className="hidden w-64 min-w-64 bg-white bg-cover px-4 py-8 shadow-md md:block">
+        {/* <section className="hidden w-64 min-w-64 bg-white bg-cover px-4 py-8 shadow-md md:block">
           <div className="flex flex-col place-items-center gap-8">
             <Image src="/img/logo.svg" alt="Logo" width={64} height={64} />
             <button
@@ -90,7 +91,7 @@ export default function ChatLayout({
             size="sm"
             onClick={handleNewThread}
           />
-        </header>
+        </header> */}
         <main className="flex h-full w-full flex-col place-content-between overflow-hidden bg-gray-100 px-6 md:p-8">
           <section className="flex h-full w-full place-content-center place-items-center">
             {children}
