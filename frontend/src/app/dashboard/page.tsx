@@ -1,6 +1,7 @@
 "use client";
 
 import { SchemeData } from "@/types/scheme";
+import { BackButton } from "@/ui/button";
 import { Button } from "@chakra-ui/react";
 import { SignInButton, useAuth } from "@clerk/nextjs";
 import { BxRightArrowAlt } from "@opengovsg/design-system-react";
@@ -19,20 +20,23 @@ export default function SupportDashboard() {
 
   return (
     <div className="flex h-full w-full flex-col gap-4 py-6">
-      {!auth.isSignedIn && (
-        <section className="flex flex-col gap-4 rounded border border-brand-primary-300 bg-brand-primary-100 p-4">
-          <p className="text-brand-primary-900">
-            Sign in to get personalized recommendations
-          </p>
-          <SignInButton>
-            <Button variant="solid" size="xs" colorScheme="blue">
-              Sign in
-            </Button>
-          </SignInButton>
-        </section>
-      )}
+      <BackButton />
       <section className="flex flex-col gap-2 pb-6">
-        <h3 className="py-4 text-2xl font-semibold">Explore Support</h3>
+        <h3 className="py-4 text-2xl font-semibold">
+          Explore Financial Support
+        </h3>
+        {!auth.isSignedIn && (
+          <section className="flex flex-col gap-4 rounded border border-brand-primary-300 bg-brand-primary-100 p-4">
+            <p className="text-brand-primary-900">
+              Sign in to get personalized recommendations
+            </p>
+            <SignInButton>
+              <Button variant="solid" size="xs" colorScheme="blue">
+                Sign in
+              </Button>
+            </SignInButton>
+          </section>
+        )}
         {data.map((scheme, index) => (
           <SchemeButton key={index} scheme={scheme} />
         ))}

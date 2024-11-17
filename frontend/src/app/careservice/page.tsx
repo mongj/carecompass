@@ -29,6 +29,7 @@ import { SignInButton, useAuth } from "@clerk/nextjs";
 import { api } from "@/api";
 import { Rating } from "@smastrom/react-rating";
 import HomeCareServices from "./homecareService";
+import { BackButton } from "@/ui/button";
 
 type CareServicesData = {
   title: string;
@@ -177,6 +178,7 @@ export default function CareServiceRecommender() {
   function CareServiceOverview({ stepper }: DrawerSectionProps) {
     return (
       <section className="flex flex-col">
+        <BackButton />
         <span className="py-4 text-2xl font-semibold leading-tight">
           Let me know which caregiving option you&apos;d like to get started
           with
@@ -599,6 +601,7 @@ export default function CareServiceRecommender() {
 
     return (
       <section className="flex flex-col gap-4">
+        <BackButton />
         <h1 className="text-xl font-semibold">Daycare Services</h1>
         <span className="leading-tight">
           Thank you! Based on your inputs, I recommend the following:

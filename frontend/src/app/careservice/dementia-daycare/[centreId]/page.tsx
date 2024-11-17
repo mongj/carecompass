@@ -35,6 +35,7 @@ import { Drawer } from "vaul";
 import { ArrowLeft } from "lucide-react";
 import { mapReviewSource } from "@/util/review";
 import { constructAddress } from "@/util/address";
+import { BackButton } from "@/ui/button";
 
 export default function DaycareCentreDetails({
   params,
@@ -73,6 +74,7 @@ export default function DaycareCentreDetails({
 
   return (
     <section className="flex flex-col gap-4 bg-white p-6">
+      <BackButton />
       {centre.photos && <PhotoSlider photos={centre.photos} />}
       <h1 className="text-xl font-semibold">{centre.name}</h1>
       {centre.reviewCount > 0 && (
