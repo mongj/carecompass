@@ -60,10 +60,11 @@ export default function Auth() {
           based on your caregiving needs.
         </span>
         <Image
-          src="/img/scene-messaging.svg"
+          src="/img/meditation.svg"
           alt="logo"
           width={500}
           height={200}
+          className="py-4"
         />
         <SignInButton forceRedirectUrl="/">
           <Button isDisabled={isSubmitting}>Sign In</Button>
