@@ -5,13 +5,17 @@ import { SignInButton } from "@clerk/nextjs";
 import { Button } from "@opengovsg/design-system-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { v4 as uuidv4 } from "uuid";
 
 export default function Auth() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    router.prefetch("/home");
+  }, [router]);
 
   const handleContinueNoSignIn = () => {
     const userId = uuidv4();
