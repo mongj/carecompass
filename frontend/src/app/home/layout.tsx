@@ -9,7 +9,7 @@ export default function Layout({
 }>) {
   return (
     <div className="flex h-dvh max-h-dvh flex-col md:flex-row">
-      <main className="flex h-full w-full flex-col overflow-auto bg-gray-100">
+      <main className="flex h-full w-full flex-col overflow-auto bg-gray-100 p-8">
         {children}
       </main>
       <BottomNav />
