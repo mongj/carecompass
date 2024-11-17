@@ -315,16 +315,10 @@ export default function CareServiceRecommender() {
   function DaycareLocationPreference({ stepper, param }: DrawerSectionProps) {
     const router = useRouter();
 
-    function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
-      const p = new URLSearchParams(param.value.toString());
-      p.set("home", e.target.value);
-      router.replace("?" + p.toString());
-    }
+    const [postalCode, setPostalCode] = useState(param.value.get("home") || "");
 
-    function isPostalCodeValid() {
-      const postalCode = param.value.get("home") || "";
-      return postalCode.length === 6 && !isNaN(Number(postalCode));
-    }
+    const isValidPostalCode =
+      postalCode.length === 6 && !isNaN(Number(postalCode));
 
     return (
       <section className="flex flex-col gap-4">
@@ -332,8 +326,10 @@ export default function CareServiceRecommender() {
         <span className="leading-tight">What is your home address?</span>
         <Input
           placeholder="e.g. 510296"
-          defaultValue={param.value.get("home") || undefined}
-          onChange={handleInputChange}
+          value={postalCode}
+          onChange={(e) => {
+            setPostalCode(e.target.value);
+          }}
         />
         <div className="mt-4 flex w-full gap-2">
           <Button
@@ -345,8 +341,14 @@ export default function CareServiceRecommender() {
           </Button>
           <Button
             className="w-[calc(50%-4px)]"
-            isDisabled={!param.value.has("home") || !isPostalCodeValid()}
-            onClick={() => stepper.increment()}
+            isDisabled={!isValidPostalCode}
+            onClick={() => {
+              const p = new URLSearchParams(param.value.toString());
+              p.set("home", postalCode);
+              // Temporary fix to set the step to 6 without triggering the increment function
+              p.set("step", "6");
+              router.replace("?" + p.toString());
+            }}
           >
             Next
           </Button>
