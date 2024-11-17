@@ -54,7 +54,9 @@ export default function HomeCareDetailPage() {
     <div className="flex min-h-screen flex-col gap-4 overflow-x-hidden bg-white p-6">
       <BackButton />
       {/* Banner Image */}
-      <div className="-mx-6 -mt-6 mb-1">
+      <div
+        className={`${provider.photos !== undefined && provider.photos.length !== 0 ? "block" : "hidden"}`}
+      >
         {provider.photos && <PhotoSlider photos={provider.photos} />}
       </div>
 
