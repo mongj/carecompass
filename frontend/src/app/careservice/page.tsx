@@ -69,7 +69,7 @@ const careServices: CareServicesData[] = [
       "Assistance with day-to-day care tasks and medical services at your home.",
     icon: "/icon/homecare.svg",
     enabled: true,
-    eligibleForSubsidies: false,
+    eligibleForSubsidies: true,
   },
   {
     title: "Hire a Foreign Domestic Worker",
