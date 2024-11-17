@@ -17,8 +17,8 @@ const Carousel: React.FC<PropType> = (props) => {
 
   return (
     <section className="max-w-full">
-      <div className="overflow-hidden" ref={emblaRef}>
-        <div className="-ml-6 flex touch-pan-y">{slides}</div>
+      <div className="overflow-x-hidden" ref={emblaRef}>
+        <div className="-ml-6 flex touch-pan-y py-1">{slides}</div>
       </div>
 
       <div className="mt-4 grid grid-cols-[auto_1fr] justify-between gap-5">

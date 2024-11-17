@@ -2,6 +2,7 @@
 
 import { api } from "@/api";
 import { DDCBase } from "@/types/ddc";
+import { BackButton } from "@/ui/button";
 import LoadingSpinner from "@/ui/loading";
 import { constructAddress } from "@/util/address";
 import { Button } from "@chakra-ui/react";
@@ -45,6 +46,7 @@ export default function DementiaDaycarePage() {
 
   return (
     <div className="flex flex-col gap-4 bg-white p-6">
+      <BackButton />
       <h1 className="text-xl font-semibold">Dementia Day Care Centres</h1>
       <Input
         placeholder="Search for a centre"

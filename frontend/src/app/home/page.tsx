@@ -44,7 +44,7 @@ export default function Home() {
 
   return (
     <div className="flex h-full w-full flex-col place-content-center place-items-start">
-      <div className="flex h-full max-h-[80vh] w-full flex-col place-content-between gap-8">
+      <div className="flex h-full max-h-[512px] w-full flex-col place-content-between">
         <h1 className="text-3xl font-semibold">{greeting}</h1>
         <div className="flex flex-col gap-8">
           <h1 className="text-2xl font-semibold">How can we help you today?</h1>

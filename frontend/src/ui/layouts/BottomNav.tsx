@@ -203,9 +203,6 @@ function ChatPopover() {
                     isLoading={isSending}
                     isDisabled={prompt.trim().length === 0}
                     icon={<SendHorizontalIcon />}
-                    onClick={() => {
-                      closeMenu();
-                    }}
                   >
                     Ask
                   </IconButton>
