@@ -191,7 +191,6 @@ function ChatPopover() {
                 </motion.span>
                 <textarea
                   className="h-full w-full resize-none rounded-md bg-transparent px-4 py-3 text-lg outline-none"
-                  autoFocus
                   value={prompt}
                   onChange={handleInput}
                 />

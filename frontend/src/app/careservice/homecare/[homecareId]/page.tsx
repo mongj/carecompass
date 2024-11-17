@@ -17,6 +17,7 @@ import { Rating } from "@smastrom/react-rating";
 import { mapReviewSource } from "@/util/review";
 import PhotoSlider from "@/components/PhotoSlider";
 import { getRatingColor } from "@/util/helper";
+import { BackButton } from "@/ui/button";
 
 export default function HomeCareDetailPage() {
   const { homecareId } = useParams();
@@ -50,7 +51,8 @@ export default function HomeCareDetailPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col gap-4 bg-white p-6">
+    <div className="flex min-h-screen flex-col gap-4 overflow-x-hidden bg-white p-6">
+      <BackButton />
       {/* Banner Image */}
       <div className="-mx-6 -mt-6 mb-1">
         {provider.photos && <PhotoSlider photos={provider.photos} />}
