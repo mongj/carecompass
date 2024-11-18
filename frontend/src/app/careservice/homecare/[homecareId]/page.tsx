@@ -7,7 +7,7 @@ import {
 } from "@/types/homecare";
 import LoadingSpinner from "@/ui/loading";
 import { Button, VisuallyHidden, VStack, Text } from "@chakra-ui/react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import { Review, ReviewSource } from "@/types/review";
@@ -18,6 +18,7 @@ import { mapReviewSource } from "@/util/review";
 import PhotoSlider from "@/components/PhotoSlider";
 import { getRatingColor } from "@/util/helper";
 import { BackButton } from "@/ui/button";
+import { BxRightArrowAlt } from "@opengovsg/design-system-react";
 
 export default function HomeCareDetailPage() {
   const { homecareId } = useParams();
@@ -184,6 +185,9 @@ export default function HomeCareDetailPage() {
         </div>
       )}
 
+      {/* Financial Support Section */}
+      <FinancialSupportSection />
+
       {/* Reviews Section */}
       <div className="mt-1">
         <ReviewSection
@@ -311,6 +315,59 @@ function ReviewSection({
           ))}
         </div>
       </div>
+    </section>
+  );
+}
+
+function FinancialSupportSection() {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.prefetch(`/dashboard/schemes`);
+  }, []);
+
+  // TODO: fetch from backend
+  const SCHEMES = [
+    {
+      id: "PARENT-RELIEF",
+      name: "Parent Relief",
+      description:
+        "Recognises individuals who are supporting their parents, grandparents, parents-in-law or grandparents-in-law in Singapore.",
+    },
+    {
+      id: "HOME-CAREGIVING-GRANT",
+      name: "Home Caregiving Grant",
+      description:
+        "Defrays caregiving costs for eligible individuals with permanent moderate disability living in the community.",
+    },
+  ];
+
+  return (
+    <section className="flex flex-col gap-4">
+      <div className="flex flex-col">
+        <h1 className="text-xl font-semibold">Financial Support</h1>
+        <span className="text-sm text-gray-500">
+          Get the support you and loved ones need
+        </span>
+      </div>
+      <section className="flex flex-col gap-4">
+        {SCHEMES.map((scheme) => (
+          <button
+            key={scheme.id}
+            className="flex flex-col gap-2 rounded-md border border-gray-200 bg-white p-4 text-left"
+            onClick={() => router.push(`/dashboard/schemes?id=${scheme.id}`)}
+          >
+            <span className="font-semibold">{scheme.name}</span>
+            <span className="leading-tight">{scheme.description}</span>
+            <div className="flex w-full place-content-end place-items-center gap-1">
+              <span className="text-sm text-brand-primary-500">
+                View details
+              </span>
+              <BxRightArrowAlt className="text-brand-primary-500" />
+            </div>
+          </button>
+        ))}
+      </section>
     </section>
   );
 }

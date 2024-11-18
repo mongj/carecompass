@@ -15,6 +15,7 @@ import {
   FormLabel,
   Textarea,
   Checkbox,
+  BxRightArrowAlt,
 } from "@opengovsg/design-system-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -36,6 +37,7 @@ import { ArrowLeft } from "lucide-react";
 import { mapReviewSource } from "@/util/review";
 import { constructAddress } from "@/util/address";
 import { BackButton } from "@/ui/button";
+import { useRouter } from "next/navigation";
 
 export default function DaycareCentreDetails({
   params,
@@ -169,6 +171,7 @@ export default function DaycareCentreDetails({
           className="h-96 w-full rounded-md border border-gray-200 shadow"
         />
       </div>
+      <FinancialSupportSection />
       <ReviewSection centreId={params.centreId} reviews={centre.reviews} />
     </section>
   );
@@ -382,7 +385,12 @@ function ReviewSection({
 
   return (
     <section className="flex flex-col gap-4">
-      <h1 className="text-xl font-semibold">Reviews</h1>
+      <div className="flex flex-col">
+        <h1 className="text-xl font-semibold">Reviews</h1>
+        <span className="text-sm text-gray-500">
+          See what other caregivers are saying
+        </span>
+      </div>
       {reviewCount > 0 && (
         <div className="flex place-items-center gap-4">
           <h3 className="text-5xl font-bold">{averageRating.toFixed(1)}</h3>
@@ -422,6 +430,59 @@ function ReviewSection({
           </div>
         ))}
       </div>
+    </section>
+  );
+}
+
+function FinancialSupportSection() {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.prefetch(`/dashboard/schemes`);
+  }, []);
+
+  // TODO: fetch from backend
+  const SCHEMES = [
+    {
+      id: "PARENT-RELIEF",
+      name: "Parent Relief",
+      description:
+        "Recognises individuals who are supporting their parents, grandparents, parents-in-law or grandparents-in-law in Singapore.",
+    },
+    {
+      id: "HOME-CAREGIVING-GRANT",
+      name: "Home Caregiving Grant",
+      description:
+        "Defrays caregiving costs for eligible individuals with permanent moderate disability living in the community.",
+    },
+  ];
+
+  return (
+    <section className="flex flex-col gap-4">
+      <div className="flex flex-col">
+        <h1 className="text-xl font-semibold">Financial Support</h1>
+        <span className="text-sm text-gray-500">
+          Get the support you and loved ones need
+        </span>
+      </div>
+      <section className="flex flex-col gap-4">
+        {SCHEMES.map((scheme) => (
+          <button
+            key={scheme.id}
+            className="flex flex-col gap-2 rounded-md border border-gray-200 bg-white p-4 text-left"
+            onClick={() => router.push(`/dashboard/schemes?id=${scheme.id}`)}
+          >
+            <span className="font-semibold">{scheme.name}</span>
+            <span className="leading-tight">{scheme.description}</span>
+            <div className="flex w-full place-content-end place-items-center gap-1">
+              <span className="text-sm text-brand-primary-500">
+                View details
+              </span>
+              <BxRightArrowAlt className="text-brand-primary-500" />
+            </div>
+          </button>
+        ))}
+      </section>
     </section>
   );
 }

@@ -179,7 +179,7 @@ export default function CareServiceRecommender() {
     return (
       <section className="flex flex-col">
         <BackButton />
-        <span className="py-4 text-2xl font-semibold leading-tight">
+        <span className="py-4 text-2xl font-semibold leading-tight text-brand-primary-500">
           Let me know which caregiving option you&apos;d like to get started
           with
         </span>
