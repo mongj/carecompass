@@ -2,6 +2,7 @@
 
 import { SchemeData } from "@/types/scheme";
 import { BackButton } from "@/ui/button";
+import LoadingSpinner from "@/ui/loading";
 import { Button } from "@chakra-ui/react";
 import { SignInButton, useAuth } from "@clerk/nextjs";
 import { BxRightArrowAlt } from "@opengovsg/design-system-react";
@@ -9,14 +10,23 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
 export default function SupportDashboard() {
-  const [data, setData] = useState<SchemeData[]>([]);
   const auth = useAuth();
+  const [data, setData] = useState<SchemeData[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true);
     fetch("/data/schemes.json")
       .then((response) => response.json())
-      .then((json) => setData(json));
+      .then((json) => {
+        setData(json);
+        setIsLoading(false);
+      });
   }, []);
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div className="flex h-full w-full flex-col gap-4 py-6">
@@ -47,7 +57,6 @@ export default function SupportDashboard() {
 
 function SchemeButton({ scheme }: { scheme: SchemeData }) {
   const router = useRouter();
-  const auth = useAuth();
 
   function handleClick() {
     router.push(`/dashboard/schemes?id=${scheme.id}`);
@@ -57,7 +66,7 @@ function SchemeButton({ scheme }: { scheme: SchemeData }) {
     <div className="flex place-content-start place-items-start gap-2 rounded-md border border-gray-200 bg-white p-4 text-left">
       <div className="flex flex-col gap-2">
         <span className="text-lg font-semibold">{scheme.name}</span>
-        <span>{scheme.description}</span>
+        <span>{scheme.shortDescription}</span>
         <Button
           variant="clear"
           size="sm"
@@ -65,9 +74,7 @@ function SchemeButton({ scheme }: { scheme: SchemeData }) {
           marginLeft="auto"
           onClick={handleClick}
         >
-          {auth.isSignedIn
-            ? `${scheme.numSteps} more steps to apply`
-            : "View details"}
+          View Details
         </Button>
       </div>
     </div>

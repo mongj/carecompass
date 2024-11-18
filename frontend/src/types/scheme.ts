@@ -1,11 +1,11 @@
 export type SchemeData = {
   id: string;
   name: string;
+  shortDescription: string;
   description: string;
   benefits: string;
-  eligibility: EligibilityCriteria[];
+  eligibility: string;
   nextSteps: string;
-  numSteps: number;
 };
 
 export type EligibilityCriteria = {
