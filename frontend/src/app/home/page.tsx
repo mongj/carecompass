@@ -27,7 +27,7 @@ const slideData: SlideDataType[] = [
   {
     title: "Where can I go for help and support?",
     img: "/img/illustration_3.svg",
-    link: "/helpandsupport",
+    link: "/help",
   },
 ];
 
@@ -40,6 +40,7 @@ export default function Home() {
   useEffect(() => {
     router.prefetch("/careservice");
     router.prefetch("/dashboard");
+    router.prefetch("/help");
   }, [router]);
 
   return (
