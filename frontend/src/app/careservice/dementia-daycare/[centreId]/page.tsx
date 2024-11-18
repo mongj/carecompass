@@ -15,6 +15,7 @@ import {
   FormLabel,
   Textarea,
   Checkbox,
+  BxRightArrowAlt,
 } from "@opengovsg/design-system-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -36,6 +37,8 @@ import { ArrowLeft } from "lucide-react";
 import { mapReviewSource } from "@/util/review";
 import { constructAddress } from "@/util/address";
 import { BackButton } from "@/ui/button";
+import { useRouter } from "next/navigation";
+import { getRatingColor } from "@/util/helper";
 
 export default function DaycareCentreDetails({
   params,
@@ -77,10 +80,32 @@ export default function DaycareCentreDetails({
       <BackButton />
       {centre.photos && <PhotoSlider photos={centre.photos} />}
       <h1 className="text-xl font-semibold">{centre.name}</h1>
+      {/* Review Scores, temporarily copied from homecare page */}
       {centre.reviewCount > 0 && (
-        <div className="flex gap-2">
-          <Rating readOnly value={centre.averageRating} className="max-w-24" />
-          <span>(from {centre.reviewCount} reviews)</span>
+        <div className="flex w-full items-center gap-4 py-3">
+          <div className="flex items-center gap-2">
+            <div
+              className="flex h-12 w-12 place-content-center place-items-center rounded p-2 text-xl font-semibold text-white"
+              style={{
+                backgroundColor: getRatingColor(centre.averageRating),
+              }}
+            >
+              <span>{centre.averageRating?.toFixed(1) || "N/A"}</span>
+            </div>
+          </div>
+          <div className="flex w-full flex-col gap-1">
+            <div className="h-8 w-full rounded bg-[#DADADA]">
+              <div
+                className="flex h-full items-center justify-between rounded bg-[#7D7D7D] px-2 text-sm text-white"
+                style={{
+                  width: `${((centre.averageRating || 0) / 5) * 100}%`,
+                }}
+              >
+                <span>Google</span>
+                <span>{centre.averageRating?.toFixed(1) || "N/A"}</span>
+              </div>
+            </div>
+          </div>
         </div>
       )}
       <Accordion allowToggle>
@@ -169,6 +194,7 @@ export default function DaycareCentreDetails({
           className="h-96 w-full rounded-md border border-gray-200 shadow"
         />
       </div>
+      <FinancialSupportSection />
       <ReviewSection centreId={params.centreId} reviews={centre.reviews} />
     </section>
   );
@@ -382,7 +408,12 @@ function ReviewSection({
 
   return (
     <section className="flex flex-col gap-4">
-      <h1 className="text-xl font-semibold">Reviews</h1>
+      <div className="flex flex-col">
+        <h1 className="text-xl font-semibold">Reviews</h1>
+        <span className="text-sm text-gray-500">
+          See what other caregivers are saying
+        </span>
+      </div>
       {reviewCount > 0 && (
         <div className="flex place-items-center gap-4">
           <h3 className="text-5xl font-bold">{averageRating.toFixed(1)}</h3>
@@ -422,6 +453,59 @@ function ReviewSection({
           </div>
         ))}
       </div>
+    </section>
+  );
+}
+
+function FinancialSupportSection() {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.prefetch(`/dashboard/schemes`);
+  }, [router]);
+
+  // TODO: fetch from backend
+  const SCHEMES = [
+    {
+      id: "PARENT-RELIEF",
+      name: "Parent Relief",
+      description:
+        "Recognises individuals who are supporting their parents, grandparents, parents-in-law or grandparents-in-law in Singapore.",
+    },
+    {
+      id: "HOME-CAREGIVING-GRANT",
+      name: "Home Caregiving Grant",
+      description:
+        "Defrays caregiving costs for eligible individuals with permanent moderate disability living in the community.",
+    },
+  ];
+
+  return (
+    <section className="flex flex-col gap-4">
+      <div className="flex flex-col">
+        <h1 className="text-xl font-semibold">Financial Support</h1>
+        <span className="text-sm text-gray-500">
+          Get the support you and loved ones need
+        </span>
+      </div>
+      <section className="flex flex-col gap-4">
+        {SCHEMES.map((scheme) => (
+          <button
+            key={scheme.id}
+            className="flex flex-col gap-2 rounded-md border border-gray-200 bg-white p-4 text-left"
+            onClick={() => router.push(`/dashboard/schemes?id=${scheme.id}`)}
+          >
+            <span className="font-semibold">{scheme.name}</span>
+            <span className="leading-tight">{scheme.description}</span>
+            <div className="flex w-full place-content-end place-items-center gap-1">
+              <span className="text-sm text-brand-primary-500">
+                View details
+              </span>
+              <BxRightArrowAlt className="text-brand-primary-500" />
+            </div>
+          </button>
+        ))}
+      </section>
     </section>
   );
 }

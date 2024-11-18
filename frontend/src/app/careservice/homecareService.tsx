@@ -67,8 +67,9 @@ export default function HomeCareServices() {
   return (
     <div className="h-full w-full overflow-auto bg-white p-8">
       <section className="flex flex-col gap-4">
-        <h1 className="text-xl font-semibold">
-          Which services do you require?
+        <h1 className="text-2xl font-semibold leading-tight text-brand-primary-500">
+          What kind of home care services are you considering for your loved
+          one?
         </h1>
         <span className="leading-tight">Pick at least 1 to continue.</span>
 
