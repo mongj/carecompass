@@ -38,6 +38,7 @@ import { mapReviewSource } from "@/util/review";
 import { constructAddress } from "@/util/address";
 import { BackButton } from "@/ui/button";
 import { useRouter } from "next/navigation";
+import { getRatingColor } from "@/util/helper";
 
 export default function DaycareCentreDetails({
   params,
@@ -79,10 +80,32 @@ export default function DaycareCentreDetails({
       <BackButton />
       {centre.photos && <PhotoSlider photos={centre.photos} />}
       <h1 className="text-xl font-semibold">{centre.name}</h1>
+      {/* Review Scores, temporarily copied from homecare page */}
       {centre.reviewCount > 0 && (
-        <div className="flex gap-2">
-          <Rating readOnly value={centre.averageRating} className="max-w-24" />
-          <span>(from {centre.reviewCount} reviews)</span>
+        <div className="flex w-full items-center gap-4 py-3">
+          <div className="flex items-center gap-2">
+            <div
+              className="flex h-12 w-12 place-content-center place-items-center rounded p-2 text-xl font-semibold text-white"
+              style={{
+                backgroundColor: getRatingColor(centre.averageRating),
+              }}
+            >
+              <span>{centre.averageRating?.toFixed(1) || "N/A"}</span>
+            </div>
+          </div>
+          <div className="flex w-full flex-col gap-1">
+            <div className="h-8 w-full rounded bg-[#DADADA]">
+              <div
+                className="flex h-full items-center justify-between rounded bg-[#7D7D7D] px-2 text-sm text-white"
+                style={{
+                  width: `${((centre.averageRating || 0) / 5) * 100}%`,
+                }}
+              >
+                <span>Google</span>
+                <span>{centre.averageRating?.toFixed(1) || "N/A"}</span>
+              </div>
+            </div>
+          </div>
         </div>
       )}
       <Accordion allowToggle>
@@ -439,7 +462,7 @@ function FinancialSupportSection() {
 
   useEffect(() => {
     router.prefetch(`/dashboard/schemes`);
-  }, []);
+  }, [router]);
 
   // TODO: fetch from backend
   const SCHEMES = [

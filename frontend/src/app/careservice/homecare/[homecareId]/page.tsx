@@ -65,19 +65,19 @@ export default function HomeCareDetailPage() {
       <div>
         <h1 className="text-2xl font-bold">{provider.name}</h1>
         {/* Review Scores */}
-        <div className="flex items-center gap-4 py-3">
+        <div className="flex w-full items-center gap-4 py-3">
           <div className="flex items-center gap-2">
             <div
-              className="rounded p-2 text-xl font-semibold text-white"
+              className="flex h-12 w-12 place-content-center place-items-center rounded p-2 text-xl font-semibold text-white"
               style={{
                 backgroundColor: getRatingColor(provider.rating),
               }}
             >
-              {provider.rating?.toFixed(2) || "N/A"}
+              <span>{provider.rating?.toFixed(1) || "N/A"}</span>
             </div>
           </div>
-          <div className="flex flex-col gap-1">
-            <div className="h-8 w-64 rounded bg-[#DADADA]">
+          <div className="flex w-full flex-col gap-1">
+            <div className="h-8 w-full rounded bg-[#DADADA]">
               <div
                 className="flex h-full items-center justify-between rounded bg-[#7D7D7D] px-2 text-sm text-white"
                 style={{
@@ -85,7 +85,7 @@ export default function HomeCareDetailPage() {
                 }}
               >
                 <span>Google</span>
-                <span>{provider.rating?.toFixed(2) || "N/A"}</span>
+                <span>{provider.rating?.toFixed(1) || "N/A"}</span>
               </div>
             </div>
           </div>
@@ -324,7 +324,7 @@ function FinancialSupportSection() {
 
   useEffect(() => {
     router.prefetch(`/dashboard/schemes`);
-  }, []);
+  }, [router]);
 
   // TODO: fetch from backend
   const SCHEMES = [
