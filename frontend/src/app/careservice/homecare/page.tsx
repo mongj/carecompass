@@ -6,6 +6,7 @@ import {
   SERVICE_ID_TO_LABEL,
   transformHomeCareData,
 } from "@/types/homecare";
+import { BackButton } from "@/ui/button";
 import LoadingSpinner from "@/ui/loading";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
@@ -66,6 +67,7 @@ export default function HomeCarePage() {
   return (
     <div className="flex flex-col gap-1 bg-white p-6">
       <div>
+        <BackButton />
         <h1 className="text-2xl font-bold">Home Care Services</h1>
         <p className="py-1 font-semibold text-gray-600">
           Find care centres and clinics near you.

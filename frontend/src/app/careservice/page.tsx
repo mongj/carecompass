@@ -2,20 +2,11 @@
 
 import { DDCRecommendation } from "@/types/ddc";
 import {
-  RangeSlider,
-  RangeSliderFilledTrack,
-  RangeSliderMark,
-  RangeSliderThumb,
-  RangeSliderTrack,
-  Stack,
-} from "@chakra-ui/react";
-import {
   Badge,
   Button,
   BxRightArrowAlt,
-  Checkbox,
-  FormLabel,
   Input,
+  Textarea,
 } from "@opengovsg/design-system-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -49,10 +40,6 @@ type Params = {
   append: (name: string, value: string) => URLSearchParams;
   remove: (name: string) => URLSearchParams;
 };
-
-const DEFAULT_POSTAL_CODE = 319398;
-const DEFAULT_MIN_PRICE = 10;
-const DEFAULT_MAX_PRICE = 50;
 
 const careServices: CareServicesData[] = [
   {
@@ -105,11 +92,8 @@ export default function CareServiceRecommender() {
 
   const sections = [
     CareServiceOverview,
-    DaycarePreferenceOverview,
     DaycareLocationPreference,
-    DaycarePickupDropoffPreference,
-    DaycarePickupDropoffLocation,
-    DaycarePricePreference,
+    DaycareOtherPreferences,
     DaycareRecommendations,
   ];
 
@@ -179,7 +163,7 @@ export default function CareServiceRecommender() {
     return (
       <section className="flex flex-col">
         <BackButton />
-        <span className="py-4 text-2xl font-semibold leading-tight">
+        <span className="py-4 text-2xl font-semibold leading-tight text-brand-primary-500">
           Let me know which caregiving option you&apos;d like to get started
           with
         </span>
@@ -239,94 +223,27 @@ export default function CareServiceRecommender() {
     );
   }
 
-  function DaycarePreferenceOverview({ stepper, param }: DrawerSectionProps) {
+  function DaycareLocationPreference() {
     const router = useRouter();
+    const searchParams = useSearchParams();
 
-    function handleCheckLocation(e: React.ChangeEvent<HTMLInputElement>) {
-      const p = new URLSearchParams(param.value.toString());
-      e.target.checked ? p.set("prefLoc", "true") : p.delete("prefLoc");
-      router.replace("?" + p.toString());
-    }
-
-    function handleCheckOthers(e: React.ChangeEvent<HTMLInputElement>) {
-      const p = new URLSearchParams(param.value.toString());
-      e.target.checked ? p.set("prefOthers", "") : p.delete("prefOthers");
-      router.replace("?" + p.toString());
-    }
-
-    function handleInputOthers(e: React.ChangeEvent<HTMLInputElement>) {
-      const p = new URLSearchParams(param.value.toString());
-      e.target.value
-        ? p.set("prefOthers", e.target.value)
-        : p.delete("prefOthers");
-      router.replace("?" + p.toString());
-    }
-
-    return (
-      <section className="flex flex-col gap-4">
-        <h1 className="text-xl font-semibold">Daycare Services</h1>
-        <span className="leading-tight">
-          What factors are important to you when choosing a daycare service?
-        </span>
-        <Stack direction="column" spacing={1}>
-          <Checkbox
-            onChange={handleCheckLocation}
-            isChecked={param.value.has("prefLoc")}
-          >
-            Location
-          </Checkbox>
-          {/* temporarily removed because these 2 filters are not implemented yet */}
-          {/* <Checkbox
-          onChange={handleCheckPrice}
-          isChecked={param.value.has("prefPrice")}
-        >
-          Price
-        </Checkbox>
-        <Checkbox
-          onChange={handleCheckPickupDropoff}
-          isChecked={param.value.has("prefPickupDropoff")}
-        >
-          Pick-up / drop-off service
-        </Checkbox> */}
-          <Checkbox.OthersWrapper>
-            <Checkbox.OthersCheckbox
-              onChange={handleCheckOthers}
-              isChecked={param.value.has("prefOthers")}
-            />
-            <Checkbox.OthersInput
-              onChange={handleInputOthers}
-              value={param.value.get("prefOthers") || ""}
-            />
-          </Checkbox.OthersWrapper>
-        </Stack>
-        <div className="mt-4 flex w-full gap-2">
-          <Button
-            onClick={stepper.decrement}
-            className="w-[calc(50%-4px)]"
-            variant="outline"
-          >
-            Back
-          </Button>
-          <Button onClick={stepper.increment} className="w-[calc(50%-4px)]">
-            Next
-          </Button>
-        </div>
-      </section>
+    const [postalCode, setPostalCode] = useState(
+      searchParams.get("home") || "",
     );
-  }
-
-  function DaycareLocationPreference({ stepper, param }: DrawerSectionProps) {
-    const router = useRouter();
-
-    const [postalCode, setPostalCode] = useState(param.value.get("home") || "");
 
     const isValidPostalCode =
       postalCode.length === 6 && !isNaN(Number(postalCode));
 
     return (
       <section className="flex flex-col gap-4">
-        <h1 className="text-xl font-semibold">Daycare Services</h1>
-        <span className="leading-tight">What is your home address?</span>
+        <BackButton />
+        <span className="text-lg font-semibold leading-tight text-gray-500">
+          I see that you&apos;re looking out for daycare services for your loved
+          one.
+        </span>
+        <span className="text-2xl font-semibold leading-tight text-brand-primary-500">
+          Could you provide me your postal code to assist you better?
+        </span>
         <Input
           placeholder="e.g. 510296"
           value={postalCode}
@@ -336,20 +253,24 @@ export default function CareServiceRecommender() {
         />
         <div className="mt-4 flex w-full gap-2">
           <Button
-            onClick={stepper.decrement}
+            onClick={() => {
+              const p = new URLSearchParams(searchParams.toString());
+              p.set("step", "2");
+              router.push("?" + p.toString());
+            }}
             className="w-[calc(50%-4px)]"
             variant="outline"
           >
-            Back
+            Skip
           </Button>
           <Button
             className="w-[calc(50%-4px)]"
             isDisabled={!isValidPostalCode}
             onClick={() => {
-              const p = new URLSearchParams(param.value.toString());
+              const p = new URLSearchParams(searchParams.toString());
               p.set("home", postalCode);
               // Temporary fix to set the step to 6 without triggering the increment function
-              p.set("step", "6");
+              p.set("step", "2");
               router.replace("?" + p.toString());
             }}
           >
@@ -360,204 +281,32 @@ export default function CareServiceRecommender() {
     );
   }
 
-  function DaycarePickupDropoffPreference({
-    stepper,
-    param,
-  }: DrawerSectionProps) {
+  function DaycareOtherPreferences() {
     const router = useRouter();
-
-    function handleCheckPickup(e: React.ChangeEvent<HTMLInputElement>) {
-      const p = new URLSearchParams(param.value.toString());
-      e.target.checked ? p.set("pickup", "true") : p.delete("pickup");
-      router.replace("?" + p.toString());
-    }
-
-    function handleCheckDropoff(e: React.ChangeEvent<HTMLInputElement>) {
-      const p = new URLSearchParams(param.value.toString());
-      e.target.checked ? p.set("dropoff", "true") : p.delete("dropoff");
-      router.replace("?" + p.toString());
-    }
+    const searchParams = useSearchParams();
 
     return (
       <section className="flex flex-col gap-4">
-        <h1 className="text-xl font-semibold">Daycare Services</h1>
-        <span className="leading-tight">
-          Would you require pick up and drop off services?
+        <BackButton />
+        <span className="text-lg font-semibold leading-tight text-gray-500">
+          Got it.
         </span>
-        <Stack direction="column" spacing={1}>
-          <Checkbox
-            onChange={handleCheckPickup}
-            isChecked={param.value.has("pickup")}
-          >
-            Pick-up
-          </Checkbox>
-          <Checkbox
-            onChange={handleCheckDropoff}
-            isChecked={param.value.has("dropoff")}
-          >
-            Drop-off
-          </Checkbox>
-        </Stack>
-        <div className="mt-4 flex w-full gap-2">
-          <Button
-            onClick={stepper.decrement}
-            className="w-[calc(50%-4px)]"
-            variant="outline"
-          >
-            Back
-          </Button>
-          <Button onClick={stepper.increment} className="w-[calc(50%-4px)]">
-            Next
-          </Button>
-        </div>
-      </section>
-    );
-  }
-
-  function DaycarePickupDropoffLocation({
-    stepper,
-    param,
-  }: DrawerSectionProps) {
-    const router = useRouter();
-
-    function updateParam(key: string, value: string) {
-      const p = new URLSearchParams(param.value.toString());
-      p.set(key, value);
-      router.replace("?" + p.toString());
-    }
-
-    const needPickup = param.value.has("pickup");
-    const needDropoff = param.value.has("dropoff");
-
-    if (needPickup && !param.value.has("pickupLoc")) {
-      const p = new URLSearchParams(param.value.toString());
-      p.set("pickupLoc", String(DEFAULT_POSTAL_CODE));
-      router.replace("?" + p.toString());
-    }
-
-    if (needDropoff && !param.value.has("dropoffLoc")) {
-      const p = new URLSearchParams(param.value.toString());
-      p.set("dropoffLoc", String(DEFAULT_POSTAL_CODE));
-      router.replace("?" + p.toString());
-    }
-
-    return (
-      <section className="flex flex-col gap-4">
-        <h1 className="text-xl font-semibold">Daycare Services</h1>
-        <span className="leading-tight">
-          To check if the daycare centre offers <b>Pick-up and drop-off</b> to
-          your desired locations, please confirm the postal code(s) below:
+        <span className="text-2xl font-semibold leading-tight text-brand-primary-500">
+          Are there any other information you&apos;d like us to be mindful of?
         </span>
-        {needPickup && (
-          <div className="flex flex-col">
-            <FormLabel isRequired>Postal code for pick-up</FormLabel>
-            <Input
-              placeholder="e.g. 510296"
-              value={DEFAULT_POSTAL_CODE}
-              onChange={(e) => updateParam("pickupLoc", e.target.value)}
-            />
-          </div>
-        )}
-        {needDropoff && (
-          <div className="flex flex-col">
-            <FormLabel isRequired>Postal code for drop-off</FormLabel>
-            <Input
-              placeholder="e.g. 510296"
-              value={DEFAULT_POSTAL_CODE}
-              onChange={(e) => updateParam("dropoffLoc", e.target.value)}
-            />
-          </div>
-        )}
-        <div className="mt-4 flex w-full gap-2">
-          <Button
-            onClick={stepper.decrement}
-            className="w-[calc(50%-4px)]"
-            variant="outline"
-          >
-            Back
-          </Button>
-          <Button onClick={stepper.increment} className="w-[calc(50%-4px)]">
-            Next
-          </Button>
-        </div>
-      </section>
-    );
-  }
-
-  function DaycarePricePreference({ stepper, param }: DrawerSectionProps) {
-    const router = useRouter();
-
-    if (!param.value.has("minp")) {
-      const p = new URLSearchParams(param.value.toString());
-      p.set("minp", String(DEFAULT_MIN_PRICE));
-      router.replace("?" + p.toString());
-    }
-
-    if (!param.value.has("maxp")) {
-      const p = new URLSearchParams(param.value.toString());
-      p.set("maxp", String(DEFAULT_MAX_PRICE));
-      router.replace("?" + p.toString());
-    }
-
-    const minp = parseInt(
-      param.value.get("minp") || DEFAULT_MIN_PRICE.toString(),
-    );
-    const maxp = parseInt(
-      param.value.get("maxp") || DEFAULT_MAX_PRICE.toString(),
-    );
-
-    function handleDragEnd(value: number[]) {
-      const p = new URLSearchParams(param.value.toString());
-      p.set("minp", String(value[0]));
-      p.set("maxp", String(value[1]));
-      router.replace("?" + p.toString());
-    }
-    return (
-      <section className="flex flex-col gap-4">
-        <h1 className="text-xl font-semibold">Daycare Services</h1>
-        <span className="leading-tight">
-          What price are you willing to pay per day?
-        </span>
-        <span className="text-sm leading-tight text-gray-400">
-          (You can change this later)
-        </span>
-        <RangeSlider
-          defaultValue={[minp, maxp]}
-          min={10}
-          max={90}
-          step={10}
-          width="90%"
-          marginBottom={8}
-          marginX="auto"
-          onChangeEnd={handleDragEnd}
+        {/* This is just a placeholder for now */}
+        <Textarea rows={5} />
+        <Button
+          className="w-full"
+          onClick={() => {
+            const p = new URLSearchParams(searchParams.toString());
+            // Temporary fix to set the step to 6 without triggering the increment function
+            p.set("step", "3");
+            router.replace("?" + p.toString());
+          }}
         >
-          <RangeSliderMark value={10} className="ml-[-16px] pt-4">
-            $10
-          </RangeSliderMark>
-          <RangeSliderMark value={50} className="ml-[-16px] pt-4">
-            $50
-          </RangeSliderMark>
-          <RangeSliderMark value={90} className="ml-[-16px] pt-4">
-            $80
-          </RangeSliderMark>
-          <RangeSliderTrack>
-            <RangeSliderFilledTrack />
-          </RangeSliderTrack>
-          <RangeSliderThumb boxSize={6} index={0} />
-          <RangeSliderThumb boxSize={6} index={1} />
-        </RangeSlider>
-        <div className="mt-4 flex w-full gap-2">
-          <Button
-            onClick={stepper.decrement}
-            className="w-[calc(50%-4px)]"
-            variant="outline"
-          >
-            Back
-          </Button>
-          <Button onClick={stepper.increment} className="w-[calc(50%-4px)]">
-            Next
-          </Button>
-        </div>
+          Next
+        </Button>
       </section>
     );
   }
@@ -602,15 +351,12 @@ export default function CareServiceRecommender() {
     return (
       <section className="flex flex-col gap-4">
         <BackButton />
-        <h1 className="text-xl font-semibold">Daycare Services</h1>
-        <span className="leading-tight">
-          Thank you! Based on your inputs, I recommend the following:
+        <span className="text-lg font-semibold leading-tight text-gray-500">
+          Thank you.
         </span>
-        <div className="flex flex-col gap-4">
-          {recommendations.map((centre, index) => (
-            <DaycareRecommendationCard key={index} centre={centre} />
-          ))}
-        </div>
+        <span className="text-2xl font-semibold leading-tight text-brand-primary-500">
+          Based on your inputs, here are the recommended daycare centres
+        </span>
         {auth.isSignedIn ? (
           <Button onClick={() => setSearchSaved(true)} isDisabled={searchSaved}>
             {searchSaved ? "Saved!" : "Save search"}
@@ -622,6 +368,11 @@ export default function CareServiceRecommender() {
             </Button>
           </SignInButton>
         )}
+        <div className="flex flex-col gap-4">
+          {recommendations.map((centre, index) => (
+            <DaycareRecommendationCard key={index} centre={centre} />
+          ))}
+        </div>
         <Button variant="outline" onClick={handleShowAll}>
           Show me the full list of centres
         </Button>
@@ -688,7 +439,7 @@ export default function CareServiceRecommender() {
           marginLeft="auto"
           onClick={handleViewDetails}
         >
-          More Info
+          View Details
         </Button>
       </div>
     );
