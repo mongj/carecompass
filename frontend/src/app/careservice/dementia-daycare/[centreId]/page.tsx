@@ -36,7 +36,7 @@ import { Drawer } from "vaul";
 import { ArrowLeft } from "lucide-react";
 import { mapReviewSource } from "@/util/review";
 import { constructAddress } from "@/util/address";
-import { BackButton } from "@/ui/button";
+import { BackButton, SaveButton, ShareButton } from "@/ui/button";
 import { useRouter } from "next/navigation";
 import { getRatingColor } from "@/util/helper";
 
@@ -80,6 +80,10 @@ export default function DaycareCentreDetails({
       <BackButton />
       {centre.photos && <PhotoSlider photos={centre.photos} />}
       <h1 className="text-xl font-semibold">{centre.name}</h1>
+      <section className="flex place-content-end gap-2">
+        <SaveButton size="sm" variant="outline" />
+        <ShareButton size="sm" variant="outline" />
+      </section>
       {/* Review Scores, temporarily copied from homecare page */}
       {centre.reviewCount > 0 && (
         <div className="flex w-full items-center gap-4 py-3">

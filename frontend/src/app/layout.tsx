@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="h-dvh w-screen">
-        <Toaster richColors />
+        <Toaster />
         <Analytics />
         <Providers>
           <div className="h-full w-full sm:hidden">{children}</div>
