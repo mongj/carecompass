@@ -17,7 +17,7 @@ import { Rating } from "@smastrom/react-rating";
 import { mapReviewSource } from "@/util/review";
 import PhotoSlider from "@/components/PhotoSlider";
 import { getRatingColor } from "@/util/helper";
-import { BackButton } from "@/ui/button";
+import { BackButton, SaveButton, ShareButton } from "@/ui/button";
 import { BxRightArrowAlt } from "@opengovsg/design-system-react";
 
 export default function HomeCareDetailPage() {
@@ -64,6 +64,11 @@ export default function HomeCareDetailPage() {
       {/* Header with Name and Rating */}
       <div>
         <h1 className="text-2xl font-bold">{provider.name}</h1>
+        {/* Save and Share Buttons */}
+        <section className="flex place-content-end gap-2">
+          <SaveButton size="sm" variant="outline" />
+          <ShareButton size="sm" variant="outline" />
+        </section>
         {/* Review Scores */}
         <div className="flex w-full items-center gap-4 py-3">
           <div className="flex items-center gap-2">
