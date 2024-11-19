@@ -13,12 +13,12 @@ import { api } from "@/api";
 
 interface NewReviewDrawerProps {
   serviceProviderId: number;
-  serviceProviderType?: string;
+  targetType: ReviewTargetType;
 }
 
 export function NewReviewDrawer({
   serviceProviderId,
-  serviceProviderType = "daycare",
+  targetType,
 }: NewReviewDrawerProps) {
   const { user } = useUser();
   const [isOpen, setIsOpen] = useState(false);
@@ -26,7 +26,7 @@ export function NewReviewDrawer({
   const [review, setReview] = useState<ReviewCreate>({
     review_source: ReviewSource.IN_APP,
     target_id: serviceProviderId,
-    target_type: ReviewTargetType.DEMENTIA_DAY_CARE,
+    target_type: targetType,
     overall_rating: 0,
     author_name: user?.fullName || "Anonymous",
     content: "",
@@ -60,8 +60,11 @@ export function NewReviewDrawer({
               <span>
                 Thank you for helping other caregivers by sharing your
                 experiences. We ask that you declare below that you have indeed
-                used the {serviceProviderType} service, as we value genuine
-                reviews only.
+                used the{" "}
+                {targetType === ReviewTargetType.DEMENTIA_DAY_CARE
+                  ? "daycare"
+                  : "homecare"}
+                service, as we value genuine reviews only.
               </span>
               <Checkbox
                 isChecked={isDeclarationChecked}

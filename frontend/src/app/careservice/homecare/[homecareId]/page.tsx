@@ -10,7 +10,7 @@ import { Button, VisuallyHidden, VStack, Text } from "@chakra-ui/react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ArrowLeft } from "lucide-react";
-import { Review, ReviewSource } from "@/types/review";
+import { Review, ReviewSource, ReviewTargetType } from "@/types/review";
 import moment from "moment";
 import { Drawer } from "vaul";
 import { Rating } from "@smastrom/react-rating";
@@ -333,7 +333,7 @@ function ReviewSection({
         {auth.isSignedIn ? (
           <NewReviewDrawer
             serviceProviderId={providerId}
-            serviceProviderType="home care"
+            targetType={ReviewTargetType.DEMENTIA_HOME_CARE}
           />
         ) : (
           <SignInButton>
