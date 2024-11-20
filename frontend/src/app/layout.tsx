@@ -1,40 +1,11 @@
-import "./globals.css";
-import { Metadata } from "next";
-import RootLayoutClient from "./layout.client";
+"use client";
 
-export const metadata: Metadata = {
-  title: "CareCompass",
-  description:
-    "A personalised care navigator for new family caregivers of dementia patients",
-  openGraph: {
-    title: "CareCompass",
-    description:
-      "A personalised care navigator for new family caregivers of dementia patients",
-    images: [
-      {
-        url: "/og-banner.png",
-        width: 1200,
-        height: 630,
-        alt: "CareCompass App Banner",
-      },
-    ],
-    type: "website",
-    locale: "en_US",
-    siteName: "CareCompass",
-    url: "https://my.carecompass.sg",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "CareCompass",
-    description:
-      "A personalised care navigator for new family caregivers of dementia patients",
-    images: ["/og-banner.png"],
-  },
-  appleWebApp: {
-    title: "CareCompass",
-    statusBarStyle: "black-translucent",
-  },
-};
+import "./globals.css";
+import Providers from "./providers";
+import { Toaster } from "sonner";
+import Image from "next/image";
+import Analytics from "./analytics";
+import "@smastrom/react-rating/style.css";
 
 export default function RootLayout({
   children,
@@ -43,7 +14,25 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <RootLayoutClient>{children}</RootLayoutClient>
+      <body className="h-dvh w-screen">
+        <Toaster />
+        <Analytics />
+        <Providers>
+          <div className="h-full w-full sm:hidden">{children}</div>
+          <main className="hidden h-full w-full flex-col place-content-center place-items-center gap-4 p-8 sm:flex">
+            <h3 className="text-4xl font-bold">Welcome to CareCompass</h3>
+            <span className="">
+              Sorry, CareCompass is currently only available for mobile devices.
+            </span>
+            <Image
+              src="/img/scene-messaging.svg"
+              alt="logo"
+              width={500}
+              height={200}
+            />
+          </main>
+        </Providers>
+      </body>
     </html>
   );
 }
