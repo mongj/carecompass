@@ -5,6 +5,7 @@ import { Box, Flex, Stack, Tooltip } from "@chakra-ui/react";
 import { Button, Checkbox } from "@opengovsg/design-system-react";
 import { useRouter } from "next/navigation";
 import { QuestionIcon } from "@chakra-ui/icons";
+import BackButton from "@/ui/button/BackButton";
 
 const HOME_CARE_SERVICES = [
   {
@@ -67,6 +68,7 @@ export default function HomeCareServices() {
   return (
     <div className="h-full w-full overflow-auto bg-white p-8">
       <section className="flex flex-col gap-4">
+        <BackButton />
         <h1 className="text-2xl font-semibold leading-tight text-brand-primary-500">
           What kind of home care services are you considering for your loved
           one?
