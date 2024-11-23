@@ -57,6 +57,7 @@ export default function SavedSearchesPage() {
           onChange={(values) => {
             setSelectedResourceTypes(values);
           }}
+          colorScheme="gray"
         />
       </div>
       <section className="flex flex-col gap-2">
