@@ -10,7 +10,7 @@ import { useEffect } from "react";
 export default function Auth() {
   const router = useRouter();
   const auth = useAuth();
-  
+
   useEffect(() => {
     router.prefetch("/home");
   }, [router]);
