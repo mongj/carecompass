@@ -39,6 +39,7 @@ import { constructAddress } from "@/util/address";
 import { BackButton, BookmarkButton, ShareButton } from "@/ui/button";
 import { useRouter } from "next/navigation";
 import { getRatingColor } from "@/util/helper";
+import Hidden from "@/ui/Hidden";
 
 export default function DaycareCentreDetails({
   params,
@@ -78,7 +79,11 @@ export default function DaycareCentreDetails({
   return (
     <section className="flex flex-col gap-4 overflow-x-hidden bg-white p-6">
       <BackButton />
-      {centre.photos && <PhotoSlider photos={centre.photos} />}
+      <Hidden
+        condition={centre.photos === undefined || centre.photos.length === 0}
+      >
+        <PhotoSlider photos={centre.photos} />
+      </Hidden>
       <h1 className="text-xl font-semibold">{centre.name}</h1>
       <section className="flex place-content-end gap-2">
         <BookmarkButton
