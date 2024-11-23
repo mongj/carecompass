@@ -2,7 +2,8 @@
 
 import { api } from "@/api";
 import { DDCBase } from "@/types/ddc";
-import { BackButton } from "@/ui/button";
+import { ReviewTargetType } from "@/types/review";
+import { BackButton, BookmarkButton } from "@/ui/button";
 import LoadingSpinner from "@/ui/loading";
 import { constructAddress } from "@/util/address";
 import { Button } from "@chakra-ui/react";
@@ -11,9 +12,15 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function DementiaDaycarePage() {
+  const router = useRouter();
+
   const [isLoading, setIsLoading] = useState(true);
   const [query, setQuery] = useState("");
   const [centres, setCentres] = useState<DDCBase[]>([]);
+
+  useEffect(() => {
+    router.prefetch("/careservice/dementia-daycare/[centreId]");
+  }, [router]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -81,14 +88,23 @@ function CentreCard({ centre }: { centre: DDCBase }) {
       <span className="text-lg font-semibold">{centre.name}</span>
       <div className="flex flex-col gap-2">
         <span>{address}</span>
-        <Button
-          variant="clear"
-          rightIcon={<BxRightArrowAlt fontSize="1.5rem" />}
-          marginLeft="auto"
-          onClick={handleViewDetails}
-        >
-          More Info
-        </Button>
+        <div className="flex pt-4">
+          <BookmarkButton
+            targetId={centre.id}
+            targetType={ReviewTargetType.DEMENTIA_DAY_CARE}
+            title={centre.name}
+            link={`/careservice/dementia-daycare/${centre.id}`}
+            variant="link"
+          />
+          <Button
+            variant="link"
+            rightIcon={<BxRightArrowAlt fontSize="1.5rem" />}
+            marginLeft="auto"
+            onClick={handleViewDetails}
+          >
+            View Details
+          </Button>
+        </div>
       </div>
     </div>
   );

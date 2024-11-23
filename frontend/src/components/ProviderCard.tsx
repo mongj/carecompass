@@ -1,7 +1,10 @@
-import { Button } from "@chakra-ui/react";
+import { Button, Divider } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { HomeCareDetail } from "@/types/homecare";
 import { getRatingColor } from "@/util/helper";
+import { BookmarkButton } from "@/ui/button";
+import { ReviewTargetType } from "@/types/review";
+import { BxRightArrowAlt } from "@opengovsg/design-system-react";
 
 interface ProviderCardProps {
   provider: HomeCareDetail;
@@ -68,14 +71,25 @@ export function ProviderCard({ provider, baseUrl }: ProviderCardProps) {
           ))}
         </div>
       </div>
-
-      {/* More Details Button */}
-      <Button
-        onClick={handleViewDetails}
-        className="mt-2 self-start rounded-md bg-blue-600 px-4 py-2 text-sm text-white"
-      >
-        More details
-      </Button>
+      <Divider />
+      {/* More Details and Save Button */}
+      <div className="flex">
+        <BookmarkButton
+          targetId={provider.id}
+          targetType={ReviewTargetType.DEMENTIA_HOME_CARE}
+          title={provider.name}
+          link={`/careservice/homecare/${provider.id}`}
+          variant="clear"
+        />
+        <Button
+          variant="clear"
+          rightIcon={<BxRightArrowAlt fontSize="1.5rem" />}
+          marginLeft="auto"
+          onClick={handleViewDetails}
+        >
+          View Details
+        </Button>
+      </div>
     </div>
   );
 }

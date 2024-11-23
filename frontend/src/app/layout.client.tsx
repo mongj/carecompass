@@ -13,7 +13,7 @@ export default function RootLayoutClient({
 }>) {
   return (
     <body className="h-dvh w-screen">
-      <Toaster />
+      <Toaster closeButton position="top-center" duration={2000} />
       <Analytics />
       <Providers>
         <div className="h-full w-full sm:hidden">{children}</div>
