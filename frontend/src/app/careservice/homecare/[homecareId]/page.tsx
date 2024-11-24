@@ -23,17 +23,22 @@ import { SignInButton } from "@clerk/nextjs";
 import { useAuth } from "@clerk/nextjs";
 import { NewReviewDrawer } from "@/components/NewReviewDrawer";
 import Hidden from "@/ui/Hidden";
+import { GetReviewsParams } from "@/types/api";
+import { getReviews } from "@/api";
 
 export default function HomeCareDetailPage() {
   const { homecareId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [provider, setProvider] = useState<HomeCareDetail | undefined>();
+  const [reviews, setReviews] = useState<Review[]>([]);
 
   useEffect(() => {
-    setIsLoading(true);
-    fetch("/data/homecare1.json")
-      .then((response) => response.json())
-      .then((data) => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        // Fetch provider data
+        const response = await fetch("/data/homecare1.json");
+        const data = await response.json();
         const transformedData = transformHomeCareData(data);
         const selectedProvider = transformedData.find(
           (p: HomeCareDetail) => String(p.id) === String(homecareId),
@@ -43,28 +48,36 @@ export default function HomeCareDetailPage() {
           console.error("Provider not found for ID:", homecareId);
         }
         setProvider(selectedProvider);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error loading provider data:", error);
-        setIsLoading(false);
-      });
-  }, [homecareId]);
 
-  // TODO: NEED TO IMPLEMENT THE API FIRST
-  // useEffect(() => {
-  //   api
-  //     .get(`/services/dementia-daycare/${params.centreId}`)
-  //     .then((response) => {
-  //       setCentre(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     })
-  //     .finally(() => {
-  //       setIsLoading(false);
-  //     });
-  // }, [homecareId]);
+        // Fetch reviews using API
+        const reviewParams: GetReviewsParams = {
+          targetType: ReviewTargetType.DEMENTIA_HOME_CARE,
+          targetId: parseInt(
+            Array.isArray(homecareId) ? homecareId[0] : homecareId,
+          ),
+          limit: 100,
+        };
+        const reviewsData = await getReviews(reviewParams);
+
+        // Combine reviews from both sources, sort by published time - latest first
+        const combinedReviews = [
+          ...(selectedProvider?.reviews || []),
+          ...reviewsData,
+        ].sort(
+          (a, b) =>
+            new Date(b.publishedTime).getTime() -
+            new Date(a.publishedTime).getTime(),
+        );
+        setReviews(combinedReviews);
+      } catch (error) {
+        console.error("Error loading data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [homecareId]);
 
   if (isLoading || !provider) {
     return <LoadingSpinner />;
@@ -241,7 +254,7 @@ export default function HomeCareDetailPage() {
       {/* Reviews Section */}
       <div className="mt-1">
         <ReviewSection
-          reviews={provider.reviews}
+          reviews={reviews}
           googleRating={provider.rating}
           numOfGoogleRatings={provider.userRatingCount}
           providerId={provider.id}
