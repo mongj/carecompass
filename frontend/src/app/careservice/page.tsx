@@ -16,11 +16,12 @@ import {
   useSearchParams,
 } from "next/navigation";
 import LoadingSpinner from "@/ui/loading";
-import { SignInButton, useAuth } from "@clerk/nextjs";
 import { api } from "@/api";
 import { Rating } from "@smastrom/react-rating";
 import HomeCareServices from "./homecareService";
-import { BackButton } from "@/ui/button";
+import { BackButton, BookmarkButton } from "@/ui/button";
+import { Divider } from "@chakra-ui/react";
+import { ReviewTargetType } from "@/types/review";
 
 type CareServicesData = {
   title: string;
@@ -197,7 +198,7 @@ export default function CareServiceRecommender() {
 
     return (
       <button
-        className={`flex place-content-start place-items-start gap-2 rounded-md border border-gray-200 p-4 text-left ${!service.enabled && "bg-gray-100"}`}
+        className={`flex place-content-start place-items-start gap-2 rounded-md border border-gray-200 p-4 text-left ${!service.enabled && "bg-gray-100"} transition-all duration-150 hover:bg-gray-50`}
         onClick={handleClick}
         disabled={!service.enabled}
       >
@@ -318,10 +319,12 @@ export default function CareServiceRecommender() {
     const [recommendations, setRecommendations] = useState<DDCRecommendation[]>(
       [],
     );
-    const [searchSaved, setSearchSaved] = useState(false);
-    const auth = useAuth();
 
     const homePostalCode = param.value.get("home");
+
+    useEffect(() => {
+      router.prefetch("/careservice/dementia-daycare/[centreId]");
+    }, [router]);
 
     useEffect(() => {
       api
@@ -357,17 +360,6 @@ export default function CareServiceRecommender() {
         <span className="text-2xl font-semibold leading-tight text-brand-primary-500">
           Based on your inputs, here are the recommended daycare centres
         </span>
-        {auth.isSignedIn ? (
-          <Button onClick={() => setSearchSaved(true)} isDisabled={searchSaved}>
-            {searchSaved ? "Saved!" : "Save search"}
-          </Button>
-        ) : (
-          <SignInButton>
-            <Button variant="solid" colorScheme="blue">
-              Sign in to save search result
-            </Button>
-          </SignInButton>
-        )}
         <div className="flex flex-col gap-4">
           {recommendations.map((centre, index) => (
             <DaycareRecommendationCard key={index} centre={centre} />
@@ -386,6 +378,10 @@ export default function CareServiceRecommender() {
     centre: DDCRecommendation;
   }) {
     const router = useRouter();
+
+    useEffect(() => {
+      router.prefetch(`/careservice/dementia-daycare/${centre.id}`);
+    }, [router, centre.id]);
 
     const parseDistance = (distance: number) => {
       return `${(distance / 1000).toFixed(1)}km`;
@@ -433,14 +429,24 @@ export default function CareServiceRecommender() {
               </div>
             )}
         </div>
-        <Button
-          variant="clear"
-          rightIcon={<BxRightArrowAlt fontSize="1.5rem" />}
-          marginLeft="auto"
-          onClick={handleViewDetails}
-        >
-          View Details
-        </Button>
+        <Divider />
+        <div className="flex">
+          <BookmarkButton
+            targetId={centre.id}
+            targetType={ReviewTargetType.DEMENTIA_DAY_CARE}
+            title={centre.name}
+            link={`/careservice/dementia-daycare/${centre.id}`}
+            variant="clear"
+          />
+          <Button
+            variant="clear"
+            rightIcon={<BxRightArrowAlt fontSize="1.5rem" />}
+            marginLeft="auto"
+            onClick={handleViewDetails}
+          >
+            View Details
+          </Button>
+        </div>
       </div>
     );
   }

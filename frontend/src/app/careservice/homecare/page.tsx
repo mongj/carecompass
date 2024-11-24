@@ -8,21 +8,25 @@ import {
 } from "@/types/homecare";
 import { BackButton } from "@/ui/button";
 import LoadingSpinner from "@/ui/loading";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
 export default function HomeCarePage() {
+  const router = useRouter();
+
   const [isLoading, setIsLoading] = useState(true);
   const [providers, setProviders] = useState<HomeCareDetail[]>([]);
   const searchParams = useSearchParams();
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const queriedServices = searchParams.get("services")?.split(",") || [];
-  console.log(queriedServices);
+
+  useEffect(() => {
+    router.prefetch(`/careservice/homecare/[homecareId]`);
+  }, [router]);
 
   useEffect(() => {
     setIsLoading(true);
     setSelectedServices(queriedServices);
-    console.log(selectedServices);
 
     fetch("/data/homecare1.json")
       .then((response) => response.json())

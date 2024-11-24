@@ -36,9 +36,10 @@ import { Drawer } from "vaul";
 import { ArrowLeft } from "lucide-react";
 import { mapReviewSource } from "@/util/review";
 import { constructAddress } from "@/util/address";
-import { BackButton, SaveButton, ShareButton } from "@/ui/button";
+import { BackButton, BookmarkButton, ShareButton } from "@/ui/button";
 import { useRouter } from "next/navigation";
 import { getRatingColor } from "@/util/helper";
+import Hidden from "@/ui/Hidden";
 
 export default function DaycareCentreDetails({
   params,
@@ -78,10 +79,20 @@ export default function DaycareCentreDetails({
   return (
     <section className="flex flex-col gap-4 overflow-x-hidden bg-white p-6">
       <BackButton />
-      {centre.photos && <PhotoSlider photos={centre.photos} />}
+      <Hidden
+        condition={centre.photos === undefined || centre.photos.length === 0}
+      >
+        <PhotoSlider photos={centre.photos} />
+      </Hidden>
       <h1 className="text-xl font-semibold">{centre.name}</h1>
       <section className="flex place-content-end gap-2">
-        <SaveButton size="sm" variant="outline" />
+        <BookmarkButton
+          targetId={centre.id}
+          targetType={ReviewTargetType.DEMENTIA_DAY_CARE}
+          title={centre.name}
+          size="sm"
+          variant="outline"
+        />
         <ShareButton size="sm" variant="outline" />
       </section>
       {/* Review Scores, temporarily copied from homecare page */}

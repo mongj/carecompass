@@ -10,15 +10,16 @@ import { Button, VisuallyHidden, VStack, Text } from "@chakra-ui/react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ArrowLeft } from "lucide-react";
-import { Review, ReviewSource } from "@/types/review";
+import { Review, ReviewSource, ReviewTargetType } from "@/types/review";
 import moment from "moment";
 import { Drawer } from "vaul";
 import { Rating } from "@smastrom/react-rating";
 import { mapReviewSource } from "@/util/review";
 import PhotoSlider from "@/components/PhotoSlider";
 import { getRatingColor } from "@/util/helper";
-import { BackButton, SaveButton, ShareButton } from "@/ui/button";
+import { BackButton, BookmarkButton, ShareButton } from "@/ui/button";
 import { BxRightArrowAlt } from "@opengovsg/design-system-react";
+import Hidden from "@/ui/Hidden";
 
 export default function HomeCareDetailPage() {
   const { homecareId } = useParams();
@@ -55,18 +56,27 @@ export default function HomeCareDetailPage() {
     <div className="flex min-h-screen flex-col gap-4 overflow-x-hidden bg-white p-6">
       <BackButton />
       {/* Banner Image */}
-      <div
-        className={`${provider.photos !== undefined && provider.photos.length !== 0 ? "block" : "hidden"}`}
+      <Hidden
+        condition={
+          provider.photos === undefined || provider.photos.length === 0
+        }
       >
         {provider.photos && <PhotoSlider photos={provider.photos} />}
-      </div>
+      </Hidden>
 
       {/* Header with Name and Rating */}
-      <div>
+      <div className="flex flex-col gap-2">
         <h1 className="text-2xl font-bold">{provider.name}</h1>
         {/* Save and Share Buttons */}
         <section className="flex place-content-end gap-2">
-          <SaveButton size="sm" variant="outline" />
+          <BookmarkButton
+            size="sm"
+            variant="outline"
+            targetId={provider.id}
+            targetType={ReviewTargetType.DEMENTIA_HOME_CARE}
+            title={provider.name}
+            link={`/careservice/homecare/${provider.id}`}
+          />
           <ShareButton size="sm" variant="outline" />
         </section>
         {/* Review Scores */}

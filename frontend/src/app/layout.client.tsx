@@ -3,7 +3,6 @@
 import Providers from "./providers";
 import { Toaster } from "sonner";
 import Image from "next/image";
-import Analytics from "./analytics";
 import "@smastrom/react-rating/style.css";
 
 export default function RootLayoutClient({
@@ -13,8 +12,7 @@ export default function RootLayoutClient({
 }>) {
   return (
     <body className="h-dvh w-screen">
-      <Toaster />
-      <Analytics />
+      <Toaster closeButton position="top-center" duration={2000} />
       <Providers>
         <div className="h-full w-full sm:hidden">{children}</div>
         <main className="hidden h-full w-full flex-col place-content-center place-items-center gap-4 p-8 sm:flex">
