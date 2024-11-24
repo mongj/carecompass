@@ -8,24 +8,31 @@ import {
   useUser,
 } from "@clerk/nextjs";
 import { Button, Skeleton } from "@chakra-ui/react";
-import { LogOutIcon } from "lucide-react";
+import { BookmarkIcon, ChevronRightIcon, LogOutIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+
 export default function ProfilePage() {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.prefetch("/profile/saved-searches");
+  }, [router]);
+
   return (
     <div className="flex h-full w-full flex-col gap-4">
       <h1 className="text-2xl font-semibold">My Profile</h1>
       <UserProfileCard />
-      <div className="flex w-full flex-col gap-2">
-        <h1 className="text-xl font-semibold">Saved Searches</h1>
-        <section className="w-full rounded-lg border border-gray-200 bg-white p-4">
-          🚧 Coming soon 🚧
-        </section>
-      </div>
-      <div className="flex w-full flex-col gap-2">
-        <h1 className="text-xl font-semibold">My Reviews</h1>
-        <section className="w-full rounded-lg border border-gray-200 bg-white p-4">
-          🚧 Coming soon 🚧
-        </section>
-      </div>
+      <button
+        className="flex w-full place-items-center gap-2 rounded-lg border border-gray-200 bg-white p-4 hover:bg-gray-50"
+        onClick={() => {
+          router.push("/profile/saved-searches");
+        }}
+      >
+        <BookmarkIcon size={24} />
+        <span className="w-full text-left font-semibold">Saved Searches</span>
+        <ChevronRightIcon size={24} />
+      </button>
     </div>
   );
 }

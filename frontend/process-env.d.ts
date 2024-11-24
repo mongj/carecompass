@@ -8,7 +8,6 @@ declare global {
       // Backend
       NEXT_PUBLIC_APP_BACKEND_URL: string;
       // Analytics
-      NEXT_PUBLIC_MICROSOFT_CLARITY_ID: string;
       NEXT_PUBLIC_POSTHOG_KEY: string;
       NEXT_PUBLIC_POSTHOG_HOST: string;
     }
