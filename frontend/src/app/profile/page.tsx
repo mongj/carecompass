@@ -10,9 +10,14 @@ import {
 import { Button, Skeleton } from "@chakra-ui/react";
 import { BookmarkIcon, ChevronRightIcon, LogOutIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function ProfilePage() {
   const router = useRouter();
+
+  useEffect(() => {
+    router.prefetch("/profile/saved-searches");
+  }, [router]);
 
   return (
     <div className="flex h-full w-full flex-col gap-4">

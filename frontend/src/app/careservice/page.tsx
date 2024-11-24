@@ -198,7 +198,7 @@ export default function CareServiceRecommender() {
 
     return (
       <button
-        className={`flex place-content-start place-items-start gap-2 rounded-md border border-gray-200 p-4 text-left ${!service.enabled && "bg-gray-100"}`}
+        className={`flex place-content-start place-items-start gap-2 rounded-md border border-gray-200 p-4 text-left ${!service.enabled && "bg-gray-100"} transition-all duration-150 hover:bg-gray-50`}
         onClick={handleClick}
         disabled={!service.enabled}
       >

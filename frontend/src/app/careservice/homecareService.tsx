@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Flex, Stack, Tooltip } from "@chakra-ui/react";
 import { Button, Checkbox } from "@opengovsg/design-system-react";
 import { useRouter } from "next/navigation";
@@ -49,6 +49,10 @@ const HOME_CARE_SERVICES = [
 export default function HomeCareServices() {
   const router = useRouter();
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
+
+  useEffect(() => {
+    router.prefetch(`/careservice/homecare`);
+  }, [router]);
 
   const handleServiceChange = (serviceId: string) => {
     setSelectedServices((prev) => {
