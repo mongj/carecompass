@@ -8,7 +8,7 @@ import {
 } from "@/util/review";
 import { useAuth } from "@clerk/nextjs";
 import { Tag } from "@chakra-ui/react";
-import { ChevronRightIcon } from "lucide-react";
+import { ChevronRightIcon, ListFilterIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import LoadingSpinner from "@/ui/loading";
 import { MultiSelect } from "@opengovsg/design-system-react";
@@ -28,7 +28,7 @@ export default function SavedSearchesPage() {
   useEffect(() => {
     if (!auth.userId) return;
 
-    api.get(`/bookmarks?userId=${auth.userId}`).then((res) => {
+    api.get(`/bookmarks?user_id=${auth.userId}`).then((res) => {
       setBookmarks(res.data);
       setIsLoading(false);
     });
@@ -42,8 +42,11 @@ export default function SavedSearchesPage() {
   return (
     <div className="flex h-full w-full flex-col gap-4">
       <h1 className="text-2xl font-semibold">Saved Searches</h1>
-      <div className="flex flex-col">
-        <span className="font-semibold">Filter by type</span>
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center gap-2">
+          <ListFilterIcon size={16} />
+          <span className="font-semibold">Filter by</span>
+        </div>
         <MultiSelect
           values={selectedResourceTypes.map((resourceType) =>
             resourceType.toString(),
@@ -60,7 +63,7 @@ export default function SavedSearchesPage() {
           colorScheme="gray"
         />
       </div>
-      <section className="flex flex-col gap-2">
+      <section className="flex h-full flex-col gap-2">
         {isLoading ? (
           <LoadingSpinner />
         ) : (
