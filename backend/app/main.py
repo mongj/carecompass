@@ -1,16 +1,15 @@
-import os
+from contextlib import asynccontextmanager
+import sentry_sdk
+
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from app.api import router
-from dotenv import load_dotenv
-import sentry_sdk
-
-
-load_dotenv("../.env")
+from app.core.config import config
+from app.core.database import test_db_connection
 
 sentry_sdk.init(
-    dsn=os.getenv("SENTRY_DSN"),
+    dsn=config.SENTRY_DSN,
     # Set traces_sample_rate to 1.0 to capture 100%
     # of transactions for tracing.
     traces_sample_rate=1.0,
@@ -22,8 +21,19 @@ sentry_sdk.init(
     },
 )
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """
+    Lifespan context manager for the FastAPI application.
+    Handles database connection testing on startup.
+    """
+    test_db_connection()
+    
+    yield
+
 app = FastAPI(
     title="CareCompass API",
+    lifespan=lifespan,
 )
 
 # TODO: use env variables

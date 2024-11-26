@@ -1,27 +1,33 @@
-import os
-from typing import Annotated
-from dotenv import load_dotenv
-from fastapi import Depends
-from sqlalchemy import create_engine
+import logging
+from typing import Annotated, Optional
+from fastapi import Depends, FastAPI
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker, Session
+from pydantic import PostgresDsn
 
-load_dotenv("../../.env")
+from app.core.config import config
 
 def build_dsn():
-    db_user = os.getenv("DB_USER")
-    db_password = os.getenv("DB_PASSWORD")
-    db_host = os.getenv("DB_HOST")
-    db_port = os.getenv("DB_PORT")
-    db_name = os.getenv("DB_NAME")
-    db_sslmode = os.getenv("DB_SSLMODE")
+    connection_params = {
+        "scheme": "postgresql",
+        "username": config.DB_USER,
+        "password": config.DB_PASSWORD,
+        "host": config.DB_HOST,
+        "port": config.DB_PORT,
+        "path": config.DB_NAME,
+        "query": f"sslmode={config.DB_SSLMODE.value}"
+    }
 
-    return f"postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}?sslmode={db_sslmode}"
+    # Validate and build URL
+    dsn = PostgresDsn.build(**connection_params)
+    
+    return str(dsn)
 
 DATABASE_URL = build_dsn()
 
 engine = create_engine(
     DATABASE_URL,
-    echo=os.getenv("ENV") == "development"
+    echo=config.ENV == "development"
 )
 
 SessionLocal = sessionmaker(
@@ -29,6 +35,20 @@ SessionLocal = sessionmaker(
     autoflush=False,
     bind=engine
 )
+
+# Test the database connection
+def test_db_connection() -> None:
+    try:
+        db = SessionLocal()
+        # Test the connection
+        db.execute(text("SELECT 1"))
+        logging.info("Database connection was successful!")
+    except Exception as e:
+        err = f"Error connecting to the database: {str(e)}"
+        logging.error(err)
+        raise RuntimeError(err)
+    finally:
+        db.close()
 
 # Database dependency
 def get_db():

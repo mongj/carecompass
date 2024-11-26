@@ -15,6 +15,7 @@ exceptiongroup = "*"
 haversine = "*"
 googlemaps = "*"
 sentry-sdk = {extras = ["fastapi"], version = "*"}
+pydantic-settings = "*"
 
 [dev-packages]
 

@@ -6,6 +6,8 @@ from pydantic import BaseModel
 
 from googlemaps import Client as GoogleMapsClient
 
+from app.core.config import config
+
 # TODO: Add return type hints
 
 def getCoordFromAddress(address: str) -> Union[Tuple[float, float], None]:
@@ -49,7 +51,7 @@ def getRouteDistance(
     Returns:
         - RouteDistance: The distance between the two locations and the estimated travel duration
     """
-    gmaps = GoogleMapsClient(key=os.getenv('GOOGLE_MAPS_API_KEY'))
+    gmaps = GoogleMapsClient(key=config.GOOGLE_MAPS_API_KEY)
     dist = gmaps.distance_matrix(
         origins=[origin],
         destinations=[destination],
