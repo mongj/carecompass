@@ -22,6 +22,7 @@ import HomeCareServices from "./homecareService";
 import { BackButton, BookmarkButton } from "@/ui/button";
 import { Divider } from "@chakra-ui/react";
 import { ReviewTargetType } from "@/types/review";
+import { constructAddress } from "@/util/address";
 
 type CareServicesData = {
   title: string;
@@ -396,7 +397,13 @@ export default function CareServiceRecommender() {
       router.push(`/careservice/dementia-daycare/${centre.id}`);
     };
 
-    const address = `${centre.block} ${centre.streetName} ${centre.buildingName} ${centre.postalCode}`;
+    const address = constructAddress(
+      centre.postalCode,
+      centre.block,
+      centre.streetName,
+      centre.buildingName,
+      centre.unitNo,
+    );
     const distance =
       centre.distanceFromHome || centre.distanceFromHome == 0
         ? `(${parseDistance(centre.distanceFromHome)} away from home)`
