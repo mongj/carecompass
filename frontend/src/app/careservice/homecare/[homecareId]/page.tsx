@@ -15,7 +15,6 @@ import moment from "moment";
 import { Drawer } from "vaul";
 import { Rating } from "@smastrom/react-rating";
 import { mapReviewSource } from "@/util/review";
-import PhotoSlider from "@/components/PhotoSlider";
 import { getRatingColor } from "@/util/helper";
 import { BackButton, BookmarkButton, ShareButton } from "@/ui/button";
 import { BxRightArrowAlt } from "@opengovsg/design-system-react";
@@ -25,6 +24,7 @@ import { NewReviewDrawer } from "@/components/NewReviewDrawer";
 import Hidden from "@/ui/Hidden";
 import { GetReviewsParams } from "@/types/api";
 import { getReviews } from "@/api";
+import PhotoCarousel from "@/ui/carousel/PhotoCarousel";
 
 export default function HomeCareDetailPage() {
   const { homecareId } = useParams();
@@ -92,7 +92,7 @@ export default function HomeCareDetailPage() {
           provider.photos === undefined || provider.photos.length === 0
         }
       >
-        {provider.photos && <PhotoSlider photos={provider.photos} />}
+        {provider.photos && <PhotoCarousel photos={provider.photos} />}
       </Hidden>
 
       {/* Header with Name and Rating */}

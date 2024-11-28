@@ -64,7 +64,7 @@ export default function Home() {
 function MenuCard({ data }: { data: SlideDataType }) {
   const router = useRouter();
   return (
-    <div className="min-w-0 flex-[0_0_80%] pl-6">
+    <div className="min-w-0 flex-[0_0_80%] pl-6 first:pl-0">
       <div
         className="flex h-[50vh] max-h-[50vh] min-h-64 cursor-pointer select-none flex-col place-content-center place-items-center gap-4 rounded-lg border border-gray-200 bg-white p-4 text-lg font-semibold shadow transition-colors duration-200 hover:bg-gray-50"
         onClick={() => router.push(data.link)}

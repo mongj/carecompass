@@ -17,10 +17,8 @@ import {
   Checkbox,
   BxRightArrowAlt,
 } from "@opengovsg/design-system-react";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import LoadingSpinner from "@/ui/loading";
-import Slider from "react-slick";
 import CustomMarkdown from "@/ui/CustomMarkdown";
 import { SignInButton, useAuth, useUser } from "@clerk/nextjs";
 import { api } from "@/api";
@@ -40,6 +38,7 @@ import { BackButton, BookmarkButton, ShareButton } from "@/ui/button";
 import { useRouter } from "next/navigation";
 import { getRatingColor } from "@/util/helper";
 import Hidden from "@/ui/Hidden";
+import PhotoCarousel from "@/ui/carousel/PhotoCarousel";
 
 export default function DaycareCentreDetails({
   params,
@@ -82,7 +81,7 @@ export default function DaycareCentreDetails({
       <Hidden
         condition={centre.photos === undefined || centre.photos.length === 0}
       >
-        <PhotoSlider photos={centre.photos} />
+        <PhotoCarousel photos={centre.photos} />
       </Hidden>
       <h1 className="text-xl font-semibold">{centre.name}</h1>
       <section className="flex place-content-end gap-2">
@@ -212,43 +211,6 @@ export default function DaycareCentreDetails({
       <FinancialSupportSection />
       <ReviewSection centreId={params.centreId} reviews={centre.reviews} />
     </section>
-  );
-}
-
-// TODO: use a better carousel library
-function PhotoSlider({ photos }: { photos: string[] }) {
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
-  return (
-    <>
-      <link
-        rel="stylesheet"
-        type="text/css"
-        href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
-      />
-      <link
-        rel="stylesheet"
-        type="text/css"
-        href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
-      />
-      <Slider {...settings} className="mb-6">
-        {photos.map((photo, index) => (
-          <Image
-            key={index}
-            src={photo}
-            alt="ds"
-            width={400}
-            height={200}
-            className="max-h-48 rounded-md"
-          />
-        ))}
-      </Slider>
-    </>
   );
 }
 
