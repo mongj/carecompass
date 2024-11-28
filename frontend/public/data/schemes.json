@@ -5,16 +5,16 @@
     "shortDescription": "Defrays cost of long-term care services for persons living in the community",
     "description": "Defrays cost of long-term care services for persons living in the community",
     "benefits": "Up to 80% subsidy on non-residential long-term care facilities such as dementia day care and home-based care.",
-    "eligibility": "- User of Non-Residential Long-Term Care service in a Singapore Citizen (SC) or Permanent Resident (PR)\n- The service provider is government-funded\n- Subsidy tiers are based on monthly household per capita income. Click [here](https://www.moh.gov.sg/managing-expenses/schemes-and-subsidies/subsidy-framework-for-non-residential-long-term-care-services) to check the subsidy level you may be eligible for.",
+    "eligibility": "- User of Non-Residential Long-Term Care service in a Singapore Citizen (SC) or Permanent Resident (PR)\n- The service provider is government-funded\n- You qualify based on monthly household income or annual property value criteria. Click [here](https://www.moh.gov.sg/managing-expenses/schemes-and-subsidies/subsidy-framework-for-non-residential-long-term-care-services) to check the subsidy level you may be eligible for.",
     "nextSteps": "1. Approach your doctor at the hospital or polyclinic, or AIC to apply for admission to a subsidised Non-Residential LTC service"
   },
   {
     "id": "CAREGIVERS-TRAINING-GRANT",
     "name": "Caregivers Training Grant",
     "shortDescription": "Supports caregivers (family, foreign domestic workers) attending approved courses on providing care.",
-    "description": "Supports caregivers (family, foreign domestic workers) attending approved courses on providing care.\n\nMore information [here](https://www.aic.sg/financial-assistance/caregivers-training-grant-ctg/).",
+    "description": "Supports caregivers (family, foreign domestic workers) attending approved courses on providing care.",
     "benefits": "Up to $400 in the first year, followed by $200 annually. The amount will be applied directly to offset course fees.",
-    "eligibility": "This eligibility checker will be built soon. Meanwhile, click [here] to view eligibility criteria",
+    "eligibility": "This eligibility checker will be built soon. Meanwhile, click [here] (https://www.aic.sg/financial-assistance/caregivers-training-grant-ctg/) to view eligibility criteria",
     "nextSteps": "**1. Complete the Caregiver Training Grant form [here](https://www.aic.sg/wp-content/uploads/2023/11/CTG-Application-form.pdf)**.\nBe sure to provide the requested documents:\n- Care Recipient's NRIC / Birth Certificate\n- Caregivier's NRIC\n\n**2. Select an approved course from the list [here](https://training-healthcare.vertis.digital/)**. Provide the completed form to the training provider at least 2 weeks before the course begins."
   },
   {
