@@ -18,7 +18,7 @@ const Carousel: React.FC<PropType> = (props) => {
   return (
     <section className="max-w-full">
       <div className="overflow-x-hidden" ref={emblaRef}>
-        <div className="-ml-6 flex touch-pan-y py-1">{slides}</div>
+        <div className="flex touch-pan-y py-1">{slides}</div>
       </div>
 
       <div className="mt-4 grid grid-cols-[auto_1fr] justify-between gap-5">
@@ -27,7 +27,7 @@ const Carousel: React.FC<PropType> = (props) => {
             <DotButton
               key={index}
               onClick={() => onDotButtonClick(index)}
-              className={`flex h-2 cursor-pointer items-center justify-center rounded-full transition-all duration-200 ${
+              className={`flex h-1 cursor-pointer items-center justify-center rounded-full transition-all duration-200 ${
                 index === selectedIndex
                   ? "w-8 rounded-full bg-gray-500"
                   : "w-4 rounded-full bg-gray-300"
