@@ -31,7 +31,7 @@ const CURRENT_YEAR = new Date().getFullYear();
 // Individual scheme checkers
 export const checkParentRelief = (user: UserDataBase): EligibilityResult => {
   const reasons = [
-    `Your dependant(s) were 55 years of age and above in ${CURRENT_YEAR}`,
+    `Your dependant(s) are 55 years of age and above in ${CURRENT_YEAR}`,
     "If your dependant(s) were living with you in the same household in Singapore, you qualify for $9,000 in tax relief per dependant",
     "If your dependant(s) who do/does not live with you but you have incurred more than S$2,000 supporting them, you may qualify for $5,500 in tax relief per dependant",
   ];

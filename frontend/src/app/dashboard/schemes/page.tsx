@@ -50,42 +50,9 @@ function SupportDetails() {
         <div className="flex flex-col place-content-start place-items-start gap-3 rounded-md border border-gray-200 bg-white p-4 text-left">
           {/* <CustomMarkdown content={scheme.eligibility} /> */}
           <div className="w-full">
-            {schemeHere?.eligibleReasons.map((message, index) => (
-              <div key={index} className="flex items-start gap-3 py-1">
-                <svg
-                  className="mt-0.5 h-6 w-6 flex-shrink-0"
-                  viewBox="0 0 22 22"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M11 0.5C5.20156 0.5 0.5 5.20156 0.5 11C0.5 16.7984 5.20156 21.5 11 21.5C16.7984 21.5 21.5 16.7984 21.5 11C21.5 5.20156 16.7984 0.5 11 0.5ZM15.5352 7.57109L10.5992 14.4148C10.5302 14.5111 10.4393 14.5896 10.3339 14.6437C10.2286 14.6978 10.1118 14.7261 9.99336 14.7261C9.87491 14.7261 9.75816 14.6978 9.6528 14.6437C9.54743 14.5896 9.45649 14.5111 9.3875 14.4148L6.46484 10.3648C6.37578 10.2406 6.46484 10.0672 6.61719 10.0672H7.71641C7.95547 10.0672 8.18281 10.182 8.32344 10.3789L9.99219 12.6945L13.6766 7.58516C13.8172 7.39062 14.0422 7.27344 14.2836 7.27344H15.3828C15.5352 7.27344 15.6242 7.44688 15.5352 7.57109V7.57109Z"
-                    fill="#2ec91c"
-                  />
-                </svg>
-                <span className="text-md">{message}</span>
-              </div>
-            ))}
-            {schemeHere?.ineligibleReasons &&
-              schemeHere.ineligibleReasons.map((message, index) => (
-                <div key={index} className="flex items-start gap-3 py-1">
-                  <svg
-                    className="mt-0.5 h-6 w-6 flex-shrink-0"
-                    viewBox="0 0 22 22"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M11 0.5C5.20156 0.5 0.5 5.20156 0.5 11C0.5 16.7984 5.20156 21.5 11 21.5C16.7984 21.5 21.5 16.7984 21.5 11C21.5 5.20156 16.7984 0.5 11 0.5ZM15.2148 8.70312L13.1679 11L15.2148 13.2969C15.3562 13.4383 15.3562 13.65 15.2148 13.7914L13.7914 15.2148C13.65 15.3562 13.4383 15.3562 13.2969 15.2148L11 13.1679L8.70312 15.2148C8.56172 15.3562 8.35 15.3562 8.20859 15.2148L6.78516 13.7914C6.64375 13.65 6.64375 13.4383 6.78516 13.2969L8.83203 11L6.78516 8.70312C6.64375 8.56172 6.64375 8.35 6.78516 8.20859L8.20859 6.78516C8.35 6.64375 8.56172 6.64375 8.70312 6.78516L11 8.83203L13.2969 6.78516C13.4383 6.64375 13.65 6.64375 13.7914 6.78516L15.2148 8.20859C15.3562 8.35 15.3562 8.56172 15.2148 8.70312Z"
-                      fill="#ed0524"
-                    />
-                  </svg>
-                  <span className="text-md">{message}</span>
-                </div>
-              ))}
-            {schemeHere?.additionalVerificationDetails &&
-              schemeHere.additionalVerificationDetails.map((message, index) => (
-                <div key={index} className="flex items-start gap-3 py-1">
+            <div className="flex flex-col gap-4">
+              {schemeHere?.eligibleReasons.map((message, index) => (
+                <div key={index} className="flex items-start gap-3">
                   <svg
                     className="mt-0.5 h-6 w-6 flex-shrink-0"
                     viewBox="0 0 22 22"
@@ -94,19 +61,63 @@ function SupportDetails() {
                   >
                     <path
                       d="M11 0.5C5.20156 0.5 0.5 5.20156 0.5 11C0.5 16.7984 5.20156 21.5 11 21.5C16.7984 21.5 21.5 16.7984 21.5 11C21.5 5.20156 16.7984 0.5 11 0.5ZM15.5352 7.57109L10.5992 14.4148C10.5302 14.5111 10.4393 14.5896 10.3339 14.6437C10.2286 14.6978 10.1118 14.7261 9.99336 14.7261C9.87491 14.7261 9.75816 14.6978 9.6528 14.6437C9.54743 14.5896 9.45649 14.5111 9.3875 14.4148L6.46484 10.3648C6.37578 10.2406 6.46484 10.0672 6.61719 10.0672H7.71641C7.95547 10.0672 8.18281 10.182 8.32344 10.3789L9.99219 12.6945L13.6766 7.58516C13.8172 7.39062 14.0422 7.27344 14.2836 7.27344H15.3828C15.5352 7.27344 15.6242 7.44688 15.5352 7.57109V7.57109Z"
-                      fill="#d9dbda"
+                      fill="#2ec91c"
                     />
                   </svg>
                   <span className="text-md">{message}</span>
                 </div>
               ))}
-            {schemeHere?.otherDetails &&
-              schemeHere.eligibleReasons.length > 0 &&
-              schemeHere.otherDetails.map((message, index) => (
-                <div key={index} className="flex items-start gap-3 py-1">
-                  <span className="text-md">{message}</span>
-                </div>
-              ))}
+              {schemeHere?.additionalVerificationDetails &&
+                schemeHere.additionalVerificationDetails.map(
+                  (message, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      <svg
+                        className="mt-0.5 h-6 w-6 flex-shrink-0"
+                        viewBox="0 0 22 22"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M11 0.5C5.20156 0.5 0.5 5.20156 0.5 11C0.5 16.7984 5.20156 21.5 11 21.5C16.7984 21.5 21.5 16.7984 21.5 11C21.5 5.20156 16.7984 0.5 11 0.5ZM15.5352 7.57109L10.5992 14.4148C10.5302 14.5111 10.4393 14.5896 10.3339 14.6437C10.2286 14.6978 10.1118 14.7261 9.99336 14.7261C9.87491 14.7261 9.75816 14.6978 9.6528 14.6437C9.54743 14.5896 9.45649 14.5111 9.3875 14.4148L6.46484 10.3648C6.37578 10.2406 6.46484 10.0672 6.61719 10.0672H7.71641C7.95547 10.0672 8.18281 10.182 8.32344 10.3789L9.99219 12.6945L13.6766 7.58516C13.8172 7.39062 14.0422 7.27344 14.2836 7.27344H15.3828C15.5352 7.27344 15.6242 7.44688 15.5352 7.57109V7.57109Z"
+                          fill="#d9dbda"
+                        />
+                      </svg>
+                      <span className="text-md">{message}</span>
+                    </div>
+                  ),
+                )}
+              {schemeHere?.ineligibleReasons &&
+                schemeHere.ineligibleReasons.map((message, index) => (
+                  <div key={index} className="flex items-start gap-3">
+                    <svg
+                      className="mt-0.5 h-6 w-6 flex-shrink-0"
+                      viewBox="0 0 22 22"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g transform="translate(0.5 0.5)">
+                        <circle cx="10.5" cy="10.5" r="10.5" fill="#ed0524" />
+                        <g
+                          stroke="#FFFFFF"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="m6.5 14.5 8-8" />
+                          <path d="m6.5 6.5 8 8" />
+                        </g>
+                      </g>
+                    </svg>
+                    <span className="text-md">{message}</span>
+                  </div>
+                ))}
+              {schemeHere?.otherDetails &&
+                schemeHere.eligibleReasons.length > 0 &&
+                schemeHere.otherDetails.map((message, index) => (
+                  <div key={index} className="flex items-start gap-3">
+                    <span className="text-md">{message}</span>
+                  </div>
+                ))}
+            </div>
           </div>
         </div>
       </section>
