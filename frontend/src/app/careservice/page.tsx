@@ -248,7 +248,7 @@ export default function CareServiceRecommender() {
           Could you provide me your postal code to assist you better?
         </span>
         <Input
-          placeholder="e.g. 510296"
+          placeholder="e.g. 310149"
           value={postalCode}
           onChange={(e) => {
             setPostalCode(e.target.value);
