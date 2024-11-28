@@ -23,6 +23,7 @@ import { BackButton, BookmarkButton } from "@/ui/button";
 import { Divider } from "@chakra-ui/react";
 import { ReviewTargetType } from "@/types/review";
 import { constructAddress } from "@/util/address";
+import { formatPriceRange } from "@/util/priceInfo";
 
 type CareServicesData = {
   title: string;
@@ -420,6 +421,13 @@ export default function CareServiceRecommender() {
               className="max-w-24"
             />
             <span>(from {centre.reviewCount} reviews)</span>
+          </div>
+        )}
+        {centre.maxPrice !== null && (
+          <div className="flex flex-col gap-2">
+            <span>
+              <b>{formatPriceRange(centre.maxPrice, centre.minPrice)}/month</b>
+            </span>
           </div>
         )}
         <div className="flex flex-col gap-2">
