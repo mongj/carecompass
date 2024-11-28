@@ -137,7 +137,7 @@ export default function DaycareCentreDetails({
         </AccordionItem>
       </Accordion>
       <div className="flex flex-col gap-4">
-        {centre.maxPrice !== null && (
+        {centre.minPrice !== null && (
           <div className="flex flex-col">
             <span className="text-lg">
               <b>Price</b>
