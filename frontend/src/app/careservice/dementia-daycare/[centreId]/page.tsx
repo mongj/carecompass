@@ -39,6 +39,7 @@ import { useRouter } from "next/navigation";
 import { getRatingColor } from "@/util/helper";
 import Hidden from "@/ui/Hidden";
 import PhotoCarousel from "@/ui/carousel/PhotoCarousel";
+import { formatPriceRange } from "@/util/priceInfo";
 
 export default function DaycareCentreDetails({
   params,
@@ -136,9 +137,20 @@ export default function DaycareCentreDetails({
         </AccordionItem>
       </Accordion>
       <div className="flex flex-col gap-4">
+        {centre.maxPrice !== null && (
+          <div className="flex flex-col">
+            <span className="text-lg">
+              <b>Price</b>
+            </span>
+            <span>{`${formatPriceRange(
+              centre.maxPrice,
+              centre.minPrice,
+            )}/month`}</span>
+          </div>
+        )}
         <div className="flex flex-col">
-          <span>
-            <b>Operating hours: </b>
+          <span className="text-lg">
+            <b>Operating hours</b>
           </span>
           <span>{centre.operatingHours.join(", \n")}</span>
         </div>

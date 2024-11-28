@@ -1,6 +1,7 @@
 // Types for dementia daycare centre data
 
 import { Review } from "./review";
+import { Nullable } from "./util";
 
 export interface DDCBase {
   id: number;
@@ -20,6 +21,8 @@ export interface DDCBase {
   unitNo?: string;
   availability?: string;
   googleMapPlaceId?: string;
+  minPrice: Nullable<number>;
+  maxPrice: Nullable<number>;
 }
 export interface DDCDetail extends DDCBase {
   photos: string[];
