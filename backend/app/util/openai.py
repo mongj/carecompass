@@ -2,10 +2,10 @@
 
 import asyncio
 import json
-import os
 import re
 
 from app.core.database import *
+from app.core.config import config
 from typing import AsyncGenerator
 from openai import OpenAI
 from openai.types.beta.assistant_stream_event import (
@@ -29,8 +29,7 @@ async def stream_chat_responses(thread_id: str, query: str) -> AsyncGenerator[st
 
     stream = client.beta.threads.runs.create(
         thread_id=thread_id,
-        # TODO: get from config
-        assistant_id=os.getenv('OPENAI_ASSISTANT_ID'),
+        assistant_id=config.OPENAI_ASSISTANT_ID,
         stream=True,
         response_format={ "type": "json_object" }
     )
