@@ -423,10 +423,15 @@ export default function CareServiceRecommender() {
             <span>(from {centre.reviewCount} reviews)</span>
           </div>
         )}
-        {centre.maxPrice !== null && (
+        {centre.minPrice !== null && (
           <div className="flex flex-col gap-2">
             <span>
-              <b>{formatPriceRange(centre.maxPrice, centre.minPrice)}/month</b>
+              <b>
+                {`From ${formatPriceRange(
+                  centre.minPrice,
+                  centre.maxPrice,
+                )}/month`}
+              </b>
             </span>
           </div>
         )}

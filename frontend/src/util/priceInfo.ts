@@ -6,9 +6,9 @@ export function formatPrice(price: number) {
   return `${CURRENCY_SYMBOL}${price}`;
 }
 
-export function formatPriceRange(maxPrice: number, minPrice: Nullable<number>) {
-  if (minPrice === null) {
-    return `${CURRENCY_SYMBOL}${maxPrice}`;
+export function formatPriceRange(minPrice: number, maxPrice: Nullable<number>) {
+  if (maxPrice === null) {
+    return `${CURRENCY_SYMBOL}${minPrice}`;
   }
   return `${CURRENCY_SYMBOL}${minPrice} - ${maxPrice}`;
 }

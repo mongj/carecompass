@@ -142,7 +142,7 @@ export default function DaycareCentreDetails({
             <span className="text-lg">
               <b>Price</b>
             </span>
-            <span>{`${formatPriceRange(
+            <span>{`From ${formatPriceRange(
               centre.maxPrice,
               centre.minPrice,
             )}/month`}</span>
