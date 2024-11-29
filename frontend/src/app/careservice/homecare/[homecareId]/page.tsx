@@ -410,10 +410,10 @@ function FinancialSupportSection() {
   // TODO: fetch from backend
   const SCHEMES = [
     {
-      id: "PARENT-RELIEF",
-      name: "Parent Relief",
+      id: "MOH-NR-LTC-SUBSIDY",
+      name: "Non-Residential Long-Term Care (LTC) Services Subsidy",
       description:
-        "Recognises individuals who are supporting their parents, grandparents, parents-in-law or grandparents-in-law in Singapore.",
+        "Singapore Citizens and Permanent Residents can receive up to 80% and 55% subsidies for Non-Residential LTC services respectively.",
     },
     {
       id: "HOME-CAREGIVING-GRANT",
@@ -426,9 +426,11 @@ function FinancialSupportSection() {
   return (
     <section className="flex flex-col gap-4">
       <div className="flex flex-col">
-        <h1 className="text-xl font-semibold">Financial Support</h1>
+        <h1 className="text-xl font-semibold">
+          Recommended Support & Subsidies
+        </h1>
         <span className="text-sm text-gray-500">
-          Get the support you and loved ones need
+          Find out what assistance you may be eligible for.
         </span>
       </div>
       <section className="flex flex-col gap-4">
