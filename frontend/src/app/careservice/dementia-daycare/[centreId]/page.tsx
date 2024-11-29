@@ -40,6 +40,11 @@ import { getRatingColor } from "@/util/helper";
 import Hidden from "@/ui/Hidden";
 import PhotoCarousel from "@/ui/carousel/PhotoCarousel";
 import { formatPriceRange } from "@/util/priceInfo";
+import { UserData } from "@/types/user";
+import { MohNrLtcSubsidy } from "@/types/scheme";
+import { HttpStatusCode } from "axios";
+import { toast } from "sonner";
+import { PCHIDrawer } from "@/components/PCHIDrawer";
 
 export default function DaycareCentreDetails({
   params,
@@ -48,6 +53,10 @@ export default function DaycareCentreDetails({
 }) {
   const [isLoading, setIsLoading] = useState(true);
   const [centre, setCentre] = useState<DDCDetail>();
+  const [subsidyInfo, setSubsidyInfo] = useState<MohNrLtcSubsidy>();
+  const auth = useAuth();
+  const [user, setUser] = useState<UserData>();
+  const router = useRouter();
 
   useEffect(() => {
     api
@@ -63,7 +72,46 @@ export default function DaycareCentreDetails({
       });
   }, [params.centreId]);
 
-  if (isLoading) {
+  // We fetch from backend instead of store for now because store
+  // is currently not persisted across refreshes
+  useEffect(() => {
+    if (auth.isLoaded && auth.isSignedIn && !user) {
+      api
+        .get(`/users/${auth.userId}`)
+        .then((response) => {
+          if (response.status === HttpStatusCode.Ok) {
+            setUser(response.data);
+          } else {
+            toast.error("Failed to fetch user data");
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [auth.isLoaded, auth.isSignedIn, auth.userId, user]);
+
+  // Super hacky need to fix ASAP
+  useEffect(() => {
+    if (auth.isLoaded && auth.isSignedIn && !subsidyInfo) {
+      api
+        .post("subsidies/moh-nrltc", {
+          id: auth.userId,
+        })
+        .then((response) => {
+          if (response.status === HttpStatusCode.Ok) {
+            setSubsidyInfo(response.data);
+          } else if (response.status !== HttpStatusCode.BadRequest) {
+            toast.error("Failed to fetch subsidy info");
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [auth, subsidyInfo]);
+
+  if (isLoading || !auth.isLoaded || !user) {
     return <LoadingSpinner />;
   }
 
@@ -138,14 +186,73 @@ export default function DaycareCentreDetails({
       </Accordion>
       <div className="flex flex-col gap-4">
         {centre.minPrice !== null && (
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-2">
             <span className="text-lg">
-              <b>Price</b>
+              <b>Fees</b>
             </span>
-            <span>{`From ${formatPriceRange(
-              centre.maxPrice,
-              centre.minPrice,
-            )}/month`}</span>
+            <span>
+              <b>Before subsidy: </b>
+              {`From ${formatPriceRange(
+                centre.minPrice,
+                centre.maxPrice,
+              )}/month`}
+            </span>
+            {auth.isSignedIn && user.monthly_pchi === null && (
+              <section className="flex flex-col gap-4 rounded border border-brand-primary-300 bg-brand-primary-100 p-4">
+                <p className="text-brand-primary-900">
+                  This service is eligible for MOH Non-Residential Long-Term
+                  Care Subsidy. Share your household information to see how much
+                  subsidy you may be eligible for.
+                </p>
+                <PCHIDrawer />
+              </section>
+            )}
+            {subsidyInfo && (
+              <>
+                <span>
+                  <b>After subsidy: </b>
+                  {`From est. ${formatPriceRange(
+                    centre.minPrice * (1 - subsidyInfo.subsidyLevel / 100),
+                    centre.maxPrice
+                      ? centre.maxPrice * (1 - subsidyInfo.subsidyLevel / 100)
+                      : centre.maxPrice,
+                  )}/month`}
+                </span>
+                <section className="flex flex-col place-items-end gap-4 rounded border border-brand-primary-300 bg-brand-primary-100 p-4">
+                  <p className="text-brand-primary-900">
+                    You may qualify for <b>{subsidyInfo.subsidyLevel}%</b>{" "}
+                    subsidy from the MOH Non-Residential Long-Term Care Subsidy!
+                  </p>
+                  <p className="text-sm leading-tight text-brand-primary-900">
+                    *Based on an estimated per capita monthly household income
+                    of&nbsp;
+                    <b>
+                      {subsidyInfo.monthlyPchi.toLocaleString("en-SG", {
+                        style: "currency",
+                        currency: "SGD",
+                      })}
+                    </b>
+                    {subsidyInfo.monthlyPchi === 0 &&
+                      ` (and Annual Property Value of ${subsidyInfo.annualPropertyValue.toLocaleString(
+                        "en-SG",
+                        {
+                          style: "currency",
+                          currency: "SGD",
+                        },
+                      )})`}
+                  </p>
+                  <Button
+                    variant="link"
+                    rightIcon={<BxRightArrowAlt />}
+                    onClick={() => {
+                      router.push("/dashboard/schemes?id=MOH-NR-LTC-SUBSIDY");
+                    }}
+                  >
+                    Learn more
+                  </Button>
+                </section>
+              </>
+            )}
           </div>
         )}
         <div className="flex flex-col">
@@ -451,15 +558,17 @@ function FinancialSupportSection() {
 
   useEffect(() => {
     router.prefetch(`/dashboard/schemes`);
+    router.prefetch(`/dashboard/schemes?id=MOH-NR-LTC-SUBSIDY`);
+    router.prefetch(`/dashboard/schemes?id=HOME-CAREGIVING-GRANT`);
   }, [router]);
 
   // TODO: fetch from backend
   const SCHEMES = [
     {
-      id: "PARENT-RELIEF",
-      name: "Parent Relief",
+      id: "MOH-NR-LTC-SUBSIDY",
+      name: "MOH Non-Residential Long-Term Care Subsidy",
       description:
-        "Recognises individuals who are supporting their parents, grandparents, parents-in-law or grandparents-in-law in Singapore.",
+        "Defrays cost of long-term care services for persons living in the community",
     },
     {
       id: "HOME-CAREGIVING-GRANT",
@@ -481,7 +590,7 @@ function FinancialSupportSection() {
         {SCHEMES.map((scheme) => (
           <button
             key={scheme.id}
-            className="flex flex-col gap-2 rounded-md border border-gray-200 bg-white p-4 text-left"
+            className="flex flex-col gap-2 rounded-md border border-gray-200 bg-white p-4 text-left hover:bg-gray-50"
             onClick={() => router.push(`/dashboard/schemes?id=${scheme.id}`)}
           >
             <span className="font-semibold">{scheme.name}</span>

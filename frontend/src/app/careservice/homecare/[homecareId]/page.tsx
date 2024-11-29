@@ -410,16 +410,16 @@ function FinancialSupportSection() {
   // TODO: fetch from backend
   const SCHEMES = [
     {
-      id: "PARENT-RELIEF",
-      name: "Parent Relief",
-      description:
-        "Recognises individuals who are supporting their parents, grandparents, parents-in-law or grandparents-in-law in Singapore.",
-    },
-    {
       id: "HOME-CAREGIVING-GRANT",
       name: "Home Caregiving Grant",
       description:
         "Defrays caregiving costs for eligible individuals with permanent moderate disability living in the community.",
+    },
+    {
+      id: "MOH-NR-LTC-SUBSIDY",
+      name: "MOH Non-Residential Long-Term Care Subsidy",
+      description:
+        "Defrays cost of long-term care services for persons living in the community",
     },
   ];
 
@@ -435,7 +435,7 @@ function FinancialSupportSection() {
         {SCHEMES.map((scheme) => (
           <button
             key={scheme.id}
-            className="flex flex-col gap-2 rounded-md border border-gray-200 bg-white p-4 text-left"
+            className="flex flex-col gap-2 rounded-md border border-gray-200 bg-white p-4 text-left hover:bg-gray-50"
             onClick={() => router.push(`/dashboard/schemes?id=${scheme.id}`)}
           >
             <span className="font-semibold">{scheme.name}</span>

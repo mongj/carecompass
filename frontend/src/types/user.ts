@@ -28,7 +28,14 @@ export interface UserDataBase {
   care_recipient_relationship: Relationship;
 }
 
-export interface UserData extends UserDataBase {
+export interface UserDataFull extends UserDataBase {
+  household_size: number;
+  total_monthly_household_income: number;
+  annual_property_value: number;
+  monthly_pchi: number;
+}
+
+export interface UserData extends UserDataFull {
   id: number;
   threads: UserThreadData[];
 }
