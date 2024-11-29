@@ -32,6 +32,7 @@ class DementiaDaycareBase(BaseModel):
     operating_hours: List[str] = []
 
     # Optional fields
+    description: Optional[str] = None
     phone: Optional[str] = None
     email: Optional[str] = None
     website: Optional[str] = None

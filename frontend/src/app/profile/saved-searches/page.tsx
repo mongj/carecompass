@@ -14,6 +14,7 @@ import LoadingSpinner from "@/ui/loading";
 import { MultiSelect } from "@opengovsg/design-system-react";
 import { ReviewTargetType } from "@/types/review";
 import React, { useEffect, useState } from "react";
+import BackButton from "@/ui/button/BackButton";
 
 export default function SavedSearchesPage() {
   const auth = useAuth();
@@ -41,6 +42,7 @@ export default function SavedSearchesPage() {
 
   return (
     <div className="flex h-full w-full flex-col gap-4">
+      <BackButton />
       <h1 className="text-2xl font-semibold">Saved Searches</h1>
       <div className="flex flex-col gap-2">
         <div className="flex items-center gap-2">
@@ -63,7 +65,7 @@ export default function SavedSearchesPage() {
           colorScheme="gray"
         />
       </div>
-      <section className="flex h-full flex-col gap-2">
+      <section className="flex flex-col gap-2 pb-8">
         {isLoading ? (
           <LoadingSpinner />
         ) : (

@@ -133,44 +133,46 @@ export default function DaycareCentreDetails({
         <PhotoCarousel photos={centre.photos} />
       </Hidden>
       <h1 className="text-xl font-semibold">{centre.name}</h1>
-      <section className="flex place-content-end gap-2">
-        <BookmarkButton
-          targetId={centre.id}
-          targetType={ReviewTargetType.DEMENTIA_DAY_CARE}
-          title={centre.name}
-          size="sm"
-          variant="outline"
-        />
-        <ShareButton size="sm" variant="outline" />
-      </section>
-      {/* Review Scores, temporarily copied from homecare page */}
-      {centre.reviewCount > 0 && (
-        <div className="flex w-full items-center gap-4 py-3">
-          <div className="flex items-center gap-2">
-            <div
-              className="flex h-12 w-12 place-content-center place-items-center rounded p-2 text-xl font-semibold text-white"
-              style={{
-                backgroundColor: getRatingColor(centre.averageRating),
-              }}
-            >
-              <span>{centre.averageRating?.toFixed(1) || "N/A"}</span>
-            </div>
-          </div>
-          <div className="flex w-full flex-col gap-1">
-            <div className="h-8 w-full rounded bg-[#DADADA]">
+      <section className="flex place-content-between gap-2">
+        {centre.reviewCount > 0 && (
+          <div className="flex w-full items-center gap-4 py-3">
+            <div className="flex items-center gap-2">
               <div
-                className="flex h-full items-center justify-between rounded bg-[#7D7D7D] px-2 text-sm text-white"
+                className="flex h-12 w-12 place-content-center place-items-center rounded p-2 text-xl font-semibold text-white"
                 style={{
-                  width: `${((centre.averageRating || 0) / 5) * 100}%`,
+                  backgroundColor: getRatingColor(centre.averageRating),
                 }}
               >
-                <span>Google</span>
                 <span>{centre.averageRating?.toFixed(1) || "N/A"}</span>
               </div>
             </div>
+            {centre.reviewCount > 0 && (
+              <div className="flex flex-col gap-1">
+                <Rating
+                  readOnly
+                  value={centre.averageRating}
+                  className="max-w-24"
+                />
+                <span className="text-sm">
+                  (from {centre.reviewCount} reviews)
+                </span>
+              </div>
+            )}
           </div>
+        )}
+        <div className="flex place-content-end place-items-center gap-2">
+          <BookmarkButton
+            targetId={centre.id}
+            targetType={ReviewTargetType.DEMENTIA_DAY_CARE}
+            title={centre.name}
+            size="sm"
+            variant="outline"
+            mini
+          />
+          <ShareButton size="sm" variant="outline" />
         </div>
-      )}
+      </section>
+      {centre.description && <CustomMarkdown content={centre.description} />}
       <Accordion allowToggle>
         <AccordionItem>
           <AccordionButton>

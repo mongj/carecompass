@@ -85,9 +85,9 @@ export default function BookmarkButton({
   return mini ? (
     <IconButton
       {...props}
-      aria-label="Save this page"
+      aria-label={isMarked ? "Remove from saved searches" : "Save this page"}
       onClick={isMarked ? handleUnmark : handleMark}
-      leftIcon={
+      icon={
         <BookmarkIcon size={16} fill={isMarked ? "currentColor" : "none"} />
       }
     />

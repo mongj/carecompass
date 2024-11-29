@@ -23,7 +23,9 @@ export interface DDCBase {
   googleMapPlaceId?: string;
   minPrice: Nullable<number>;
   maxPrice: Nullable<number>;
+  description: Nullable<string>;
 }
+
 export interface DDCDetail extends DDCBase {
   photos: string[];
   reviewCount: number;

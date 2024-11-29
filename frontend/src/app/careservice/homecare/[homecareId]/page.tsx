@@ -98,44 +98,45 @@ export default function HomeCareDetailPage() {
       {/* Header with Name and Rating */}
       <div className="flex flex-col gap-2">
         <h1 className="text-2xl font-bold">{provider.name}</h1>
-        {/* Save and Share Buttons */}
-        <section className="mt-3 flex place-content-start gap-2">
-          <BookmarkButton
-            size="sm"
-            variant="outline"
-            targetId={provider.id}
-            targetType={ReviewTargetType.DEMENTIA_HOME_CARE}
-            title={provider.name}
-            link={`/careservice/homecare/${provider.id}`}
-          />
-          <ShareButton size="sm" variant="outline" />
-        </section>
-        {/* Review Scores */}
-        <div className="flex w-full items-center gap-4 py-3">
-          <div className="flex items-center gap-2">
-            <div
-              className="flex h-12 w-12 place-content-center place-items-center rounded p-2 text-xl font-semibold text-white"
-              style={{
-                backgroundColor: getRatingColor(provider.rating),
-              }}
-            >
-              <span>{provider.rating?.toFixed(1) || "N/A"}</span>
-            </div>
-          </div>
-          <div className="flex w-full flex-col gap-1">
-            <div className="h-8 w-full rounded bg-[#DADADA]">
-              <div
-                className="flex h-full items-center justify-between rounded bg-[#7D7D7D] px-2 text-sm text-white"
-                style={{
-                  width: `${((provider.rating || 0) / 5) * 100}%`,
-                }}
-              >
-                <span>Google</span>
-                <span>{provider.rating?.toFixed(1) || "N/A"}</span>
+        <section className="flex place-content-between gap-2">
+          {provider.reviewCount > 0 && (
+            <div className="flex w-full items-center gap-4 py-3">
+              <div className="flex items-center gap-2">
+                <div
+                  className="flex h-12 w-12 place-content-center place-items-center rounded p-2 text-xl font-semibold text-white"
+                  style={{
+                    backgroundColor: getRatingColor(provider.rating),
+                  }}
+                >
+                  <span>{provider.rating?.toFixed(1) || "N/A"}</span>
+                </div>
               </div>
+              {provider.reviewCount > 0 && (
+                <div className="flex flex-col gap-1">
+                  <Rating
+                    readOnly
+                    value={provider.rating}
+                    className="max-w-24"
+                  />
+                  <span className="text-sm">
+                    (from {provider.reviewCount} reviews)
+                  </span>
+                </div>
+              )}
             </div>
+          )}
+          <div className="flex place-content-end place-items-center gap-2">
+            <BookmarkButton
+              targetId={provider.id}
+              targetType={ReviewTargetType.DEMENTIA_DAY_CARE}
+              title={provider.name}
+              size="sm"
+              variant="outline"
+              mini
+            />
+            <ShareButton size="sm" variant="outline" />
           </div>
-        </div>
+        </section>
       </div>
 
       {/* Address Section */}
