@@ -1,18 +1,25 @@
 "use client";
 
-import { useUserStore } from "@/stores/user";
-import { SchemeData } from "@/types/scheme";
+import { api } from "@/api";
+import { PCHIDrawer } from "@/components/PCHIDrawer";
+import { SchemeData, SubsidyInfo } from "@/types/scheme";
+import { UserData } from "@/types/user";
 import { BackButton } from "@/ui/button";
 import CustomMarkdown from "@/ui/CustomMarkdown";
 import LoadingSpinner from "@/ui/loading";
 import { checkAllSchemesEligibility } from "@/util/eligibilityChecker";
+import { useAuth } from "@clerk/nextjs";
+import { HttpStatusCode } from "axios";
 import { useSearchParams } from "next/navigation";
 import { useState, useEffect, Suspense } from "react";
+import { toast } from "sonner";
 
 function SupportDetails() {
   const param = useSearchParams();
   const [scheme, setScheme] = useState<SchemeData>();
-  const user = useUserStore((state) => state.user);
+  const [subsidyInfo, setSubsidyInfo] = useState<SubsidyInfo>();
+  const auth = useAuth();
+  const [user, setUser] = useState<UserData>();
 
   useEffect(() => {
     fetch("/data/schemes.json")
@@ -22,7 +29,52 @@ function SupportDetails() {
       });
   }, [param]);
 
-  if (!scheme) {
+  // We fetch from backend instead of store for now because store
+  // is currently not persisted across refreshes
+  useEffect(() => {
+    if (auth.isLoaded && auth.isSignedIn && !user) {
+      api
+        .get(`/users/${auth.userId}`)
+        .then((response) => {
+          if (response.status === HttpStatusCode.Ok) {
+            setUser(response.data);
+          } else {
+            toast.error("Failed to fetch user data");
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [auth.isLoaded, auth.isSignedIn, auth.userId, user]);
+
+  // Super hacky need to fix ASAP
+  useEffect(() => {
+    if (
+      scheme &&
+      scheme.id === "MOH-NR-LTC-SUBSIDY" &&
+      auth.isLoaded &&
+      auth.isSignedIn &&
+      !subsidyInfo
+    ) {
+      api
+        .post("subsidies/moh-nrltc", {
+          id: auth.userId,
+        })
+        .then((response) => {
+          if (response.status === HttpStatusCode.Ok) {
+            setSubsidyInfo(response.data);
+          } else if (response.status !== HttpStatusCode.BadRequest) {
+            toast.error("Failed to fetch subsidy info");
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [auth, scheme, subsidyInfo]);
+
+  if (!scheme || !auth.isLoaded || !user) {
     return <LoadingSpinner />;
   }
 
@@ -47,6 +99,42 @@ function SupportDetails() {
       </section>
       <section className="flex flex-col gap-2">
         <h3 className="text-lg font-semibold">Eligibility</h3>
+        {auth.isSignedIn &&
+          scheme.pchiRequired &&
+          user.monthly_pchi === null && (
+            <section className="flex flex-col gap-4 rounded border border-brand-primary-300 bg-brand-primary-100 p-4">
+              <p className="text-brand-primary-900">
+                Share your household information to see how much subsidy you may
+                be eligible for
+              </p>
+              <PCHIDrawer />
+            </section>
+          )}
+        {subsidyInfo && (
+          <section className="flex flex-col gap-4 rounded border border-brand-primary-300 bg-brand-primary-100 p-4">
+            <p className="text-brand-primary-900">
+              You may qualify for <b>{subsidyInfo.subsidyLevel}%</b> subsidy!
+            </p>
+            <p className="text-sm leading-tight text-brand-primary-900">
+              *Based on an estimated per capita monthly household income
+              of&nbsp;
+              <b>
+                {subsidyInfo.monthlyPchi.toLocaleString("en-SG", {
+                  style: "currency",
+                  currency: "SGD",
+                })}
+              </b>
+              {subsidyInfo.monthlyPchi === 0 &&
+                ` (and Annual Property Value of ${subsidyInfo.annualPropertyValue.toLocaleString(
+                  "en-SG",
+                  {
+                    style: "currency",
+                    currency: "SGD",
+                  },
+                )})`}
+            </p>
+          </section>
+        )}
         <div className="flex flex-col place-content-start place-items-start gap-3 rounded-md border border-gray-200 bg-white p-4 text-left">
           {/* <CustomMarkdown content={scheme.eligibility} /> */}
           <div className="w-full">

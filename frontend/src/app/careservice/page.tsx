@@ -23,6 +23,7 @@ import { BackButton, BookmarkButton } from "@/ui/button";
 import { Divider } from "@chakra-ui/react";
 import { ReviewTargetType } from "@/types/review";
 import { constructAddress } from "@/util/address";
+import { formatPriceRange } from "@/util/priceInfo";
 
 type CareServicesData = {
   title: string;
@@ -247,7 +248,7 @@ export default function CareServiceRecommender() {
           Could you provide me your postal code to assist you better?
         </span>
         <Input
-          placeholder="e.g. 510296"
+          placeholder="e.g. 310149"
           value={postalCode}
           onChange={(e) => {
             setPostalCode(e.target.value);
@@ -420,6 +421,18 @@ export default function CareServiceRecommender() {
               className="max-w-24"
             />
             <span>(from {centre.reviewCount} reviews)</span>
+          </div>
+        )}
+        {centre.minPrice !== null && (
+          <div className="flex flex-col gap-2">
+            <span>
+              <b>
+                {`From ${formatPriceRange(
+                  centre.minPrice,
+                  centre.maxPrice,
+                )}/month (pre-subsidy)`}
+              </b>
+            </span>
           </div>
         )}
         <div className="flex flex-col gap-2">

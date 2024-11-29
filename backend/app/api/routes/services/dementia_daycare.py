@@ -16,6 +16,7 @@ from app.util.maps import getCoordFromAddress, getRouteDistance
 router = APIRouter(prefix="/dementia-daycare", tags=["dementia-daycare"])
 
 # Pydantic models for request/response validation
+# TODO: add price info from scraper
 class DementiaDaycareBase(BaseModel):
     model_config = ConfigDict(
         alias_generator=to_camel,
@@ -40,6 +41,8 @@ class DementiaDaycareBase(BaseModel):
     unit_no: Optional[str] = None
     availability: Optional[str] = None
     google_map_place_id: Optional[str] = None
+    min_price: Optional[int] = None
+    max_price: Optional[int] = None
 
 class DementiaDaycareDetails(DementiaDaycareBase):
     model_config = ConfigDict(from_attributes=True)

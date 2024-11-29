@@ -1,25 +1,29 @@
 "use client";
 
+import { Button } from "@chakra-ui/react";
 import { BackButton } from "@/ui/button";
-import ExternalLink from "@/ui/ExternalLink";
+
 type PartnerData = {
   name: string;
   description: string;
   link: string;
+  cta: string;
 };
 
 const PARTNERS: PartnerData[] = [
   {
-    name: "Caregivers Alliance Limited",
+    name: "Dementia Singapore Caregiver Support & Network",
     description:
-      "Caregivers Alliance Limited (CAL) is a non-profit organisation in Singapore dedicated to meeting the needs of caregivers of persons with mental health issues through education, support networks, crisis support, tailored services and self-care enablement.\n\nWhile there are other organisations providing support to the community affected by mental health issues, only CAL focuses exclusively on supporting caregivers.",
-    link: "https://www.cal.org.sg/programme-support",
+      "Promotes self-care by providing a platform for caregivers to nurture interests, learn skills, and connect with other caregivers.",
+    link: "https://dementia.org.sg/csn",
+    cta: "Learn More",
   },
   {
-    name: "Dementia Singapore",
+    name: "CareCompass User Community",
     description:
-      "Singapore’s leading Social Service Agency in specialised dementia care, caregiver support, training, consultancy, and advocacy.",
-    link: "https://dementia.org.sg/csg",
+      "Join our community of caregivers on Telegram to exchange advice and provide feedback on what you’d like to see on the app!",
+    link: "https://t.me/+OFlWBBcS7OdlZTM1",
+    cta: "Join Now",
   },
 ];
 
@@ -51,7 +55,18 @@ function PartnerCard({ partner }: { partner: PartnerData }) {
         <span className="whitespace-pre-line leading-tight">
           {partner.description}
         </span>
-        <ExternalLink link={partner.link} text="Learn more" />
+        <Button
+          as="a"
+          href={partner.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          backgroundColor="#005DEA"
+          size="sm"
+          width="fit-content"
+          mt={3}
+        >
+          {partner.cta}
+        </Button>
       </div>
     </div>
   );
