@@ -410,25 +410,27 @@ function FinancialSupportSection() {
   // TODO: fetch from backend
   const SCHEMES = [
     {
+      id: "MOH-NR-LTC-SUBSIDY",
+      name: "Non-Residential Long-Term Care (LTC) Services Subsidy",
+      description:
+        "Singapore Citizens and Permanent Residents can receive up to 80% and 55% subsidies for Non-Residential LTC services respectively.",
+    },
+    {
       id: "HOME-CAREGIVING-GRANT",
       name: "Home Caregiving Grant",
       description:
         "Defrays caregiving costs for eligible individuals with permanent moderate disability living in the community.",
-    },
-    {
-      id: "MOH-NR-LTC-SUBSIDY",
-      name: "MOH Non-Residential Long-Term Care Subsidy",
-      description:
-        "Defrays cost of long-term care services for persons living in the community",
     },
   ];
 
   return (
     <section className="flex flex-col gap-4">
       <div className="flex flex-col">
-        <h1 className="text-xl font-semibold">Financial Support</h1>
+        <h1 className="text-xl font-semibold">
+          Recommended Support & Subsidies
+        </h1>
         <span className="text-sm text-gray-500">
-          Get the support you and loved ones need
+          Find out what assistance you may be eligible for.
         </span>
       </div>
       <section className="flex flex-col gap-4">

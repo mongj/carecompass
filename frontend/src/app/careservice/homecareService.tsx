@@ -93,7 +93,7 @@ export default function HomeCareServices() {
                 <Box mt={2}>
                   <Tooltip label={service.description} placement="top">
                     <button aria-label={`Info about ${service.label}`}>
-                      <QuestionIcon color="gray.500" w={4} h={4} />
+                      <QuestionIcon color="gray.500" w={5} h={5} />
                     </button>
                   </Tooltip>
                 </Box>

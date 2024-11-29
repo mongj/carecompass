@@ -5,6 +5,7 @@ import { getRatingColor } from "@/util/helper";
 import { BookmarkButton } from "@/ui/button";
 import { ReviewTargetType } from "@/types/review";
 import { BxRightArrowAlt } from "@opengovsg/design-system-react";
+import { Rating } from "@smastrom/react-rating";
 
 interface ProviderCardProps {
   provider: HomeCareDetail;
@@ -23,7 +24,7 @@ export function ProviderCard({ provider, baseUrl }: ProviderCardProps) {
       <h2 className="text-xl font-semibold">{provider.name}</h2>
 
       {/* Review Scores */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3">
         <div className="flex items-center gap-2">
           <div
             className="rounded p-2 text-xl font-semibold text-white"
@@ -31,21 +32,12 @@ export function ProviderCard({ provider, baseUrl }: ProviderCardProps) {
               backgroundColor: getRatingColor(provider.rating),
             }}
           >
-            {provider.rating?.toFixed(2) || "N/A"}
+            {provider.rating?.toFixed(1) || "N/A"}
           </div>
         </div>
-        <div className="flex flex-col gap-1">
-          <div className="h-8 w-56 rounded bg-[#DADADA]">
-            <div
-              className="flex h-full items-center justify-between rounded bg-[#7D7D7D] px-2 text-sm text-white"
-              style={{
-                width: `${((provider.rating || 0) / 5) * 100}%`,
-              }}
-            >
-              <span>Google</span>
-              <span>{provider.rating?.toFixed(2) || "N/A"}</span>
-            </div>
-          </div>
+        <div className="flex flex-col">
+          <Rating readOnly value={provider.rating} className="max-w-24" />
+          <span>(from {provider.reviewCount} reviews)</span>
         </div>
       </div>
 
