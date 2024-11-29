@@ -32,4 +32,10 @@ class User(Base):
     care_recipient_residence = Column(SQLAlchemyEnum(Residence))
     care_recipient_relationship = Column(SQLAlchemyEnum(Relationship))
 
+    # PCHI info
+    household_size = Column(Integer, nullable=True)
+    total_monthly_household_income = Column(Integer, nullable=True)
+    annual_property_value = Column(Integer, nullable=True)
+    monthly_pchi = Column(Integer, nullable=True)
+
     threads = relationship("Thread", back_populates="user")

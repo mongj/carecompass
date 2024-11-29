@@ -437,7 +437,7 @@ function FinancialSupportSection() {
         {SCHEMES.map((scheme) => (
           <button
             key={scheme.id}
-            className="flex flex-col gap-2 rounded-md border border-gray-200 bg-white p-4 text-left"
+            className="flex flex-col gap-2 rounded-md border border-gray-200 bg-white p-4 text-left hover:bg-gray-50"
             onClick={() => router.push(`/dashboard/schemes?id=${scheme.id}`)}
           >
             <span className="font-semibold">{scheme.name}</span>

@@ -430,7 +430,7 @@ export default function CareServiceRecommender() {
                 {`From ${formatPriceRange(
                   centre.minPrice,
                   centre.maxPrice,
-                )}/month`}
+                )}/month (pre-subsidy)`}
               </b>
             </span>
           </div>

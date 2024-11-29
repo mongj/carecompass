@@ -6,12 +6,12 @@ export default function PhotoCarousel({ photos }: { photos: string[] }) {
     <Carousel
       slides={photos.map((photo, index) => (
         <Image
+          key={index}
           src={photo}
           alt="photo"
-          key={index}
           width={4000}
           height={1080}
-          className="w-full"
+          className="aspect-[4/3] w-full object-contain"
         />
       ))}
     />

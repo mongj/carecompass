@@ -1,4 +1,4 @@
-import { Citizenship, Residence, UserDataBase } from "../types/user";
+import { Citizenship, Residence, UserDataFull } from "../types/user";
 
 // Types
 interface EligibilityResult {
@@ -29,7 +29,7 @@ interface DetailedEligibilityResult {
 const CURRENT_YEAR = new Date().getFullYear();
 
 // Individual scheme checkers
-export const checkParentRelief = (user: UserDataBase): EligibilityResult => {
+export const checkParentRelief = (user: UserDataFull): EligibilityResult => {
   const reasons = [
     `Your dependant(s) are 55 years of age and above in ${CURRENT_YEAR}`,
     "If your dependant(s) were living with you in the same household in Singapore, you qualify for $9,000 in tax relief per dependant",
@@ -66,7 +66,7 @@ export const checkParentRelief = (user: UserDataBase): EligibilityResult => {
 };
 
 export const checkCaregiversTrainingGrant = (
-  user: UserDataBase,
+  user: UserDataFull,
 ): EligibilityResult => {
   const reasons = [
     "Care recipient is a Singapore Citizen or Permanent Resident",
@@ -109,17 +109,17 @@ export const checkCaregiversTrainingGrant = (
 };
 
 export const checkHomeCaregivingGrant = (
-  user: UserDataBase,
+  user: UserDataFull,
 ): EligibilityResult => {
   const reasons = [
     "Care recipient is a Singapore Citizen (SC)",
     "Care recipient is not in a residential long-term care institution (e.g. nursing home)",
+    "If household has no income, the annual value of property must be not more than $21,000",
+    "If your household monthly income per person is $1,500 or less and your household owns no more than one property, you may qualify for $400 in monthly cash payouts",
+    "If your household monthly income per person is between $1,501 and $3,600, you may qualify for $250 monthly cash payout",
   ];
   const additionalVerificationCriteria = [
     "Care recipient must always require some assistance with at least 3 Activities of Daily Living, as certified via a Functional Assessment Report",
-    "If your household monthly income per person is $1,500 or less* and your household owns no more than one property, you may qualify for $400 in monthly cash payouts",
-    "If household has no income, the annual value of property must be less than $21,000",
-    "If your household monthly income per person is between $1,501 and $3,600, you may qualify for $250 monthly cash payout",
   ];
 
   const criteriaCount = reasons.length + additionalVerificationCriteria.length;
@@ -138,6 +138,30 @@ export const checkHomeCaregivingGrant = (
     ineligibleReasons.push(reasons[1]);
   }
 
+  if (user.monthly_pchi === null) {
+    // User has not submitted PCHI data
+    additionalVerificationCriteria.push(reasons[2]);
+    additionalVerificationCriteria.push(reasons[3]);
+    additionalVerificationCriteria.push(reasons[4]);
+  } else if (user.monthly_pchi === 0) {
+    if (
+      user.annual_property_value !== null &&
+      user.annual_property_value <= 21000
+    ) {
+      eligibleReasons.push(reasons[2]);
+    } else {
+      ineligibleReasons.push(reasons[2]);
+    }
+  } else if (user.monthly_pchi <= 1500) {
+    eligibleReasons.push(reasons[3]);
+  } else if (user.monthly_pchi >= 1501 && user.monthly_pchi <= 3600) {
+    eligibleReasons.push(reasons[4]);
+  } else {
+    ineligibleReasons.push(reasons[2]);
+    ineligibleReasons.push(reasons[3]);
+    ineligibleReasons.push(reasons[4]);
+  }
+
   return {
     id: "HOME-CAREGIVING-GRANT",
     criteriaCount,
@@ -148,7 +172,7 @@ export const checkHomeCaregivingGrant = (
 };
 
 export const checkMdwLevyConcession = (
-  user: UserDataBase,
+  user: UserDataFull,
 ): EligibilityResult => {
   let eligibleReasons: string[] = [];
   let ineligibleReasons: string[] = [];
@@ -200,13 +224,12 @@ export const checkMdwLevyConcession = (
   };
 };
 
-export const checkMohLtcSubsidy = (user: UserDataBase): EligibilityResult => {
+export const checkMohLtcSubsidy = (user: UserDataFull): EligibilityResult => {
   const reasons = [
     "User of Non-Residential Long-Term Care service is a Singapore Citizen (SC) or Permanent Resident (PR)",
   ];
   const additionalVerificationCriteria = [
     "The service provider is government-funded",
-    "Subsidy tiers are based on monthly household per capita income. Click [here](redirect to our eligibility checker when built or the MOH link under benefits) to check the subsidy you may be eligible for.",
   ];
   const criteriaCount = reasons.length + additionalVerificationCriteria.length;
 
@@ -232,7 +255,7 @@ export const checkMohLtcSubsidy = (user: UserDataBase): EligibilityResult => {
 };
 
 export const checkAllSchemesEligibility = (
-  user: UserDataBase,
+  user: UserDataFull,
 ): DetailedEligibilityResult[] => {
   const checkers = [
     checkParentRelief,

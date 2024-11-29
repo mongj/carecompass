@@ -7,3 +7,7 @@ export type OptionalEnumFields<T> = {
 export type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
 
 export type Nullable<T> = T | null;
+
+export type WithNullableField<T, K extends keyof T> = Omit<T, K> & {
+  [P in K]: Nullable<T[P]>;
+};
