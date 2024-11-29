@@ -171,6 +171,7 @@ export default function DaycareCentreDetails({
           </div>
         </div>
       )}
+      {centre.description && <CustomMarkdown content={centre.description} />}
       <Accordion allowToggle>
         <AccordionItem>
           <AccordionButton>

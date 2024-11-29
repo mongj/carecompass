@@ -32,4 +32,5 @@ class DementiaDaycare(Base):
     photos: Mapped[List[str]] = mapped_column(ARRAY(String))
     min_price: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
     max_price: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    description: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     
