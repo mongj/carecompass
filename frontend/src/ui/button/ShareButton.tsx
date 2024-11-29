@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import {
   Button,
   ButtonProps,
+  IconButton,
   TouchableTooltip,
 } from "@opengovsg/design-system-react";
 import { VisuallyHidden } from "@chakra-ui/react";
@@ -64,13 +65,21 @@ export default function ShareButton({
   return (
     <Drawer.Root>
       <Drawer.Trigger>
-        <Button
-          {...props}
-          leftIcon={<Share2Icon size={16} />}
-          aria-label="Share this page"
-        >
-          Share
-        </Button>
+        {props.size === "sm" || props.size === "xs" ? (
+          <IconButton
+            {...props}
+            aria-label="Share this page"
+            icon={<Share2Icon size={16} />}
+          />
+        ) : (
+          <Button
+            {...props}
+            leftIcon={<Share2Icon size={16} />}
+            aria-label="Share this page"
+          >
+            Share
+          </Button>
+        )}
       </Drawer.Trigger>
       <Drawer.Portal>
         <Drawer.Overlay className="fixed inset-0 bg-black/40" />
