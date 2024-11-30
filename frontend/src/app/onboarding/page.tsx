@@ -86,7 +86,7 @@ function PersonalDetailsForm() {
     })
       .then((res) => {
         if (res.ok) {
-          router.push("/chat");
+          router.push("/home");
         } else {
           toast.error("Something went wrong. Please try again later.");
         }
