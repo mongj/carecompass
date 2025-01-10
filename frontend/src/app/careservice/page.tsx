@@ -17,13 +17,13 @@ import {
 } from "next/navigation";
 import LoadingSpinner from "@/ui/loading";
 import { api } from "@/api";
-import { Rating } from "@smastrom/react-rating";
 import HomeCareServices from "./homecareService";
 import { BackButton, BookmarkButton } from "@/ui/button";
 import { Divider } from "@chakra-ui/react";
 import { ReviewTargetType } from "@/types/review";
 import { constructAddress } from "@/util/address";
 import { formatPriceRange } from "@/util/priceInfo";
+import ReviewScore from "@/components/ReviewScore";
 
 type CareServicesData = {
   title: string;
@@ -414,14 +414,10 @@ export default function CareServiceRecommender() {
       <div className="flex flex-col gap-4 rounded-md border border-gray-200 p-4">
         <span className="text-lg font-semibold">{centre.name}</span>
         {centre.reviewCount > 0 && (
-          <div className="flex gap-2">
-            <Rating
-              readOnly
-              value={centre.averageRating}
-              className="max-w-24"
-            />
-            <span>(from {centre.reviewCount} reviews)</span>
-          </div>
+          <ReviewScore
+            rating={centre.averageRating}
+            reviewCount={centre.reviewCount}
+          />
         )}
         {centre.minPrice !== null && (
           <div className="flex flex-col gap-2">

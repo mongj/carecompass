@@ -1,11 +1,10 @@
 import { Button, Divider } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { HomeCareDetail } from "@/types/homecare";
-import { getRatingColor } from "@/util/helper";
 import { BookmarkButton } from "@/ui/button";
 import { ReviewTargetType } from "@/types/review";
 import { BxRightArrowAlt } from "@opengovsg/design-system-react";
-import { Rating } from "@smastrom/react-rating";
+import ReviewScore from "./ReviewScore";
 
 interface ProviderCardProps {
   provider: HomeCareDetail;
@@ -22,25 +21,10 @@ export function ProviderCard({ provider, baseUrl }: ProviderCardProps) {
   return (
     <div className="flex flex-col gap-3 rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
       <h2 className="text-xl font-semibold">{provider.name}</h2>
-
-      {/* Review Scores */}
-      <div className="flex items-center gap-3">
-        <div className="flex items-center gap-2">
-          <div
-            className="rounded p-2 text-xl font-semibold text-white"
-            style={{
-              backgroundColor: getRatingColor(provider.rating),
-            }}
-          >
-            {provider.rating?.toFixed(1) || "N/A"}
-          </div>
-        </div>
-        <div className="flex flex-col">
-          <Rating readOnly value={provider.rating} className="max-w-24" />
-          <span>(from {provider.reviewCount} reviews)</span>
-        </div>
-      </div>
-
+      <ReviewScore
+        rating={provider.rating}
+        reviewCount={provider.reviewCount}
+      />
       {/* Services Offered */}
       <div>
         <h3 className="mb-2 text-sm font-bold">Services Offered</h3>
@@ -48,7 +32,7 @@ export function ProviderCard({ provider, baseUrl }: ProviderCardProps) {
           {provider.services?.map((service) => (
             <div key={service} className="flex items-center gap-2">
               <svg
-                className="h-5 w-5 text-green-500"
+                className="h-5 w-5 text-emerald-600"
                 viewBox="0 0 24 24"
                 fill="currentColor"
               >

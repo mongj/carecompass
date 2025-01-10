@@ -8,6 +8,7 @@ import {
 } from "@/types/homecare";
 import { BackButton } from "@/ui/button";
 import LoadingSpinner from "@/ui/loading";
+import { Button } from "@opengovsg/design-system-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
@@ -19,6 +20,11 @@ export default function HomeCarePage() {
   const searchParams = useSearchParams();
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const queriedServices = searchParams.get("services")?.split(",") || [];
+  const [showAll, setShowAll] = useState(false);
+
+  const handleToggleShowAll = () => {
+    setShowAll((state) => !state);
+  };
 
   useEffect(() => {
     router.prefetch(`/careservice/homecare/[homecareId]`);
@@ -64,6 +70,10 @@ export default function HomeCarePage() {
     );
   }, [providers, selectedServices]);
 
+  const displayedProviders = useMemo(() => {
+    return filteredProviders.slice(0, showAll ? filteredProviders.length : 3);
+  }, [filteredProviders, showAll]);
+
   if (isLoading) {
     return <LoadingSpinner />;
   }
@@ -74,7 +84,7 @@ export default function HomeCarePage() {
         <BackButton />
         <h1 className="text-2xl font-bold">Home Care Services</h1>
         <p className="py-1 font-semibold text-gray-600">
-          Find care centres and clinics near you.
+          Find suitable home care centres providers.
         </p>
       </div>
 
@@ -113,7 +123,7 @@ export default function HomeCarePage() {
 
       {/* Provider Cards */}
       <div className="mt-4 flex flex-col gap-4">
-        {filteredProviders.map((provider) => (
+        {displayedProviders.map((provider) => (
           <ProviderCard
             key={provider.id}
             provider={provider}
@@ -121,6 +131,17 @@ export default function HomeCarePage() {
           />
         ))}
       </div>
+      {filteredProviders.length > 3 && (
+        <Button
+          variant="outline"
+          onClick={handleToggleShowAll}
+          className="mb-4 mt-6"
+        >
+          {showAll
+            ? "Show me just the top 3 providers"
+            : "Show me the full list of home care providers"}
+        </Button>
+      )}
     </div>
   );
 }
