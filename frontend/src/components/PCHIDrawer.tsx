@@ -1,17 +1,13 @@
 import { useState } from "react";
 import { Drawer } from "vaul";
-import {
-  Button,
-  FormLabel,
-  NumberInput,
-  TouchableTooltip,
-} from "@opengovsg/design-system-react";
+import { Button, FormLabel, NumberInput } from "@opengovsg/design-system-react";
 import { useUser } from "@clerk/nextjs";
 import { api } from "@/api";
 import { PCHICreate } from "@/types/pchi";
 import { QuestionIcon } from "@chakra-ui/icons";
 import CustomMarkdown from "@/ui/CustomMarkdown";
 import { WithNullableField } from "@/types/util";
+import MobileTooltip from "./MobileTooltip";
 
 export function PCHIDrawer() {
   const { user } = useUser();
@@ -116,11 +112,12 @@ export function PCHIDrawer() {
                 <div className="flex flex-col gap-1">
                   <FormLabel marginBottom={0} marginTop={4} isRequired>
                     What is the Annual Value of your residential property?&nbsp;
-                    <TouchableTooltip label="Annual Value is the estimated gross annual rent of a property if it were to be rented out, excluding furnishings and maintenance fees. It is determined by IRAS, and may be checked via IRAS website. Subsidy levels in 2024 will be determined using 2023 Annual Values">
-                      <button aria-label="Annual Value is the estimated gross annual rent of a property if it were to be rented out, excluding furnishings and maintenance fees. It is determined by IRAS, and may be checked via IRAS website. Subsidy levels in 2024 will be determined using 2023 Annual Values">
-                        <QuestionIcon color="gray.500" w={4} h={4} />
-                      </button>
-                    </TouchableTooltip>
+                    <MobileTooltip
+                      label="Annual Value is the estimated gross annual rent of a property if it were to be rented out, excluding furnishings and maintenance fees. It is determined by IRAS, and may be checked via IRAS website. Subsidy levels in 2024 will be determined using 2023 Annual Values"
+                      placement="top"
+                    >
+                      <QuestionIcon color="gray.500" w={4} h={4} />
+                    </MobileTooltip>
                   </FormLabel>
                   <CustomMarkdown
                     content="Check your property's Annual Value on [IRAS](https://mytax.iras.gov.sg/ESVWeb/default.aspx)"
