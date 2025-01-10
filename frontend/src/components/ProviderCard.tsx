@@ -32,7 +32,7 @@ export function ProviderCard({ provider, baseUrl }: ProviderCardProps) {
           {provider.services?.map((service) => (
             <div key={service} className="flex items-center gap-2">
               <svg
-                className="h-5 w-5 text-green-500"
+                className="h-5 w-5 text-emerald-600"
                 viewBox="0 0 24 24"
                 fill="currentColor"
               >
