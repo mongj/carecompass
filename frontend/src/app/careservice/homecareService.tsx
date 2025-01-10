@@ -1,8 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Box, Flex, Stack, Tooltip } from "@chakra-ui/react";
-import { Button, Checkbox } from "@opengovsg/design-system-react";
+import { Box, Flex, Stack } from "@chakra-ui/react";
+import {
+  Button,
+  Checkbox,
+  TouchableTooltip,
+} from "@opengovsg/design-system-react";
 import { useRouter } from "next/navigation";
 import { QuestionIcon } from "@chakra-ui/icons";
 import BackButton from "@/ui/button/BackButton";
@@ -91,11 +95,11 @@ export default function HomeCareServices() {
                   <span className="-pr-1 font-semibold">{service.label}</span>
                 </Checkbox>
                 <Box mt={2}>
-                  <Tooltip label={service.description} placement="top">
+                  <TouchableTooltip label={service.description} placement="top">
                     <button aria-label={`Info about ${service.label}`}>
                       <QuestionIcon color="gray.500" w={5} h={5} />
                     </button>
-                  </Tooltip>
+                  </TouchableTooltip>
                 </Box>
               </Flex>
             </div>
