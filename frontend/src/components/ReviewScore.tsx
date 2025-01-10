@@ -12,7 +12,7 @@ function ReviewScore({
     <div className="flex items-center gap-3">
       <div className="flex items-center gap-2">
         <div
-          className="rounded p-2 text-xl font-semibold text-white"
+          className="h-12 w-12 place-content-center place-items-center rounded-lg p-2 text-center align-middle text-xl font-semibold text-white"
           style={{
             backgroundColor: getRatingColor(rating),
           }}
