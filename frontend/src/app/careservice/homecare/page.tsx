@@ -137,9 +137,7 @@ export default function HomeCarePage() {
           onClick={handleToggleShowAll}
           className="mb-4 mt-6"
         >
-          {showAll
-            ? "Show me just the top 3 providers"
-            : "Show me the full list of home care providers"}
+          {showAll ? "Show me just the top 3 providers" : "Show all"}
         </Button>
       )}
     </div>
