@@ -159,7 +159,9 @@ function UserProfileCard() {
       {auth.isSignedIn ? (
         <div className="flex w-full flex-col place-items-start gap-4">
           <div className="flex w-full gap-4">
-            <UserButton />
+            <UserButton
+              appearance={{ elements: { userButtonAvatarBox: "w-12 h-12" } }}
+            />
             <div className="flex flex-col">
               <span className="text-lg font-semibold">{user?.fullName}</span>
               <span className="text-sm text-gray-500">
