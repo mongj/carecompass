@@ -1,8 +1,14 @@
+import { Nullable, WithNullableField } from "./util";
+
 export interface PCHIBase {
   householdSize: number;
   totalMonthlyHouseholdIncome: number;
   monthlyPchi: number;
-  annualPropertyValue: number;
+  annualPropertyValue: Nullable<number>;
 }
 
-export interface PCHICreate extends PCHIBase {}
+export interface PCHIFormData
+  extends WithNullableField<
+    PCHIBase,
+    "householdSize" | "totalMonthlyHouseholdIncome" | "annualPropertyValue"
+  > {}

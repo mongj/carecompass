@@ -19,13 +19,19 @@ export enum Relationship {
   NON_FAMILY = "NON_FAMILY",
 }
 
-export interface UserDataBase {
-  clerk_id: string;
+export interface CaregiverData {
   citizenship: Citizenship;
+}
+
+export interface CareRecipientData {
   care_recipient_age: number;
   care_recipient_citizenship: Citizenship;
   care_recipient_residence: Residence;
   care_recipient_relationship: Relationship;
+}
+
+export interface UserDataBase extends CaregiverData, CareRecipientData {
+  clerk_id: string;
 }
 
 export interface UserDataFull extends UserDataBase {

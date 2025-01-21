@@ -7,12 +7,21 @@ import {
   UserButton,
   useUser,
 } from "@clerk/nextjs";
-import { Button, Divider, Skeleton } from "@chakra-ui/react";
+import {
+  AccordionIcon,
+  AccordionButton,
+  Accordion,
+  AccordionItem,
+  Button,
+  Skeleton,
+  AccordionPanel,
+} from "@chakra-ui/react";
 import {
   BookmarkIcon,
   ChevronRightIcon,
   LogOutIcon,
   PencilIcon,
+  InfoIcon,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -21,6 +30,11 @@ import { HttpStatusCode } from "axios";
 import { api } from "@/api";
 import { toast } from "sonner";
 import { formatPrice } from "@/util/priceInfo";
+import {
+  getFormattedUserCitizenship,
+  getFormattedUserRelationship,
+  getFormattedUserResidence,
+} from "@/util/userPropMapping";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -48,50 +62,6 @@ export default function ProfilePage() {
     }
   }, [auth.isLoaded, auth.isSignedIn, auth.userId, user]);
 
-  const userDataDisplay = [
-    {
-      label: "Citizenship",
-      value: user?.citizenship,
-    },
-    {
-      label: "Loved one's relationship",
-      value: user?.care_recipient_relationship,
-    },
-    {
-      label: "Loved one's age",
-      value: user?.care_recipient_age,
-    },
-    {
-      label: "Loved one's citizenship",
-      value: user?.care_recipient_citizenship,
-    },
-    {
-      label: "Loved one's residence",
-      value: user?.care_recipient_residence,
-    },
-  ];
-
-  const pchiDisplay = [
-    {
-      label: "Household size",
-      value: user?.household_size,
-    },
-    {
-      label: "Total monthly household income",
-      value: user
-        ? formatPrice(user.total_monthly_household_income)
-        : undefined,
-    },
-    {
-      label: "Annual property value",
-      value: user ? formatPrice(user.annual_property_value) : undefined,
-    },
-    {
-      label: "Monthly PCHI",
-      value: user ? formatPrice(user.monthly_pchi) : undefined,
-    },
-  ];
-
   return (
     <div className="mb-8 flex h-full w-full flex-col gap-2">
       <h1 className="mb-2 text-2xl font-semibold">My Profile</h1>
@@ -102,40 +72,13 @@ export default function ProfilePage() {
           router.push("/profile/saved-searches");
         }}
       >
-        <BookmarkIcon size={24} />
-        <span className="w-full text-left font-semibold">Saved Searches</span>
-        <ChevronRightIcon size={24} />
+        <BookmarkIcon size={20} />
+        <span className="w-f<BookmarkIcon size={24} />ull text-left font-semibold">
+          Saved Searches
+        </span>
+        <ChevronRightIcon size={24} className="ml-auto" />
       </button>
-      {user && (
-        <section className="flex w-full flex-col gap-1 rounded-lg border border-gray-200 bg-white p-4">
-          <Button
-            variant="outline"
-            size="xs"
-            rightIcon={<PencilIcon size={16} />}
-            isDisabled={true}
-            className="mb-2"
-          >
-            Edit
-          </Button>
-          {userDataDisplay.map((item) => (
-            <div key={item.label}>
-              <span>{item.label}: </span>
-              <span className="font-semibold">{item.value}</span>
-            </div>
-          ))}
-          {user.monthly_pchi !== null && (
-            <>
-              <Divider className="my-2" />
-              {pchiDisplay.map((item) => (
-                <div key={item.label}>
-                  <span>{item.label}: </span>
-                  <span className="font-semibold">{item.value}</span>
-                </div>
-              ))}
-            </>
-          )}
-        </section>
-      )}
+      {user && <UserInfoAccordian user={user} />}
     </div>
   );
 }
@@ -193,5 +136,167 @@ function UserProfileCard() {
         </SignInButton>
       )}
     </section>
+  );
+}
+
+function UserInfoAccordian({ user }: { user: UserData }) {
+  const router = useRouter();
+
+  const caregiverDataDisplay = [
+    {
+      label: "Citizenship",
+      value: getFormattedUserCitizenship(user.citizenship),
+    },
+  ];
+
+  const careRecipientDataDisplay = [
+    {
+      label: "Relationship to caregiver",
+      value: getFormattedUserRelationship(user.care_recipient_relationship),
+    },
+    {
+      label: "Age",
+      value: user.care_recipient_age,
+    },
+    {
+      label: "Citizenship",
+      value: getFormattedUserCitizenship(user.care_recipient_citizenship),
+    },
+    {
+      label: "Staying at",
+      value: getFormattedUserResidence(user.care_recipient_residence),
+    },
+  ];
+
+  const pchiDisplay = [
+    {
+      label: "Household size",
+      value: user.household_size,
+    },
+    {
+      label: "Total monthly household income",
+      value: formatPrice(user.total_monthly_household_income),
+    },
+    {
+      label: "Annual property value",
+      value: formatPrice(user.annual_property_value),
+    },
+    {
+      label: "Monthly PCHI*",
+      value: formatPrice(user.monthly_pchi),
+    },
+  ];
+
+  return (
+    user && (
+      <section className="flex w-full flex-col rounded-lg border border-gray-200 bg-white">
+        <h3 className="text-md flex items-center gap-2 p-4 font-semibold">
+          <InfoIcon size={20} />
+          Personal Details
+        </h3>
+        <Accordion allowMultiple>
+          <AccordionItem>
+            <h2>
+              <AccordionButton>
+                <span className="flex-1 text-left">Caregiver Information</span>
+                <AccordionIcon />
+              </AccordionButton>
+            </h2>
+            <AccordionPanel pb={4}>
+              <section className="flex flex-col">
+                {caregiverDataDisplay.map((item) => (
+                  <div key={item.label}>
+                    <span>{item.label}: </span>
+                    <span className="font-semibold">{item.value}</span>
+                  </div>
+                ))}
+              </section>
+              <section className="mt-2 flex">
+                <Button
+                  variant="link"
+                  size="xs"
+                  className="ml-auto"
+                  leftIcon={<PencilIcon size={16} />}
+                  onClick={() => {
+                    router.push("/profile/caregiver-info/edit");
+                  }}
+                >
+                  Edit
+                </Button>
+              </section>
+            </AccordionPanel>
+          </AccordionItem>
+          <AccordionItem>
+            <h2>
+              <AccordionButton>
+                <span className="flex-1 text-left">
+                  Care Recipient Information
+                </span>
+                <AccordionIcon />
+              </AccordionButton>
+            </h2>
+            <AccordionPanel pb={4}>
+              <section className="flex flex-col">
+                {careRecipientDataDisplay.map((item) => (
+                  <div key={item.label}>
+                    <span>{item.label}: </span>
+                    <span className="font-semibold">{item.value}</span>
+                  </div>
+                ))}
+              </section>
+              <section className="mt-2 flex">
+                <Button
+                  variant="link"
+                  size="xs"
+                  className="ml-auto"
+                  leftIcon={<PencilIcon size={16} />}
+                  onClick={() => {
+                    router.push("/profile/care-recipient-info/edit");
+                  }}
+                >
+                  Edit
+                </Button>
+              </section>
+            </AccordionPanel>
+          </AccordionItem>
+          {user.monthly_pchi !== null && (
+            <AccordionItem>
+              <h2>
+                <AccordionButton>
+                  <span className="flex-1 text-left">Household Income</span>
+                  <AccordionIcon />
+                </AccordionButton>
+              </h2>
+              <AccordionPanel pb={4}>
+                <section className="flex flex-col">
+                  {pchiDisplay.map((item) => (
+                    <div key={item.label}>
+                      <span>{item.label}: </span>
+                      <span className="font-semibold">{item.value}</span>
+                    </div>
+                  ))}
+                </section>
+                <span className="text-xs text-gray-500">
+                  *PCHI is the Per Capita Household Income.
+                </span>
+                <section className="mt-2 flex">
+                  <Button
+                    variant="link"
+                    size="xs"
+                    className="ml-auto"
+                    leftIcon={<PencilIcon size={16} />}
+                    onClick={() => {
+                      router.push("/profile/household-income/edit");
+                    }}
+                  >
+                    Edit
+                  </Button>
+                </section>
+              </AccordionPanel>
+            </AccordionItem>
+          )}
+        </Accordion>
+      </section>
+    )
   );
 }

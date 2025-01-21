@@ -29,6 +29,18 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     pass
 
+# TODO: find a way to make all fields optional
+# without setting them explicitly
+class UserUpdate(UserBase):    
+    model_config = ConfigDict(from_attributes=True)
+
+    clerk_id: Optional[str] = None
+    citizenship: Optional[Citizenship] = None
+    care_recipient_age: Optional[int] = None
+    care_recipient_citizenship: Optional[Citizenship] = None
+    care_recipient_residence: Optional[Residence] = None
+    care_recipient_relationship: Optional[Relationship] = None
+
 class UserResponse(UserBase):
     id: int # primary key in db
     threads: List[ThreadReadResponse] = []
@@ -62,7 +74,6 @@ def create_user(userToAdd: UserCreate, db: db_dependency) -> UserResponse:
     db.refresh(user)
     return user
 
-
 @router.get("/users/{user_id}", response_model=UserResponse)
 def read_user(user_id: str, db: db_dependency):
     user = db.query(User).filter(User.clerk_id == user_id).first()
@@ -72,7 +83,30 @@ def read_user(user_id: str, db: db_dependency):
 
     return user
 
-@router.post("/users/{user_id}/pchi", response_model=UserResponse)
+@router.patch("/users/{user_id}", response_model=UserResponse)
+def update_user(user_id: str, user_info: UserUpdate, db: db_dependency):
+    # stored_item_data = items[item_id]
+    # stored_item_model = Item(**stored_item_data)
+    # update_data = item.dict(exclude_unset=True)
+    # updated_item = stored_item_model.copy(update=update_data)
+    # items[item_id] = jsonable_encoder(updated_item)
+    # return updated_item
+    user = db.query(User).filter(User.clerk_id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="user not found")
+
+    # update_data = user_info.model_dump(exclude_unset=True)
+    # updated_user = user.copy(update=update_data)
+    data_dict = user_info.model_dump(exclude_unset=True)
+
+    for key, value in data_dict.items():
+        setattr(user, key, value)
+    db.commit()
+    db.refresh(user)
+    return user
+
+# TODO: move this into the PATCH endpoint above
+@router.put("/users/{user_id}/pchi", response_model=UserResponse)
 def add_pchi_info(user_id: str, pchi_info: PCHICreate, db: db_dependency):
     user = db.query(User).filter(User.clerk_id == user_id).first()
     if not user:

@@ -2,8 +2,11 @@ import { Nullable } from "@/types/util";
 
 const CURRENCY_SYMBOL = "$";
 
-export function formatPrice(price: number) {
-  return `${CURRENCY_SYMBOL}${price}`;
+export function formatPrice(price: Nullable<number>) {
+  if (price === null) {
+    return "-";
+  }
+  return `${CURRENCY_SYMBOL}${Number.isInteger(price) ? price : price.toFixed(2)}`;
 }
 
 export function formatPriceRange(
