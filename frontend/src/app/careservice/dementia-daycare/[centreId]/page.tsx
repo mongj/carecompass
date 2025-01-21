@@ -235,6 +235,7 @@ export default function DaycareCentreDetails({
                       })}
                     </b>
                     {subsidyInfo.monthlyPchi === 0 &&
+                      subsidyInfo.annualPropertyValue !== null &&
                       ` (and Annual Property Value of ${subsidyInfo.annualPropertyValue.toLocaleString(
                         "en-SG",
                         {

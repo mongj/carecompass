@@ -125,6 +125,7 @@ function SupportDetails() {
                 })}
               </b>
               {subsidyInfo.monthlyPchi === 0 &&
+                subsidyInfo.annualPropertyValue !== null &&
                 ` (and Annual Property Value of ${subsidyInfo.annualPropertyValue.toLocaleString(
                   "en-SG",
                   {
