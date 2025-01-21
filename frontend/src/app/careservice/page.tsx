@@ -24,6 +24,7 @@ import { ReviewTargetType } from "@/types/review";
 import { constructAddress } from "@/util/address";
 import { formatPriceRange } from "@/util/priceInfo";
 import ReviewScore from "@/components/ReviewScore";
+import SGWBanner from "@/components/SGWBanner";
 
 type CareServicesData = {
   title: string;
@@ -370,6 +371,10 @@ export default function CareServiceRecommender() {
         <Button variant="outline" onClick={handleShowAll}>
           Show me the full list of centres
         </Button>
+        {/* TODO: fix this hack */}
+        <div className="pb-8">
+          <SGWBanner />
+        </div>
       </section>
     );
   }

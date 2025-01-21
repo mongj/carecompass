@@ -1,6 +1,7 @@
 "use client";
 
 import { ProviderCard } from "@/components/ProviderCard";
+import SGWBanner from "@/components/SGWBanner";
 import {
   HomeCareDetail,
   SERVICE_ID_TO_LABEL,
@@ -140,6 +141,10 @@ export default function HomeCarePage() {
           {showAll ? "Show me just the top 3 providers" : "Show all"}
         </Button>
       )}
+      {/* TODO: fix this hack */}
+      <div className="pb-8">
+        <SGWBanner />
+      </div>
     </div>
   );
 }

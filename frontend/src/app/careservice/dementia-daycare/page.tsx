@@ -1,6 +1,7 @@
 "use client";
 
 import { api } from "@/api";
+import SGWBanner from "@/components/SGWBanner";
 import { DDCBase } from "@/types/ddc";
 import { ReviewTargetType } from "@/types/review";
 import { BackButton, BookmarkButton } from "@/ui/button";
@@ -63,6 +64,10 @@ export default function DementiaDaycarePage() {
         {filteredCentres.map((centre) => (
           <CentreCard key={centre.id} centre={centre} />
         ))}
+      </div>
+      {/* TODO: fix this hack */}
+      <div className="pb-8">
+        <SGWBanner />
       </div>
     </div>
   );
