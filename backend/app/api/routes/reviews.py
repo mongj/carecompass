@@ -53,7 +53,7 @@ class ReviewResponse(ReviewBase):
     published_time: datetime
 
 
-@router.get("/", response_model=List[ReviewResponse])
+@router.get("", response_model=List[ReviewResponse])
 def list_reviews(
     db: db_dependency,
     skip: Optional[int] = None,
@@ -78,7 +78,7 @@ def list_reviews(
     return reviews
 
 
-@router.post("/", response_model=ReviewResponse, status_code=201)
+@router.post("", response_model=ReviewResponse, status_code=201)
 def create_review(review: ReviewCreate, db: db_dependency):
     """
     Create a new review.

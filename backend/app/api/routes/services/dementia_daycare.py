@@ -96,7 +96,7 @@ class DementiaDaycareAddress(BaseModel):
 
 # Routes
 # List all dementia daycare centers
-@router.get("/", response_model=List[DementiaDaycareBaseResponse])
+@router.get("", response_model=List[DementiaDaycareBaseResponse])
 async def get_all_daycare_centers(
     db: db_dependency,
     skip: Optional[int] = None,
@@ -213,7 +213,7 @@ async def get_daycare_center(
     )
 
 # Create new dementia daycare center
-@router.post("/", status_code=status.HTTP_201_CREATED)
+@router.post("", status_code=status.HTTP_201_CREATED)
 def create_daycare_center(
     center: DementiaDaycareCreate,
     db: db_dependency
@@ -301,7 +301,7 @@ async def update_daycare_center(
         )
 
 # Upsert dementia daycare center
-@router.put("/", response_model=DementiaDaycareDetailResponse)
+@router.put("", response_model=DementiaDaycareDetailResponse)
 async def upsert_daycare_center(
     center: DementiaDaycareCreate,
     db: db_dependency

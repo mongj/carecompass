@@ -32,7 +32,7 @@ class BookmarkResponse(BookmarkBase):
     id: int
 
 
-@router.get("/", response_model=List[BookmarkResponse])
+@router.get("", response_model=List[BookmarkResponse])
 def list_bookmarks(
     db: db_dependency,
     skip: Optional[int] = None,
@@ -57,7 +57,7 @@ def list_bookmarks(
     return bookmarks
 
 
-@router.post("/", response_model=BookmarkResponse, status_code=201)
+@router.post("", response_model=BookmarkResponse, status_code=201)
 def create_bookmark(bookmark: BookmarkCreate, db: db_dependency):
     """
     Create a new bookmark.

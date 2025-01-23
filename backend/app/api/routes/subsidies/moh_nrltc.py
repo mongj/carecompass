@@ -19,7 +19,7 @@ class PCHIResponse(PCHIBase):
     correct_as_of: str
 
 # Routes
-@router.post("/", response_model=PCHIResponse)
+@router.post("", response_model=PCHIResponse)
 def calculate_pchi(user_info: UserInfo, db: db_dependency):
     user = db.query(User).filter(User.clerk_id == user_info.id).first()
     if not user:
