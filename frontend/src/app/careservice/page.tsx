@@ -309,9 +309,11 @@ export default function CareServiceRecommender() {
         <Button
           className="w-full"
           onClick={() => {
-            posthog.capture("daycare_preferences", {
-              data: otherPreferences,
-            });
+            if (otherPreferences.length > 0) {
+              posthog.capture("daycare_preferences", {
+                data: otherPreferences,
+              });
+            }
             const p = new URLSearchParams(searchParams.toString());
             // Temporary fix to set the step to 6 without triggering the increment function
             p.set("step", "3");
