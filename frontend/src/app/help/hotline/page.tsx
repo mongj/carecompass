@@ -10,12 +10,6 @@ type HotlineData = {
 
 const HOTLINES: HotlineData[] = [
   {
-    name: "Community Outreach Team (CREST)",
-    description:
-      "Provides emotional support for caregivers and persons with or at risk of dementia. Helps facilitate linkages with relevant health and social care services where necessary. ",
-    link: "1800-650-6060",
-  },
-  {
     name: "Dementia Helpline",
     description:
       "Provides information and service linkages on dementia care. Operated by Dementia Singapore, Singapore’s leading Social Service Agency (SSA) in specialised dementia care.",
