@@ -1,6 +1,15 @@
 "use client";
 
+import { api } from "@/api";
+import ReviewScore from "@/components/ReviewScore";
+import SGWBanner from "@/components/SGWBanner";
 import { DDCRecommendation } from "@/types/ddc";
+import { ReviewTargetType } from "@/types/review";
+import { BackButton, BookmarkButton } from "@/ui/button";
+import LoadingSpinner from "@/ui/loading";
+import { constructAddress } from "@/util/address";
+import { formatPriceRange } from "@/util/priceInfo";
+import { Divider } from "@chakra-ui/react";
 import {
   Badge,
   Button,
@@ -9,22 +18,14 @@ import {
   Textarea,
 } from "@opengovsg/design-system-react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 import {
   ReadonlyURLSearchParams,
   useRouter,
   useSearchParams,
 } from "next/navigation";
-import LoadingSpinner from "@/ui/loading";
-import { api } from "@/api";
+import posthog from "posthog-js";
+import { useEffect, useState } from "react";
 import HomeCareServices from "./homecareService";
-import { BackButton, BookmarkButton } from "@/ui/button";
-import { Divider } from "@chakra-ui/react";
-import { ReviewTargetType } from "@/types/review";
-import { constructAddress } from "@/util/address";
-import { formatPriceRange } from "@/util/priceInfo";
-import ReviewScore from "@/components/ReviewScore";
-import SGWBanner from "@/components/SGWBanner";
 
 type CareServicesData = {
   title: string;
@@ -288,6 +289,7 @@ export default function CareServiceRecommender() {
   function DaycareOtherPreferences() {
     const router = useRouter();
     const searchParams = useSearchParams();
+    const [otherPreferences, setOtherPreferences] = useState("");
 
     return (
       <section className="flex flex-col gap-4">
@@ -299,10 +301,17 @@ export default function CareServiceRecommender() {
           Are there any other information you&apos;d like us to be mindful of?
         </span>
         {/* This is just a placeholder for now */}
-        <Textarea rows={5} />
+        <Textarea
+          rows={5}
+          value={otherPreferences}
+          onChange={(e) => setOtherPreferences(e.target.value)}
+        />
         <Button
           className="w-full"
           onClick={() => {
+            posthog.capture("daycare_preferences", {
+              data: otherPreferences,
+            });
             const p = new URLSearchParams(searchParams.toString());
             // Temporary fix to set the step to 6 without triggering the increment function
             p.set("step", "3");
