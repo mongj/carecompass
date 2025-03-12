@@ -146,7 +146,7 @@ function AssistantMessage({ content }: { content: string }) {
                 rightIcon={<BxRightArrowAlt />}
                 variant="outline"
                 paddingY={6}
-                onClick={() => router.push("/programmes")}
+                onClick={() => router.push("/help/education")}
               >
                 {response.content}
               </Button>
