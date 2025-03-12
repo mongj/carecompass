@@ -1,3 +1,4 @@
+import { useCurrentThreadStore } from "@/stores/currentThread";
 import {
   BotResponse,
   BotResponseCardAction,
@@ -6,14 +7,13 @@ import {
   Message,
   MessageRole,
 } from "@/types/chat";
+import { useChatQuery } from "@/util/hooks/useChatQuery";
 import { Avatar } from "@chakra-ui/react";
 import { Button, BxRightArrowAlt } from "@opengovsg/design-system-react";
-import { parse } from "partial-json";
-import { usePathname, useRouter } from "next/navigation";
-import { useChatQuery } from "@/util/hooks/useChatQuery";
-import { useCurrentThreadStore } from "@/stores/currentThread";
-import CustomMarkdown from "../CustomMarkdown";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { usePathname, useRouter } from "next/navigation";
+import { parse } from "partial-json";
+import CustomMarkdown from "../CustomMarkdown";
 
 export default function ChatMessage({ message }: { message: Message }) {
   return (
@@ -49,6 +49,7 @@ function AssistantMessage({ content }: { content: string }) {
   const { handleSubmitPrompt } = useChatQuery(currentChatId);
 
   // Parse the JSON string into a BotResponse object
+  content = content.replaceAll(/\\\\/g, "\\");
   content = content.replaceAll(/\\"/g, '"');
   const parsedContent: BotResponse = parse(content);
 
