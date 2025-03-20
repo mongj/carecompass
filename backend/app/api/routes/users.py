@@ -1,11 +1,12 @@
 from typing import List, Optional
+
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
 
 from app.api.routes.threads import ThreadReadResponse
 from app.core.database import db_dependency
-from app.models import User, Citizenship, Residence, Relationship
+from app.models import Citizenship, Relationship, Residence, User
 
 router = APIRouter()
 
@@ -61,7 +62,7 @@ class PCHICreate(PCHIBase):
     pass
 
 # Routes
-@router.post("/users/", response_model=UserResponse)
+@router.post("/users", response_model=UserResponse)
 def create_user(userToAdd: UserCreate, db: db_dependency) -> UserResponse:
     # check if user already exists
     user = db.query(User).filter(User.clerk_id == userToAdd.clerk_id).first()
