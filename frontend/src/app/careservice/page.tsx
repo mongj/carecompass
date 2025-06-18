@@ -205,7 +205,21 @@ export default function CareServiceRecommender() {
         className={`flex place-content-start place-items-start gap-2 rounded-md border border-gray-200 p-4 text-left ${!service.enabled && "bg-gray-100"} transition-all duration-150 hover:bg-gray-50`}
         onClick={handleClick}
         disabled={!service.enabled}
+        data-sentry-component="CareServiceButton"
+        data-sentry-element={
+          service.title === "Daycare Services"
+            ? "CTA-Daycare"
+            : service.title === "Home Care Services"
+            ? "CTA-Homecare"
+            : service.title === "Hire a Foreign Domestic Worker"
+            ? "CTA-FDW"
+            : service.title === "Engage a Nursing Home"
+            ? "CTA-NursingHome"
+            : undefined
+        }
       >
+
+        
         <Image src={service.icon} alt="ds" width={40} height={40} />
         <div className="flex flex-col gap-2">
           <span className="text-lg font-semibold">{service.title}</span>
