@@ -78,6 +78,14 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
+    const addToHomeScreenPrompted = localStorage.getItem(
+      "cc_add_to_homescreen_prompted",
+    );
+    if (addToHomeScreenPrompted !== "true") {
+      router.push("/add-to-homescreen");
+      return;
+    }
+
     router.prefetch("/careservice");
     router.prefetch("/dashboard");
     router.prefetch("/help");

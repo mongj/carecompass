@@ -62,7 +62,14 @@ function UserInfoChecker() {
               user: data,
             };
           });
-          router.push("/home");
+          const addToHomeScreenPrompted = localStorage.getItem(
+            "cc_add_to_homescreen_prompted",
+          );
+          if (addToHomeScreenPrompted !== "true") {
+            router.push("/add-to-homescreen");
+          } else {
+            router.push("/home");
+          }
         });
       } else if (res.status === 404) {
         router.push(`/onboarding?id=${user.id}`);
