@@ -55,7 +55,7 @@ export default function AddToHomeScreen() {
   const router = useRouter();
 
   return (
-    <div className="flex h-dvh max-h-dvh flex-col place-items-center gap-4 p-8">
+    <div className="flex h-full flex-col place-items-center gap-4 overflow-y-auto p-8">
       <Image
         src="img/shield-with-tick.svg"
         alt="add to homescreen"
@@ -67,8 +67,8 @@ export default function AddToHomeScreen() {
         Welcome to the <br /> CareCompass Community
       </h1>
       <h3 className="text-center font-semibold text-brand-primary-500">
-        Before you proceed, follow the steps below. <br /> This helps add
-        CareCompass to your phone’s homescreen for quicker access.
+        Before you proceed, follow the steps below. This helps add CareCompass
+        to your phone’s homescreen for quicker access.
       </h3>
       <Carousel slides={[iosSlide, androidSlide]} />
       <Button
