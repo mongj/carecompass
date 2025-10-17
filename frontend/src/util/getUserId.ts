@@ -1,12 +1,8 @@
-// get Clerk userId if available, else get the randomly dummy userId from localStorage
+"use client";
 
-import { useUserStore } from "@/stores/user";
+import { useAuthStore } from "@/stores/auth";
 
-export default function getUserId() {
-  const clerkId = useUserStore.getState().user.clerk_id;
-  return clerkId
-    ? clerkId
-    : typeof window !== "undefined"
-      ? window.localStorage.getItem("cc-userId")
-      : null;
+export default function useUserId() {
+  const userId = useAuthStore.getState().currentUser.id;
+  return userId;
 }

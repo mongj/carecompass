@@ -2,6 +2,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@opengovsg/design-system-react";
 import { CSPostHogProvider } from "./posthog";
+import StoreProvider from "./store";
 
 export default function Providers({
   children,
@@ -12,7 +13,9 @@ export default function Providers({
     <CSPostHogProvider>
       <ClerkProvider>
         <ChakraProvider>
-          <ThemeProvider>{children}</ThemeProvider>
+          <ThemeProvider>
+            <StoreProvider>{children}</StoreProvider>
+          </ThemeProvider>
         </ChakraProvider>
       </ClerkProvider>
     </CSPostHogProvider>
