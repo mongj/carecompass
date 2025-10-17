@@ -210,16 +210,14 @@ export default function CareServiceRecommender() {
           service.title === "Daycare Services"
             ? "CTA-Daycare"
             : service.title === "Home Care Services"
-            ? "CTA-Homecare"
-            : service.title === "Hire a Foreign Domestic Worker"
-            ? "CTA-FDW"
-            : service.title === "Engage a Nursing Home"
-            ? "CTA-NursingHome"
-            : undefined
+              ? "CTA-Homecare"
+              : service.title === "Hire a Foreign Domestic Worker"
+                ? "CTA-FDW"
+                : service.title === "Engage a Nursing Home"
+                  ? "CTA-NursingHome"
+                  : undefined
         }
       >
-
-        
         <Image src={service.icon} alt="ds" width={40} height={40} />
         <div className="flex flex-col gap-2">
           <span className="text-lg font-semibold">{service.title}</span>
