@@ -1,11 +1,11 @@
+from dotenv import load_dotenv
+load_dotenv(override=True) # Omit file path to let dotenv search for .env files automatically
+
 import os
 from typing import Annotated
-from dotenv import load_dotenv
 from fastapi import Depends
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
-
-load_dotenv("../../.env")
 
 def build_dsn():
     db_user = os.getenv("DB_USER")

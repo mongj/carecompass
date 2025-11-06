@@ -1,13 +1,12 @@
+from dotenv import load_dotenv
+load_dotenv(override=True) # Omit file path to let dotenv search for .env files automatically
+
 import os
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from app.api import router
-from dotenv import load_dotenv
 import sentry_sdk
-
-
-load_dotenv("../.env")
 
 sentry_sdk.init(
     dsn=os.getenv("SENTRY_DSN"),
