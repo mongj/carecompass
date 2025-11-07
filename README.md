@@ -8,6 +8,7 @@
 - Justin Noah Chua, UX Designer
 - Ming Jun Zhang, Developer
 - Natalie Yu, Product Manager/Data Analyst
+- Nalongsak Luangkhot, Developer
 
 ### Problem Statement
 Caregivers of elderly with dementia need to search for and sift through multiple sources of information to make good care decisions when their loved ones require informal care. This results in a disproportionate amount of stress and time spent searching for and evaluating information because there is no single source of trusted, curated advice on next steps they should take for their care recipient’s needs.
