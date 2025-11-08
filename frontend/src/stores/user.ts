@@ -6,6 +6,7 @@ interface UserState {
 }
 
 interface UserActions {
+  setUser: (user: UserData) => void;
   reset: () => void;
 }
 
@@ -16,5 +17,6 @@ const initialState: UserState = {
 export const useUserStore = create<UserState & UserActions>()((set) => ({
   ...initialState,
 
+  setUser: (user: UserData) => set({ user }),
   reset: () => set(initialState),
 }));

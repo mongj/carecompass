@@ -39,6 +39,39 @@ function Route(props: { route: string }) {
 function UserInfoChecker() {
   const router = useRouter();
   const { user } = useUser();
+  const setCurrentUser = useAuthStore((state) => state.setCurrentUser);
+  const setUser = useUserStore((state) => state.setUser);
+
+  // Update auth store and fetch user data declaratively
+  useEffect(() => {
+    if (!user) {
+      return;
+    }
+
+    setCurrentUser(user);
+
+    fetch(`${process.env.NEXT_PUBLIC_APP_BACKEND_URL}/users/${user.id}`).then(
+      (res) => {
+        if (res.ok) {
+          res.json().then((data) => {
+            setUser(data);
+            const addToHomeScreenPrompted = localStorage.getItem(
+              "cc_add_to_homescreen_prompted",
+            );
+            if (addToHomeScreenPrompted !== "true") {
+              router.push("/add-to-homescreen");
+            } else {
+              router.push("/home");
+            }
+          });
+        } else if (res.status === 404) {
+          router.push(`/onboarding?id=${user.id}`);
+        } else {
+          router.push("/error");
+        }
+      },
+    );
+  }, [router, setCurrentUser, setUser, user]);
 
   if (!user) {
     return (
@@ -47,40 +80,4 @@ function UserInfoChecker() {
       </main>
     );
   }
-
-  // Update store
-  useAuthStore.setState((state) => {
-    return {
-      ...state,
-      currentUser: user,
-    };
-  });
-
-  // Fetch user data
-  fetch(`${process.env.NEXT_PUBLIC_APP_BACKEND_URL}/users/${user.id}`).then(
-    (res) => {
-      if (res.ok) {
-        res.json().then((data) => {
-          useUserStore.setState((state) => {
-            return {
-              ...state,
-              user: data,
-            };
-          });
-          const addToHomeScreenPrompted = localStorage.getItem(
-            "cc_add_to_homescreen_prompted",
-          );
-          if (addToHomeScreenPrompted !== "true") {
-            router.push("/add-to-homescreen");
-          } else {
-            router.push("/home");
-          }
-        });
-      } else if (res.status === 404) {
-        router.push(`/onboarding?id=${user.id}`);
-      } else {
-        router.push("/error");
-      }
-    },
-  );
 }

@@ -6,6 +6,7 @@ interface AuthState {
 }
 
 interface AuthActions {
+  setCurrentUser: (user: UserResource) => void;
   reset: () => void;
 }
 
@@ -16,5 +17,6 @@ const initialState: AuthState = {
 export const useAuthStore = create<AuthState & AuthActions>()((set) => ({
   ...initialState,
 
+  setCurrentUser: (user: UserResource) => set({ currentUser: user }),
   reset: () => set(initialState),
 }));
