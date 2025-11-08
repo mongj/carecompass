@@ -5,6 +5,7 @@ import { useUserStore } from "@/stores/user";
 import LoadingSpinner from "@/ui/loading";
 import { SignedIn, SignedOut, useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Main() {
   // const userId = typeof window !== "undefined" ? window.localStorage.getItem('cc-userId') : null;
@@ -27,7 +28,11 @@ export default function Main() {
 
 function Route(props: { route: string }) {
   const router = useRouter();
-  router.push(props.route);
+
+  useEffect(() => {
+    router.push(props.route);
+  });
+
   return null;
 }
 
