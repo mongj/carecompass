@@ -11,7 +11,7 @@ import {
 import { FormEvent, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { BackButton } from "@/ui/button";
-import { useAuth } from "@clerk/nextjs";
+import { useAuthStore } from "@/stores/auth";
 import { HttpStatusCode } from "axios";
 import { api } from "@/api";
 
@@ -31,14 +31,15 @@ const citizenshipOptions = [
 ];
 
 function CaregiverDetailsForm() {
-  const auth = useAuth();
+  const isSignedIn = useAuthStore((state) => state.isSignedIn);
+  const userId = useAuthStore((state) => state.userId);
   const [caregiverData, setCaregiverData] = useState<CaregiverData>();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    if (auth.isLoaded && auth.isSignedIn && !caregiverData) {
+    if (isSignedIn && !caregiverData && userId) {
       api
-        .get(`/users/${auth.userId}`)
+        .get(`/users/${userId}`)
         .then((response) => {
           if (response.status === HttpStatusCode.Ok) {
             const userData = response.data as UserData;
@@ -53,7 +54,7 @@ function CaregiverDetailsForm() {
           console.error(error);
         });
     }
-  }, [auth.isLoaded, auth.isSignedIn, auth.userId, caregiverData]);
+  }, [isSignedIn, userId, caregiverData]);
 
   const submitDisabled =
     !caregiverData || Object.values(caregiverData).some((v) => v === "");
@@ -62,7 +63,7 @@ function CaregiverDetailsForm() {
     e.preventDefault();
     setIsSubmitting(true);
     api
-      .patch(`/users/${auth.userId}`, caregiverData)
+      .patch(`/users/${userId}`, caregiverData)
       .then((res) => {
         if (res.status === HttpStatusCode.Ok) {
           toast.success("Caregiver info updated successfully");

@@ -2,13 +2,14 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCurrentThreadStore } from "@/stores/currentThread";
 import { CreateThreadResponse, MessageRole } from "@/types/chat";
-import useUserId from "../useUserId";
+import { useAuthStore } from "@/stores/auth";
+import { toast } from "sonner";
 
 export function useChatQuery(currentChatId?: string) {
   const router = useRouter();
   const [prompt, setPrompt] = useState("");
   const [isSending, setIsSending] = useState(false);
-  const userId = useUserId();
+  const userId = useAuthStore((s) => s.userId);
 
   const setThreadId = useCurrentThreadStore((s) => s.setThreadId);
   const setMessages = useCurrentThreadStore((s) => s.setMessages);
@@ -50,6 +51,11 @@ export function useChatQuery(currentChatId?: string) {
     let threadId = currentChatId;
 
     if (!threadId) {
+      if (!userId) {
+        toast.error("Please sign in to use this feature!");
+        return;
+      }
+
       // Create a new chat
       const newThreadId = await createThread(userId);
       threadId = newThreadId;

@@ -6,7 +6,7 @@ import {
   Textarea,
   Checkbox,
 } from "@opengovsg/design-system-react";
-import { useUser } from "@clerk/nextjs";
+import { useAuthStore } from "@/stores/auth";
 import { Rating } from "@smastrom/react-rating";
 import { ReviewCreate, ReviewSource, ReviewTargetType } from "@/types/review";
 import { api } from "@/api";
@@ -20,7 +20,7 @@ export function NewReviewDrawer({
   serviceProviderId,
   targetType,
 }: NewReviewDrawerProps) {
-  const { user } = useUser();
+  const userFullName = useAuthStore((state) => state.userFullName);
   const [isOpen, setIsOpen] = useState(false);
   const [isDeclarationChecked, setIsDeclarationChecked] = useState(false);
   const [review, setReview] = useState<ReviewCreate>({
@@ -28,7 +28,7 @@ export function NewReviewDrawer({
     target_id: serviceProviderId,
     target_type: targetType,
     overall_rating: 0,
-    author_name: user?.fullName || "Anonymous",
+    author_name: userFullName || "Anonymous",
     content: "",
   });
 

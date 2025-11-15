@@ -4,13 +4,14 @@ import { SchemeData } from "@/types/scheme";
 import { BackButton } from "@/ui/button";
 import LoadingSpinner from "@/ui/loading";
 import { Button } from "@chakra-ui/react";
-import { SignInButton, useAuth } from "@clerk/nextjs";
+import { SignInButton } from "@clerk/nextjs";
+import { useAuthStore } from "@/stores/auth";
 import { BxRightArrowAlt } from "@opengovsg/design-system-react";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
 export default function SupportDashboard() {
-  const auth = useAuth();
+  const isSignedIn = useAuthStore((state) => state.isSignedIn);
   const [data, setData] = useState<SchemeData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -35,7 +36,7 @@ export default function SupportDashboard() {
         <h3 className="py-4 text-2xl font-semibold">
           Explore Financial Support
         </h3>
-        {!auth.isSignedIn && (
+        {!isSignedIn && (
           <section className="flex flex-col gap-4 rounded border border-brand-primary-300 bg-brand-primary-100 p-4">
             <p className="text-brand-primary-900">
               Sign in to get personalized recommendations

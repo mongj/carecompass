@@ -1,7 +1,7 @@
 "use client";
 
 import { api } from "@/api";
-import { useAuth } from "@clerk/nextjs";
+import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import BackButton from "@/ui/button/BackButton";
@@ -13,7 +13,8 @@ import { PCHIFormData } from "@/types/pchi";
 
 export default function EditHouseholdIncomePage() {
   const router = useRouter();
-  const auth = useAuth();
+  const isSignedIn = useAuthStore((state) => state.isSignedIn);
+  const userId = useAuthStore((state) => state.userId);
   const [user, setUser] = useState<UserData>();
 
   useEffect(() => {
@@ -21,9 +22,9 @@ export default function EditHouseholdIncomePage() {
   }, [router]);
 
   useEffect(() => {
-    if (auth.isLoaded && auth.isSignedIn && !user) {
+    if (isSignedIn && !user && userId) {
       api
-        .get(`/users/${auth.userId}`)
+        .get(`/users/${userId}`)
         .then((response) => {
           if (response.status === HttpStatusCode.Ok) {
             setUser(response.data);
@@ -35,7 +36,7 @@ export default function EditHouseholdIncomePage() {
           console.error(error);
         });
     }
-  }, [auth.isLoaded, auth.isSignedIn, auth.userId, user]);
+  }, [isSignedIn, userId, user]);
 
   const pchiData: PCHIFormData = {
     householdSize: user?.household_size ?? null,

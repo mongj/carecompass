@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  SignInButton,
-  SignOutButton,
-  useAuth,
-  UserButton,
-  useUser,
-} from "@clerk/nextjs";
+import { SignInButton, SignOutButton, UserButton } from "@clerk/nextjs";
 import {
   AccordionIcon,
   AccordionButton,
@@ -24,43 +18,23 @@ import {
   InfoIcon,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { UserData } from "@/types/user";
-import { HttpStatusCode } from "axios";
-import { api } from "@/api";
-import { toast } from "sonner";
 import { formatPrice } from "@/util/priceInfo";
 import {
   getFormattedUserCitizenship,
   getFormattedUserRelationship,
   getFormattedUserResidence,
 } from "@/util/userPropMapping";
+import { useAuthStore } from "@/stores/auth";
 
 export default function ProfilePage() {
   const router = useRouter();
-  const auth = useAuth();
-  const [user, setUser] = useState<UserData>();
+  const user = useAuthStore((state) => state.userData);
 
   useEffect(() => {
     router.prefetch("/profile/saved-searches");
   }, [router]);
-
-  useEffect(() => {
-    if (auth.isLoaded && auth.isSignedIn && !user) {
-      api
-        .get(`/users/${auth.userId}`)
-        .then((response) => {
-          if (response.status === HttpStatusCode.Ok) {
-            setUser(response.data);
-          } else {
-            toast.error("Failed to fetch user data");
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-  }, [auth.isLoaded, auth.isSignedIn, auth.userId, user]);
 
   return (
     <div className="mb-8 flex h-full w-full flex-col gap-2">
@@ -84,10 +58,11 @@ export default function ProfilePage() {
 }
 
 function UserProfileCard() {
-  const auth = useAuth();
-  const { user } = useUser();
+  const isSignedIn = useAuthStore((state) => state.isSignedIn);
+  const userFullName = useAuthStore((state) => state.userFullName);
+  const emailAddresses = useAuthStore((state) => state.emailAddresses);
 
-  if (auth.isSignedIn === undefined) {
+  if (isSignedIn === undefined) {
     return (
       <section className="flex w-full flex-col gap-2 rounded-lg border border-gray-200 bg-white p-4">
         {Array.from({ length: 3 }).map((_, i) => (
@@ -99,16 +74,16 @@ function UserProfileCard() {
 
   return (
     <section className="flex w-full rounded-lg border border-gray-200 bg-white p-4">
-      {auth.isSignedIn ? (
+      {isSignedIn ? (
         <div className="flex w-full flex-col place-items-start gap-4">
           <div className="flex w-full gap-4">
             <UserButton
               appearance={{ elements: { userButtonAvatarBox: "w-12 h-12" } }}
             />
             <div className="flex flex-col">
-              <span className="text-lg font-semibold">{user?.fullName}</span>
+              <span className="text-lg font-semibold">{userFullName}</span>
               <span className="text-sm text-gray-500">
-                {user?.emailAddresses[0].emailAddress}
+                {emailAddresses?.[0]}
               </span>
             </div>
           </div>
@@ -124,16 +99,7 @@ function UserProfileCard() {
           </SignOutButton>
         </div>
       ) : (
-        <SignInButton>
-          <Button
-            className="w-full"
-            onClick={() => {
-              window.localStorage.removeItem("cc-userId");
-            }}
-          >
-            Sign In
-          </Button>
-        </SignInButton>
+        <SignInButton>Sign In</SignInButton>
       )}
     </section>
   );

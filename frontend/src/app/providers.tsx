@@ -1,20 +1,17 @@
 import { ChakraProvider } from "@chakra-ui/react";
-import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@opengovsg/design-system-react";
 import { CSPostHogProvider } from "./posthog";
+import AuthProvider from "@/components/AuthProvider";
+import { PropsWithChildren } from "react";
 
-export default function Providers({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function Providers({ children }: PropsWithChildren<unknown>) {
   return (
     <CSPostHogProvider>
-      <ClerkProvider>
+      <AuthProvider>
         <ChakraProvider>
           <ThemeProvider>{children}</ThemeProvider>
         </ChakraProvider>
-      </ClerkProvider>
+      </AuthProvider>
     </CSPostHogProvider>
   );
 }

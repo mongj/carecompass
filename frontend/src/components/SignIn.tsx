@@ -1,23 +1,17 @@
 "use client";
 
-import LoadingSpinner from "@/ui/loading";
-import { SignInButton, useAuth } from "@clerk/nextjs";
+import { SignInButton } from "@clerk/nextjs";
 import { Button } from "@opengovsg/design-system-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-export default function Auth() {
+export default function SignIn() {
   const router = useRouter();
-  const auth = useAuth();
 
   useEffect(() => {
     router.prefetch("/home");
   }, [router]);
-
-  if (!auth.isLoaded) {
-    return <LoadingSpinner />;
-  }
 
   return (
     <div className="flex h-dvh max-h-dvh flex-col">

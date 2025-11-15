@@ -1,7 +1,7 @@
 import { api } from "@/api";
 import { Bookmark } from "@/types/bookmark";
 import { ReviewTargetType } from "@/types/review";
-import { useAuth } from "@clerk/nextjs";
+import { useAuthStore } from "@/stores/auth";
 import {
   Button,
   ButtonProps,
@@ -30,7 +30,7 @@ export default function BookmarkButton({
   mini = false,
   ...props
 }: BookmarkButtonProps) {
-  const auth = useAuth();
+  const userId = useAuthStore((state) => state.userId);
   const pathname = usePathname();
 
   if (!link) {
@@ -40,10 +40,10 @@ export default function BookmarkButton({
   const [bookmarkId, setBookmarkId] = useState(UNCREATED_BOOKMARK_ID);
 
   useEffect(() => {
-    if (auth.userId) {
+    if (userId) {
       api
         .get(
-          `/bookmarks?user_id=${auth.userId}&target_id=${targetId}&target_type=${targetType}`,
+          `/bookmarks?user_id=${userId}&target_id=${targetId}&target_type=${targetType}`,
         )
         .then((res) => {
           const data = res.data as Bookmark[];
@@ -52,9 +52,9 @@ export default function BookmarkButton({
           }
         });
     }
-  }, [auth.userId, targetId, targetType]);
+  }, [userId, targetId, targetType]);
 
-  if (!auth.userId) {
+  if (!userId) {
     return null;
   }
 
@@ -62,7 +62,7 @@ export default function BookmarkButton({
 
   const handleMark = () => {
     const bookmarkToCreate: Omit<Bookmark, "id"> = {
-      userId: auth.userId,
+      userId: userId,
       targetId,
       targetType,
       title,

@@ -63,6 +63,11 @@ function AddToHomeScreenCarousel() {
 export default function AddToHomeScreen() {
   const router = useRouter();
 
+  const handleClick = () => {
+    localStorage.setItem("cc_add_to_homescreen_prompted", "true");
+    router.push("/home");
+  };
+
   return (
     <div className="flex h-full flex-col place-items-center gap-4 overflow-y-auto p-8">
       <Image
@@ -80,13 +85,7 @@ export default function AddToHomeScreen() {
         to your phone’s homescreen for quicker access.
       </h3>
       <AddToHomeScreenCarousel />
-      <Button
-        className="mt-auto w-full"
-        onClick={() => {
-          localStorage.setItem("cc_add_to_homescreen_prompted", "true");
-          router.push("/home");
-        }}
-      >
+      <Button className="mt-auto w-full" onClick={handleClick}>
         Okay, I have done so
       </Button>
     </div>
