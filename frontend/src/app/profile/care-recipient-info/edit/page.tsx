@@ -20,7 +20,7 @@ import { RadioGroup } from "@chakra-ui/react";
 import { FormEvent, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { BackButton } from "@/ui/button";
-import { useAuth } from "@clerk/nextjs";
+import { useAuthStore } from "@/stores/auth";
 import { HttpStatusCode } from "axios";
 import { api } from "@/api";
 
@@ -59,15 +59,16 @@ const relationshipOptions = [
 ];
 
 function CareRecipientDetailsForm() {
-  const auth = useAuth();
+  const isSignedIn = useAuthStore((state) => state.isSignedIn);
+  const userId = useAuthStore((state) => state.userId);
   const [careRecipientData, setCareRecipientData] =
     useState<CareRecipientData>();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    if (auth.isLoaded && auth.isSignedIn && !careRecipientData) {
+    if (isSignedIn && !careRecipientData && userId) {
       api
-        .get(`/users/${auth.userId}`)
+        .get(`/users/${userId}`)
         .then((response) => {
           if (response.status === HttpStatusCode.Ok) {
             const userData = response.data as UserData;
@@ -85,7 +86,7 @@ function CareRecipientDetailsForm() {
           console.error(error);
         });
     }
-  }, [auth.isLoaded, auth.isSignedIn, auth.userId, careRecipientData]);
+  }, [isSignedIn, userId, careRecipientData]);
 
   const submitDisabled =
     !careRecipientData ||
@@ -95,7 +96,7 @@ function CareRecipientDetailsForm() {
     e.preventDefault();
     setIsSubmitting(true);
     api
-      .patch(`/users/${auth.userId}`, careRecipientData)
+      .patch(`/users/${userId}`, careRecipientData)
       .then((res) => {
         if (res.status === HttpStatusCode.Ok) {
           toast.success("Care recipient info updated successfully");

@@ -1,7 +1,7 @@
 "use client";
 
 import { GetUserThreadResponse } from "@/types/chat";
-import getUserId from "@/util/getUserId";
+import { useAuthStore } from "@/stores/auth";
 import { Skeleton, Stack } from "@chakra-ui/react";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useEffect, useState } from "react";
@@ -13,7 +13,7 @@ export default function ChatHistory({
   router: AppRouterInstance;
   onClose?: () => void;
 }) {
-  const userId = getUserId();
+  const userId = useAuthStore((s) => s.userId);
   const [chats, setChats] = useState<GetUserThreadResponse[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 

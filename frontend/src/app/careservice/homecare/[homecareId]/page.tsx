@@ -19,7 +19,7 @@ import { getRatingColor } from "@/util/helper";
 import { BackButton, BookmarkButton, ShareButton } from "@/ui/button";
 import { BxRightArrowAlt } from "@opengovsg/design-system-react";
 import { SignInButton } from "@clerk/nextjs";
-import { useAuth } from "@clerk/nextjs";
+import { useAuthStore } from "@/stores/auth";
 import { NewReviewDrawer } from "@/components/NewReviewDrawer";
 import Hidden from "@/ui/Hidden";
 import { GetReviewsParams } from "@/types/api";
@@ -333,7 +333,7 @@ function ReviewSection({
   numOfGoogleRatings: number;
   providerId: number;
 }) {
-  const auth = useAuth();
+  const isSignedIn = useAuthStore((state) => state.isSignedIn);
   const sortedReviews = reviews.sort((a, b) => {
     return (
       new Date(b.publishedTime).getTime() - new Date(a.publishedTime).getTime()
@@ -354,7 +354,7 @@ function ReviewSection({
         )}
       </div>
       <div className="mx-auto mt-3 w-[88%]">
-        {auth.isSignedIn ? (
+        {isSignedIn ? (
           <NewReviewDrawer
             serviceProviderId={providerId}
             targetType={ReviewTargetType.DEMENTIA_HOME_CARE}

@@ -20,7 +20,8 @@ import {
 import { useEffect, useState } from "react";
 import LoadingSpinner from "@/ui/loading";
 import CustomMarkdown from "@/ui/CustomMarkdown";
-import { SignInButton, useAuth, useUser } from "@clerk/nextjs";
+import { SignInButton } from "@clerk/nextjs";
+import { useAuthStore } from "@/stores/auth";
 import { api } from "@/api";
 import { Rating } from "@smastrom/react-rating";
 import {
@@ -54,7 +55,8 @@ export default function DaycareCentreDetails({
   const [isLoading, setIsLoading] = useState(true);
   const [centre, setCentre] = useState<DDCDetail>();
   const [subsidyInfo, setSubsidyInfo] = useState<MohNrLtcSubsidy>();
-  const auth = useAuth();
+  const isSignedIn = useAuthStore((state) => state.isSignedIn);
+  const userId = useAuthStore((state) => state.userId);
   const [user, setUser] = useState<UserData>();
   const router = useRouter();
 
@@ -75,9 +77,9 @@ export default function DaycareCentreDetails({
   // We fetch from backend instead of store for now because store
   // is currently not persisted across refreshes
   useEffect(() => {
-    if (auth.isLoaded && auth.isSignedIn && !user) {
+    if (isSignedIn && !user && userId) {
       api
-        .get(`/users/${auth.userId}`)
+        .get(`/users/${userId}`)
         .then((response) => {
           if (response.status === HttpStatusCode.Ok) {
             setUser(response.data);
@@ -89,14 +91,14 @@ export default function DaycareCentreDetails({
           console.error(error);
         });
     }
-  }, [auth.isLoaded, auth.isSignedIn, auth.userId, user]);
+  }, [isSignedIn, userId, user]);
 
   // Super hacky need to fix ASAP
   useEffect(() => {
-    if (auth.isLoaded && auth.isSignedIn && !subsidyInfo) {
+    if (isSignedIn && !subsidyInfo && userId) {
       api
         .post("subsidies/moh-nrltc", {
-          id: auth.userId,
+          id: userId,
         })
         .then((response) => {
           if (response.status === HttpStatusCode.Ok) {
@@ -109,9 +111,9 @@ export default function DaycareCentreDetails({
           console.error(error);
         });
     }
-  }, [auth, subsidyInfo]);
+  }, [isSignedIn, userId, subsidyInfo]);
 
-  if (isLoading || !auth.isLoaded || !user) {
+  if (isLoading || !user) {
     return <LoadingSpinner />;
   }
 
@@ -199,7 +201,7 @@ export default function DaycareCentreDetails({
                 centre.maxPrice,
               )}/month`}
             </span>
-            {auth.isSignedIn && user.monthly_pchi === null && (
+            {isSignedIn && user.monthly_pchi === null && (
               <section className="flex flex-col gap-4 rounded border border-brand-primary-300 bg-brand-primary-100 p-4">
                 <p className="text-brand-primary-900">
                   This service is eligible for MOH Non-Residential Long-Term
@@ -337,7 +339,7 @@ export default function DaycareCentreDetails({
 }
 
 function NewReviewDrawer({ centreId }: { centreId: number }) {
-  const { user } = useUser();
+  const userFullName = useAuthStore((state) => state.userFullName);
   const [isOpen, setIsOpen] = useState(false);
   const [isDeclarationChecked, setIsDeclarationChecked] = useState(false);
   const [review, setReview] = useState<ReviewCreate>({
@@ -345,7 +347,7 @@ function NewReviewDrawer({ centreId }: { centreId: number }) {
     target_id: centreId,
     target_type: ReviewTargetType.DEMENTIA_DAY_CARE,
     overall_rating: 0,
-    author_name: user?.fullName || "Anonymous",
+    author_name: userFullName || "Anonymous",
     content: "",
   });
 
@@ -492,7 +494,7 @@ function ReviewSection({
   centreId: number;
   reviews: Review[];
 }) {
-  const auth = useAuth();
+  const isSignedIn = useAuthStore((state) => state.isSignedIn);
 
   const sortedReviews = reviews.sort((a, b) => {
     return (
@@ -520,7 +522,7 @@ function ReviewSection({
           {/* <span>(from {reviewCount} reviews)</span> */}
         </div>
       )}
-      {auth.isSignedIn ? (
+      {isSignedIn ? (
         <NewReviewDrawer centreId={centreId} />
       ) : (
         <SignInButton>

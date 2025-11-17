@@ -15,7 +15,7 @@ import {
 
 import { Button, IconButton } from "@opengovsg/design-system-react";
 import { MenuIcon, SquarePenIcon } from "lucide-react";
-import getUserId from "@/util/getUserId";
+import { useAuthStore } from "@/stores/auth";
 import LoadingSpinner from "@/ui/loading";
 import BottomNav from "@/ui/layouts/BottomNav";
 
@@ -27,7 +27,7 @@ export default function ChatLayout({
   const router = useRouter();
   const params = useParams<{ chatId: string }>();
 
-  const userId = getUserId();
+  const userId = useAuthStore((s) => s.userId);
 
   useLayoutEffect(() => {
     if (!userId) {

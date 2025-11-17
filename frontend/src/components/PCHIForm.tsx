@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, FormLabel, NumberInput } from "@opengovsg/design-system-react";
-import { useUser } from "@clerk/nextjs";
+import { useAuthStore } from "@/stores/auth";
 import { api } from "@/api";
 import { PCHIBase, PCHIFormData } from "@/types/pchi";
 import { QuestionIcon } from "@chakra-ui/icons";
@@ -14,7 +14,7 @@ interface PCHIFormProps {
 
 export function PCHIForm({ data, callbackFn }: PCHIFormProps) {
   console.log(data);
-  const { user } = useUser();
+  const userId = useAuthStore((state) => state.userId);
   const [pchi, setPchi] = useState<PCHIFormData>({
     householdSize: null,
     totalMonthlyHouseholdIncome: null,
@@ -50,7 +50,7 @@ export function PCHIForm({ data, callbackFn }: PCHIFormProps) {
 
     // TODO: handle error and case where user is not found
     api
-      .put(`/users/${user?.id}/pchi`, pchiPayload)
+      .put(`/users/${userId}/pchi`, pchiPayload)
       .then((response) => {
         if (response.status === 200) {
           callbackFn?.();

@@ -14,6 +14,7 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import { usePathname, useRouter } from "next/navigation";
 import { parse } from "partial-json";
 import CustomMarkdown from "../CustomMarkdown";
+import { Fragment } from "react";
 
 export default function ChatMessage({ message }: { message: Message }) {
   return (
@@ -61,7 +62,7 @@ function AssistantMessage({ content }: { content: string }) {
     <div className="m-0 flex flex-col gap-4 p-0">
       {parsedContent.output.map((response, index) => {
         if (!response.content) {
-          return <></>;
+          return <Fragment key={index} />;
         }
 
         response.content = response.content.replaceAll(/\\n/g, "\n");
@@ -152,7 +153,7 @@ function AssistantMessage({ content }: { content: string }) {
               </Button>
             );
           } else {
-            return <></>;
+            return <Fragment key={index} />;
           }
         }
       })}

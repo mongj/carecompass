@@ -4,6 +4,7 @@ import {
   Citizenship,
   Relationship,
   Residence,
+  UserData,
   UserDataBase,
 } from "@/types/user";
 import LoadingSpinner from "@/ui/loading";
@@ -21,6 +22,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, Suspense, useState } from "react";
 import { toast } from "sonner";
 import { OptionalEnumFields } from "@/types/util";
+import { useAuthStore } from "@/stores/auth";
 
 const citizenshipOptions = [
   {
@@ -59,6 +61,7 @@ const relationshipOptions = [
 function PersonalDetailsForm() {
   const router = useRouter();
   const params = useSearchParams();
+  const setUserData = useAuthStore((state) => state.setUserData);
 
   const [personalDetails, setPersonalDetails] = useState<
     OptionalEnumFields<UserDataBase>
@@ -74,29 +77,33 @@ function PersonalDetailsForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const submitDisabled = Object.values(personalDetails).some((v) => v === "");
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setIsSubmitting(true);
-    fetch(`${process.env.NEXT_PUBLIC_APP_BACKEND_URL}/users`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(personalDetails),
-    })
-      .then((res) => {
-        if (res.ok) {
-          router.push("/home");
-        } else {
-          toast.error("Something went wrong. Please try again later.");
-        }
-      })
-      .catch(() => {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_APP_BACKEND_URL}/users`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(personalDetails),
+        },
+      );
+
+      if (res.ok) {
+        const data: UserData = await res.json();
+        setUserData(true, data);
+        router.push("/home");
+      } else {
         toast.error("Something went wrong. Please try again later.");
-      })
-      .finally(() => {
-        setIsSubmitting(false);
-      });
+      }
+    } catch (error) {
+      toast.error("Something went wrong. Please try again later.");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   // 1. Your citizenship status (Singapore Citizen/Permanent Resident/Foreigner)

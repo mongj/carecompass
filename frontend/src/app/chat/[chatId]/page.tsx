@@ -15,7 +15,16 @@ export default function Chat({ params }: { params: { chatId: string } }) {
 
   const [isLoading, setIsLoading] = useState(true);
   const currentThread = useCurrentThreadStore((state) => state.thread);
-  currentThread.id = params.chatId;
+  const setThreadId = useCurrentThreadStore((state) => state.setThreadId);
+  const setMessages = useCurrentThreadStore((state) => state.setMessages);
+  const reset = useCurrentThreadStore((state) => state.reset);
+  const isWaitingForResponse = useCurrentThreadStore(
+    (state) => state.isWaitingForResponse,
+  );
+
+  useEffect(() => {
+    setThreadId(params.chatId);
+  }, [params.chatId, setThreadId]);
 
   useEffect(() => {
     if (isNew) {
@@ -29,17 +38,10 @@ export default function Chat({ params }: { params: { chatId: string } }) {
       .then((response) => {
         if (response.ok) {
           response.json().then((data) => {
-            useCurrentThreadStore.setState((state) => {
-              return {
-                thread: {
-                  ...state.thread,
-                  messages: data,
-                },
-              };
-            });
+            setMessages(data);
           });
         } else {
-          useCurrentThreadStore.getState().reset();
+          reset();
           router.replace("/chat");
         }
       })
@@ -50,7 +52,7 @@ export default function Chat({ params }: { params: { chatId: string } }) {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [params.chatId, isNew, router]);
+  }, [params.chatId, isNew, router, reset, setMessages]);
 
   useEffect(() => {
     if (!isLoading) {
@@ -74,7 +76,7 @@ export default function Chat({ params }: { params: { chatId: string } }) {
           <ChatMessage key={message.id} message={message} />
         ))}
         <div id="msg-bottom" />
-        {useCurrentThreadStore.getState().isWaitingForResponse && (
+        {isWaitingForResponse && (
           <div className="flex place-items-start gap-2 md:gap-4">
             <Avatar className="sticky mt-2" src="/img/logo.svg" size="xs" />
             <div className="flex w-[calc(100%-40px)] flex-col rounded-lg border bg-white p-4 md:w-[calc(100%-48px)]">

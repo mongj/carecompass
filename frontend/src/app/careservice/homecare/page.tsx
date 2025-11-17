@@ -18,9 +18,12 @@ export default function HomeCarePage() {
 
   const [isLoading, setIsLoading] = useState(true);
   const [providers, setProviders] = useState<HomeCareDetail[]>([]);
-  const searchParams = useSearchParams();
+  const searchParamsServices = useSearchParams().get("services");
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
-  const queriedServices = searchParams.get("services")?.split(",") || [];
+  const queriedServices = useMemo(
+    () => searchParamsServices?.split(",") || [],
+    [searchParamsServices],
+  );
   const [showAll, setShowAll] = useState(false);
 
   const handleToggleShowAll = () => {
@@ -47,7 +50,7 @@ export default function HomeCarePage() {
         console.error("Error loading homecare data:", error);
         setIsLoading(false);
       });
-  }, []);
+  }, [queriedServices]);
 
   const filteredProviders = useMemo(() => {
     return (

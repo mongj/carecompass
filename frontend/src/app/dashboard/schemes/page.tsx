@@ -8,7 +8,7 @@ import { BackButton } from "@/ui/button";
 import CustomMarkdown from "@/ui/CustomMarkdown";
 import LoadingSpinner from "@/ui/loading";
 import { checkAllSchemesEligibility } from "@/util/eligibilityChecker";
-import { useAuth } from "@clerk/nextjs";
+import { useAuthStore } from "@/stores/auth";
 import { HttpStatusCode } from "axios";
 import { useSearchParams } from "next/navigation";
 import { useState, useEffect, Suspense } from "react";
@@ -18,7 +18,8 @@ function SupportDetails() {
   const param = useSearchParams();
   const [scheme, setScheme] = useState<SchemeData>();
   const [subsidyInfo, setSubsidyInfo] = useState<SubsidyInfo>();
-  const auth = useAuth();
+  const isSignedIn = useAuthStore((state) => state.isSignedIn);
+  const userId = useAuthStore((state) => state.userId);
   const [user, setUser] = useState<UserData>();
 
   useEffect(() => {
@@ -32,9 +33,9 @@ function SupportDetails() {
   // We fetch from backend instead of store for now because store
   // is currently not persisted across refreshes
   useEffect(() => {
-    if (auth.isLoaded && auth.isSignedIn && !user) {
+    if (isSignedIn && !user && userId) {
       api
-        .get(`/users/${auth.userId}`)
+        .get(`/users/${userId}`)
         .then((response) => {
           if (response.status === HttpStatusCode.Ok) {
             setUser(response.data);
@@ -46,20 +47,20 @@ function SupportDetails() {
           console.error(error);
         });
     }
-  }, [auth.isLoaded, auth.isSignedIn, auth.userId, user]);
+  }, [isSignedIn, userId, user]);
 
   // Super hacky need to fix ASAP
   useEffect(() => {
     if (
       scheme &&
       scheme.id === "MOH-NR-LTC-SUBSIDY" &&
-      auth.isLoaded &&
-      auth.isSignedIn &&
-      !subsidyInfo
+      isSignedIn &&
+      !subsidyInfo &&
+      userId
     ) {
       api
         .post("subsidies/moh-nrltc", {
-          id: auth.userId,
+          id: userId,
         })
         .then((response) => {
           if (response.status === HttpStatusCode.Ok) {
@@ -72,9 +73,9 @@ function SupportDetails() {
           console.error(error);
         });
     }
-  }, [auth, scheme, subsidyInfo]);
+  }, [isSignedIn, userId, scheme, subsidyInfo]);
 
-  if (!scheme || !auth.isLoaded || !user) {
+  if (!scheme || !user) {
     return <LoadingSpinner />;
   }
 
@@ -99,17 +100,15 @@ function SupportDetails() {
       </section>
       <section className="flex flex-col gap-2">
         <h3 className="text-lg font-semibold">Eligibility</h3>
-        {auth.isSignedIn &&
-          scheme.pchiRequired &&
-          user.monthly_pchi === null && (
-            <section className="flex flex-col gap-4 rounded border border-brand-primary-300 bg-brand-primary-100 p-4">
-              <p className="text-brand-primary-900">
-                Share your household information to see how much subsidy you may
-                be eligible for
-              </p>
-              <PCHIDrawer />
-            </section>
-          )}
+        {isSignedIn && scheme.pchiRequired && user.monthly_pchi === null && (
+          <section className="flex flex-col gap-4 rounded border border-brand-primary-300 bg-brand-primary-100 p-4">
+            <p className="text-brand-primary-900">
+              Share your household information to see how much subsidy you may
+              be eligible for
+            </p>
+            <PCHIDrawer />
+          </section>
+        )}
         {subsidyInfo && (
           <section className="flex flex-col gap-4 rounded border border-brand-primary-300 bg-brand-primary-100 p-4">
             <p className="text-brand-primary-900">

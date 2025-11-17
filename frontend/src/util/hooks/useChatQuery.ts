@@ -2,12 +2,27 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCurrentThreadStore } from "@/stores/currentThread";
 import { CreateThreadResponse, MessageRole } from "@/types/chat";
-import getUserId from "../getUserId";
+import { useAuthStore } from "@/stores/auth";
+import { toast } from "sonner";
 
 export function useChatQuery(currentChatId?: string) {
   const router = useRouter();
   const [prompt, setPrompt] = useState("");
   const [isSending, setIsSending] = useState(false);
+  const userId = useAuthStore((s) => s.userId);
+
+  const setThreadId = useCurrentThreadStore((s) => s.setThreadId);
+  const setMessages = useCurrentThreadStore((s) => s.setMessages);
+  const appendUserMessage = useCurrentThreadStore((s) => s.appendUserMessage);
+  const upsertAssistantMessage = useCurrentThreadStore(
+    (s) => s.upsertAssistantMessage,
+  );
+  const setIsWaitingForResponse = useCurrentThreadStore(
+    (s) => s.setIsWaitingForResponse,
+  );
+  const currentMessagesLength = useCurrentThreadStore(
+    (s) => s.thread.messages.length,
+  );
 
   const handleInput = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -36,50 +51,41 @@ export function useChatQuery(currentChatId?: string) {
     let threadId = currentChatId;
 
     if (!threadId) {
+      if (!userId) {
+        toast.error("Please sign in to use this feature!");
+        return;
+      }
+
       // Create a new chat
-      const newThreadId = await createThread();
+      const newThreadId = await createThread(userId);
       threadId = newThreadId;
-      // Add the message to the current chat
-      useCurrentThreadStore.setState(() => ({
-        thread: {
-          id: newThreadId,
-          messages: [
-            {
-              id: "NEW_USER_MESSAGE",
-              role: MessageRole.User,
-              content: query,
-            },
-          ],
-        },
-      }));
+      // Initialize thread id and first user message declaratively
+      setThreadId(newThreadId);
+      setMessages([
+        { id: "NEW_USER_MESSAGE", role: MessageRole.User, content: query },
+      ]);
       router.push(`/chat/${newThreadId}?new=true`);
     } else {
-      // Add the message to the current chat
-      useCurrentThreadStore.setState((state) => ({
-        thread: {
-          ...state.thread,
-          messages: [
-            ...state.thread.messages,
-            {
-              id: "NEW_USER_MESSAGE" + state.thread.messages.length,
-              role: MessageRole.User,
-              content: query,
-            },
-          ],
-        },
-      }));
+      // Add the message to the current chat declaratively
+      appendUserMessage(query);
     }
 
-    getResponse(threadId, query);
+    const messageId = "NEW_ASST_MESSAGE" + currentMessagesLength;
+    await getResponse({
+      threadId,
+      query,
+      messageId,
+      setIsWaitingForResponse,
+      upsertAssistantMessage,
+    });
     setIsSending(false);
   };
 
   return { prompt, setPrompt, isSending, handleInput, handleSubmitPrompt };
 }
 
-async function createThread() {
+async function createThread(userId: string | null) {
   try {
-    const userId = getUserId();
     if (!userId) {
       throw new Error("User ID is missing");
     }
@@ -105,8 +111,20 @@ async function createThread() {
   }
 }
 
-async function getResponse(threadId: string, query: string) {
-  useCurrentThreadStore.getState().setIsWaitingForResponse(true);
+async function getResponse({
+  threadId,
+  query,
+  messageId,
+  setIsWaitingForResponse,
+  upsertAssistantMessage,
+}: {
+  threadId: string;
+  query: string;
+  messageId: string;
+  setIsWaitingForResponse: (b: boolean) => void;
+  upsertAssistantMessage: (id: string, content: string) => void;
+}) {
+  setIsWaitingForResponse(true);
 
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_APP_BACKEND_URL}/threads/${threadId}/messages`,
@@ -121,9 +139,6 @@ async function getResponse(threadId: string, query: string) {
     },
   );
   let combined = "";
-  const messageId =
-    "NEW_ASST_MESSAGE" +
-    useCurrentThreadStore.getState().thread.messages.length;
 
   if (response.body) {
     const reader = response.body.getReader();
@@ -131,9 +146,7 @@ async function getResponse(threadId: string, query: string) {
     while (true) {
       const { value, done } = await reader.read();
 
-      if (useCurrentThreadStore.getState().isWaitingForResponse) {
-        useCurrentThreadStore.getState().setIsWaitingForResponse(false);
-      }
+      setIsWaitingForResponse(false);
 
       if (done) break;
 
@@ -141,40 +154,7 @@ async function getResponse(threadId: string, query: string) {
       const parsedChunk = parseEventStream(chunk);
       if (parsedChunk) {
         combined += parsedChunk;
-        useCurrentThreadStore.setState((state) => {
-          if (
-            !state.thread.messages.find((message) => message.id === messageId)
-          ) {
-            return {
-              thread: {
-                ...state.thread,
-                messages: [
-                  ...state.thread.messages,
-                  {
-                    id: messageId,
-                    role: MessageRole.Assistant,
-                    content: combined,
-                  },
-                ],
-              },
-            };
-          } else {
-            return {
-              thread: {
-                ...state.thread,
-                messages: state.thread.messages.map((message) =>
-                  message.id === messageId
-                    ? {
-                        ...message,
-                        role: MessageRole.Assistant,
-                        content: combined,
-                      }
-                    : message,
-                ),
-              },
-            };
-          }
-        });
+        upsertAssistantMessage(messageId, combined);
       }
     }
   }
