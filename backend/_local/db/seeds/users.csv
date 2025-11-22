@@ -1,0 +1,5 @@
+clerk_id,citizenship,care_recipient_age,care_recipient_citizenship,care_recipient_residence,care_recipient_relationship,household_size,total_monthly_household_income,annual_property_value,monthly_pchi
+user_dev_1,CITIZEN,75,CITIZEN,HOME,PARENT,3,5000,500000,200
+user_dev_2,PR,68,CITIZEN,HOME,SPOUSE,2,8000,800000,300
+user_dev_3,CITIZEN,82,CITIZEN,NURSING_HOME_LTCF,PARENT,4,6000,600000,250
+

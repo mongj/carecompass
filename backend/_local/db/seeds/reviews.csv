@@ -1,0 +1,6 @@
+review_source,target_friendly_id,target_type,content,overall_rating,author_name,author_id,google_review_id,google_author_url,google_author_photo_url,published_time
+IN_APP,ddc-dev-001,DEMENTIA_DAY_CARE,"Excellent care and very professional staff. My mother enjoys the activities here.",5,Sarah Tan,user_dev_1,,,,"2024-11-01 10:00:00"
+IN_APP,ddc-dev-001,DEMENTIA_DAY_CARE,"Good facilities but could use more activities. Staff are friendly.",4,Michael Lim,user_dev_2,,,,"2024-11-05 14:30:00"
+GOOGLE,ddc-dev-002,DEMENTIA_DAY_CARE,"Wonderful place with caring staff. Highly recommend!",5,Jennifer Wong,,google_review_123,https://maps.google.com/user/jennifer,,"2024-10-28 09:15:00"
+IN_APP,ddc-dev-003,DEMENTIA_DAY_CARE,"Affordable and good quality care. Very satisfied.",4,David Chen,user_dev_3,,,,"2024-11-10 16:45:00"
+
