@@ -15,6 +15,11 @@ export default function SignIn() {
     router.prefetch("/home");
   }, [router]);
 
+  const handleSignInAsGuest = () => {
+    signInAsGuest();
+    router.push("/");
+  };
+
   return (
     <div className="flex h-dvh max-h-dvh flex-col">
       <main className="flex h-full w-full flex-col place-content-center gap-4 overflow-auto p-8">
@@ -35,7 +40,7 @@ export default function SignIn() {
         </SignInButton>
         <button
           className="underline underline-offset-4"
-          onClick={() => signInAsGuest()}
+          onClick={handleSignInAsGuest}
         >
           Try as a Guest
         </button>
