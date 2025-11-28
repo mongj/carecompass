@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuthStore } from "@/stores/auth";
 import { SignInButton } from "@clerk/nextjs";
 import { Button } from "@opengovsg/design-system-react";
 import Image from "next/image";
@@ -8,6 +9,7 @@ import { useEffect } from "react";
 
 export default function SignIn() {
   const router = useRouter();
+  const signInAsGuest = useAuthStore((state) => state.signInAsGuest);
 
   useEffect(() => {
     router.prefetch("/home");
@@ -31,6 +33,12 @@ export default function SignIn() {
         <SignInButton forceRedirectUrl="/">
           <Button>Sign In</Button>
         </SignInButton>
+        <button
+          className="underline underline-offset-4"
+          onClick={() => signInAsGuest()}
+        >
+          Try as a Guest
+        </button>
       </main>
     </div>
   );

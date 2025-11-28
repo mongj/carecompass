@@ -5,6 +5,7 @@ import { UserData } from "@/types/user";
 interface AuthState {
   // Clerk auth state
   isSignedIn: boolean;
+  isGuest: boolean;
   userId?: string;
   userFullName?: string;
   emailAddresses?: string[];
@@ -14,18 +15,20 @@ interface AuthState {
 }
 
 interface AuthActions {
-  setAuth: (
+  signIn: (
     isSignedIn: boolean,
     userId?: string,
     userFullName?: string,
     emailAddresses?: string[],
   ) => void;
   setUserData: (isOnboarded: boolean, userData?: UserData) => void;
-  reset: () => void;
+  signInAsGuest: () => void;
+  signOut: () => void;
 }
 
 const initialState: AuthState = {
   isSignedIn: false,
+  isGuest: false,
   userId: undefined,
   userFullName: undefined,
   emailAddresses: undefined,
@@ -34,26 +37,37 @@ const initialState: AuthState = {
 };
 
 export const useAuthStore = create<AuthState & AuthActions>()(
-  immer((set) => ({
-    ...initialState,
-
-    setAuth: (
-      isSignedIn: boolean,
-      userId?: string,
-      userFullName?: string,
-      emailAddresses?: string[],
-    ) =>
-      set((state) => {
-        state.isSignedIn = isSignedIn;
-        state.userId = userId;
-        state.userFullName = userFullName;
-        state.emailAddresses = emailAddresses;
-      }),
-    setUserData: (isOnboarded: boolean, userData?: UserData) =>
-      set((state) => {
-        state.isOnboarded = isOnboarded;
-        state.userData = userData;
-      }),
-    reset: () => set(initialState),
-  })),
+  immer((set) => {
+    const reset = () => set(initialState);
+    return {
+      ...initialState,
+      signIn: (
+        isSignedIn: boolean,
+        userId?: string,
+        userFullName?: string,
+        emailAddresses?: string[],
+      ) => {
+        reset();
+        set((state) => {
+          state.isSignedIn = isSignedIn;
+          state.userId = userId;
+          state.userFullName = userFullName;
+          state.emailAddresses = emailAddresses;
+        });
+      },
+      signInAsGuest: () => {
+        reset();
+        set((state) => {
+          state.isGuest = true;
+        });
+      },
+      signOut: reset,
+      setUserData: (isOnboarded: boolean, userData?: UserData) => {
+        set((state) => {
+          state.isOnboarded = isOnboarded;
+          state.userData = userData;
+        });
+      },
+    };
+  }),
 );

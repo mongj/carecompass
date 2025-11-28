@@ -11,6 +11,7 @@ import { BookmarkIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import useSignInOnlyFeaturePrompt from "@/util/hooks/useSignInOnlyFeaturePrompt";
 
 interface BookmarkButtonProps extends ButtonProps {
   targetId: number;
@@ -31,6 +32,7 @@ export default function BookmarkButton({
   ...props
 }: BookmarkButtonProps) {
   const userId = useAuthStore((state) => state.userId);
+  const { promptIfNotSignedIn } = useSignInOnlyFeaturePrompt();
   const pathname = usePathname();
 
   if (!link) {
@@ -54,13 +56,13 @@ export default function BookmarkButton({
     }
   }, [userId, targetId, targetType]);
 
-  if (!userId) {
-    return null;
-  }
-
   const isMarked = bookmarkId !== UNCREATED_BOOKMARK_ID;
 
   const handleMark = () => {
+    if (promptIfNotSignedIn() || !userId) {
+      return;
+    }
+
     const bookmarkToCreate: Omit<Bookmark, "id"> = {
       userId: userId,
       targetId,

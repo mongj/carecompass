@@ -13,23 +13,28 @@ function ClerkProviderAdapter({ children }: PropsWithChildren<unknown>) {
   const router = useRouter();
   const auth = useAuth();
   const { user } = useUser();
-  const setAuth = useAuthStore((state) => state.setAuth);
+  const signIn = useAuthStore((state) => state.signIn);
+  const signOut = useAuthStore((state) => state.signOut);
   const setUserData = useAuthStore((state) => state.setUserData);
   const userData = useAuthStore((state) => state.userData);
 
   // Sync Clerk auth state to auth store
   useEffect(() => {
-    setAuth(
-      auth.isSignedIn ?? false,
-      auth.userId ?? undefined,
-      user?.fullName ?? undefined,
-      user?.emailAddresses?.map((email) => email.emailAddress),
-    );
-  }, [auth.isSignedIn, auth.userId, user, setAuth]);
+    if (auth.isSignedIn) {
+      signIn(
+        auth.isSignedIn ?? false,
+        auth.userId ?? undefined,
+        user?.fullName ?? undefined,
+        user?.emailAddresses?.map((email) => email.emailAddress),
+      );
+    } else {
+      signOut();
+    }
+  }, [auth.isSignedIn, auth.userId, user, signIn, signOut]);
 
   // Fetch user data from backend when authenticated
   useEffect(() => {
-    if (auth.isSignedIn && auth.userId && !userData?.id) {
+    if (auth.isSignedIn && auth.userId && !userData) {
       fetch(`${process.env.NEXT_PUBLIC_APP_BACKEND_URL}/users/${auth.userId}`)
         .then((res) => {
           if (res.ok) {
@@ -45,7 +50,7 @@ function ClerkProviderAdapter({ children }: PropsWithChildren<unknown>) {
           console.error("Failed to fetch user data:", error);
         });
     }
-  }, [auth.isSignedIn, auth.userId, userData?.id, setUserData, router]);
+  }, [auth.isSignedIn, auth.userId, userData, setUserData, router]);
 
   return <>{children}</>;
 }
