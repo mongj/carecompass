@@ -26,13 +26,16 @@ import {
 import posthog from "posthog-js";
 import { useEffect, useState } from "react";
 import HomeCareServices from "./homecareService";
+import { useAuthStore } from "@/stores/auth";
+import useSignInOnlyFeaturePrompt from "@/util/hooks/useSignInOnlyFeaturePrompt";
 
-type CareServicesData = {
+type CareServiceData = {
   title: string;
   description: string;
   eligibleForSubsidies: boolean;
   icon: string;
-  enabled?: boolean;
+  enabled: boolean;
+  isSignInRequired: boolean;
 };
 
 type Stepper = {
@@ -46,7 +49,7 @@ type Params = {
   remove: (name: string) => URLSearchParams;
 };
 
-const careServices: CareServicesData[] = [
+const careServiceDataList: CareServiceData[] = [
   {
     title: "Daycare Services",
     description:
@@ -54,6 +57,7 @@ const careServices: CareServicesData[] = [
     eligibleForSubsidies: true,
     icon: "/icon/daycare.svg",
     enabled: true,
+    isSignInRequired: false,
   },
   {
     title: "Home Care Services",
@@ -62,20 +66,25 @@ const careServices: CareServicesData[] = [
     icon: "/icon/homecare.svg",
     enabled: true,
     eligibleForSubsidies: true,
+    isSignInRequired: true,
   },
   {
     title: "Hire a Foreign Domestic Worker",
     description:
       "Pre-trained in eldercare, they will have basic skills to care for your loved one.",
     icon: "/icon/careworker.svg",
+    enabled: false,
     eligibleForSubsidies: false,
+    isSignInRequired: true,
   },
   {
     title: "Engage a Nursing Home",
     description:
       "Residential care facility that would assist with your loved one's activities of daily living and nursing care needs.",
     icon: "/icon/nursinghome.svg",
+    enabled: false,
     eligibleForSubsidies: false,
+    isSignInRequired: true,
   },
 ];
 
@@ -173,7 +182,7 @@ export default function CareServiceRecommender() {
           with
         </span>
         <div className="mt-4 flex flex-col gap-2">
-          {careServices.map((service, index) => (
+          {careServiceDataList.map((service, index) => (
             <CareServiceButton
               key={index}
               service={service}
@@ -189,9 +198,15 @@ export default function CareServiceRecommender() {
     service,
     incrementIndex,
   }: {
-    service: CareServicesData;
+    service: CareServiceData;
     incrementIndex: () => void;
   }) {
+    const isSignedIn = useAuthStore((state) => state.isSignedIn);
+    const isDisbledDueToNotImplemented = !service.enabled;
+    const isDisabledDueToNotSignedIn = !isSignedIn && service.isSignInRequired;
+    const isDisabled =
+      isDisbledDueToNotImplemented || isDisabledDueToNotSignedIn;
+
     const handleClick = () => {
       if (service.title === "Home Care Services") {
         handleServiceSelection("Home Care Services");
@@ -202,9 +217,9 @@ export default function CareServiceRecommender() {
 
     return (
       <button
-        className={`flex place-content-start place-items-start gap-2 rounded-md border border-gray-200 p-4 text-left ${!service.enabled && "bg-gray-100"} transition-all duration-150 hover:bg-gray-50`}
+        className={`flex place-content-start place-items-start gap-2 rounded-md border border-gray-200 p-4 text-left ${isDisabled && "opacity-50 grayscale"} transition-all duration-150 hover:bg-gray-50`}
         onClick={handleClick}
-        disabled={!service.enabled}
+        disabled={isDisabled}
         data-sentry-component="CareServiceButton"
         data-sentry-element={
           service.title === "Daycare Services"
@@ -222,15 +237,22 @@ export default function CareServiceRecommender() {
         <div className="flex flex-col gap-2">
           <span className="text-lg font-semibold">{service.title}</span>
           <span>{service.description}</span>
-          {service.eligibleForSubsidies && (
-            <Badge
-              colorScheme={service.enabled ? "success" : "neutral"}
-              variant="subtle"
-            >
-              $ May be eligible for subsidies
-            </Badge>
-          )}
-          {!service.enabled && (
+          <div className="flex flex-row flex-wrap gap-2">
+            {service.eligibleForSubsidies && (
+              <Badge
+                colorScheme={isDisabled ? "neutral" : "success"}
+                variant="subtle"
+              >
+                $ May be eligible for subsidies
+              </Badge>
+            )}
+            {isDisabledDueToNotSignedIn && (
+              <Badge colorScheme="neutral" variant="subtle">
+                Sign-in required
+              </Badge>
+            )}
+          </div>
+          {isDisbledDueToNotImplemented && (
             <span className="text-sm italic">
               This recommender is not yet available
             </span>
@@ -408,6 +430,7 @@ export default function CareServiceRecommender() {
     centre: DDCRecommendation;
   }) {
     const router = useRouter();
+    const { promptIfNotSignedIn } = useSignInOnlyFeaturePrompt();
 
     useEffect(() => {
       router.prefetch(`/careservice/dementia-daycare/${centre.id}`);
@@ -423,6 +446,9 @@ export default function CareServiceRecommender() {
     };
 
     const handleViewDetails = () => {
+      if (promptIfNotSignedIn()) {
+        return;
+      }
       router.push(`/careservice/dementia-daycare/${centre.id}`);
     };
 

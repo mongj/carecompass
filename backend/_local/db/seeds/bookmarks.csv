@@ -1,0 +1,5 @@
+user_clerk_id,target_friendly_id,target_type,title,link
+user_dev_1,ddc-dev-001,DEMENTIA_DAY_CARE,Sunshine Dementia Day Care Centre,/careservice/dementia-daycare/ddc-dev-001
+user_dev_1,ddc-dev-002,DEMENTIA_DAY_CARE,Harmony Memory Care Centre,/careservice/dementia-daycare/ddc-dev-002
+user_dev_2,ddc-dev-003,DEMENTIA_DAY_CARE,Compassion Care Day Centre,/careservice/dementia-daycare/ddc-dev-003
+

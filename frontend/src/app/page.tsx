@@ -8,9 +8,10 @@ import { useEffect } from "react";
 export default function Main() {
   const router = useRouter();
   const userData = useAuthStore((auth) => auth.userData);
+  const isGuest = useAuthStore((auth) => auth.isGuest);
 
   useEffect(() => {
-    if (userData && userData.id) {
+    if (userData || isGuest) {
       const addToHomeScreenPrompted = localStorage.getItem(
         "cc_add_to_homescreen_prompted",
       );
@@ -20,7 +21,7 @@ export default function Main() {
         router.push("/home");
       }
     }
-  }, [router, userData]);
+  }, [router, userData, isGuest]);
 
   return <LoadingSpinner />;
 }
