@@ -135,14 +135,16 @@ export default function Home() {
             <MenuCard key={index} data={data} />
           ))}
         </div>
-        <div className="flex flex-col gap-2 pb-8">
-          <p>
-            <i>Sign-In Required</i>
-          </p>
-          {disabledCards.map((data, index) => (
-            <MenuCard key={index} data={data} isDisabled />
-          ))}
-        </div>
+        {disabledCards.length > 0 && (
+          <div className="flex flex-col gap-2 pb-8">
+            <p>
+              <i>Sign-In Required</i>
+            </p>
+            {disabledCards.map((data, index) => (
+              <MenuCard key={index} data={data} isDisabled />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
