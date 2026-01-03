@@ -17,6 +17,8 @@ class UserBase(BaseModel):
 
     clerk_id: str
     citizenship: Citizenship
+    contact_number: Optional[int] = None
+    
     care_recipient_age: int
     care_recipient_citizenship: Citizenship
     care_recipient_residence: Residence

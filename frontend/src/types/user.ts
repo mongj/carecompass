@@ -21,6 +21,7 @@ export enum Relationship {
 
 export interface CaregiverData {
   citizenship: Citizenship;
+  contact_number?: number | null;
 }
 
 export interface CareRecipientData {
