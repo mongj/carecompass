@@ -7,6 +7,7 @@ import { IncompatibleDevicePage } from "../components/IncompatibleDevicePage";
 import { PropsWithChildren } from "react";
 import { useAuthStore } from "@/stores/auth";
 import SignIn from "@/components/SignIn";
+import LoadingSpinner from "@/ui/loading";
 
 export default function RootLayoutClient({ children }: PropsWithChildren) {
   return (
@@ -21,11 +22,21 @@ export default function RootLayoutClient({ children }: PropsWithChildren) {
 }
 
 function Main({ children }: PropsWithChildren) {
+  const isInitilised = useAuthStore((state) => state.isInitialised);
   const isSignedIn = useAuthStore((state) => state.isSignedIn);
   const isGuest = useAuthStore((state) => state.isGuest);
+
   return (
     <div className="h-full w-full sm:hidden">
-      {isSignedIn || isGuest ? <>{children}</> : <SignIn />}
+      {isInitilised ? (
+        isSignedIn || isGuest ? (
+          children
+        ) : (
+          <SignIn />
+        )
+      ) : (
+        <LoadingSpinner />
+      )}
     </div>
   );
 }

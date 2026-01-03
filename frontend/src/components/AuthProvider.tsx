@@ -20,17 +20,19 @@ function ClerkProviderAdapter({ children }: PropsWithChildren<unknown>) {
 
   // Sync Clerk auth state to auth store
   useEffect(() => {
-    if (auth.isSignedIn) {
-      signIn(
-        auth.isSignedIn ?? false,
-        auth.userId ?? undefined,
-        user?.fullName ?? undefined,
-        user?.emailAddresses?.map((email) => email.emailAddress),
-      );
-    } else {
-      signOut();
+    if (auth.isLoaded) {
+      if (auth.isSignedIn) {
+        signIn(
+          auth.isSignedIn ?? false,
+          auth.userId ?? undefined,
+          user?.fullName ?? undefined,
+          user?.emailAddresses?.map((email) => email.emailAddress),
+        );
+      } else {
+        signOut();
+      }
     }
-  }, [auth.isSignedIn, auth.userId, user, signIn, signOut]);
+  }, [auth.isLoaded, auth.isSignedIn, auth.userId, user, signIn, signOut]);
 
   // Fetch user data from backend when authenticated
   useEffect(() => {

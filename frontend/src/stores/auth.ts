@@ -3,6 +3,8 @@ import { immer } from "zustand/middleware/immer";
 import { UserData } from "@/types/user";
 
 interface AuthState {
+  // Initialisation
+  isInitialised: boolean;
   // Clerk auth state
   isSignedIn: boolean;
   isGuest: boolean;
@@ -27,6 +29,7 @@ interface AuthActions {
 }
 
 const initialState: AuthState = {
+  isInitialised: false,
   isSignedIn: false,
   isGuest: false,
   userId: undefined,
@@ -38,7 +41,12 @@ const initialState: AuthState = {
 
 export const useAuthStore = create<AuthState & AuthActions>()(
   immer((set) => {
-    const reset = () => set(initialState);
+    const reset = () =>
+      set({
+        ...initialState,
+        isInitialised: true,
+      });
+
     return {
       ...initialState,
       signIn: (
