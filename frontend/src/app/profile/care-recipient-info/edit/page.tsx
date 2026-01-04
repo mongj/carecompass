@@ -17,12 +17,13 @@ import {
   SingleSelect,
 } from "@opengovsg/design-system-react";
 import { RadioGroup } from "@chakra-ui/react";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import { toast } from "sonner";
 import { BackButton } from "@/ui/button";
 import { useAuthStore } from "@/stores/auth";
 import { HttpStatusCode } from "axios";
 import { api } from "@/api";
+import useInitialUserData from "@/util/hooks/useInitialUserData";
 
 const citizenshipOptions = [
   {
@@ -59,58 +60,39 @@ const relationshipOptions = [
 ];
 
 function CareRecipientDetailsForm() {
-  const isSignedIn = useAuthStore((state) => state.isSignedIn);
   const userId = useAuthStore((state) => state.userId);
-  const [careRecipientData, setCareRecipientData] =
-    useState<CareRecipientData>();
+  const setUserData = useAuthStore((state) => state.setUserData);
+  const [formData, setFormData] = useInitialUserData<CareRecipientData>(
+    (userData) => ({
+      care_recipient_age: userData.care_recipient_age,
+      care_recipient_citizenship: userData.care_recipient_citizenship,
+      care_recipient_residence: userData.care_recipient_residence,
+      care_recipient_relationship: userData.care_recipient_relationship,
+    }),
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  useEffect(() => {
-    if (isSignedIn && !careRecipientData && userId) {
-      api
-        .get(`/users/${userId}`)
-        .then((response) => {
-          if (response.status === HttpStatusCode.Ok) {
-            const userData = response.data as UserData;
-            setCareRecipientData({
-              care_recipient_age: userData.care_recipient_age,
-              care_recipient_citizenship: userData.care_recipient_citizenship,
-              care_recipient_residence: userData.care_recipient_residence,
-              care_recipient_relationship: userData.care_recipient_relationship,
-            });
-          } else {
-            toast.error("Failed to fetch user data");
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-  }, [isSignedIn, userId, careRecipientData]);
-
   const submitDisabled =
-    !careRecipientData ||
-    Object.values(careRecipientData).some((v) => v === "");
+    !formData || Object.values(formData).some((v) => v === "");
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
     setIsSubmitting(true);
-    api
-      .patch(`/users/${userId}`, careRecipientData)
-      .then((res) => {
-        if (res.status === HttpStatusCode.Ok) {
-          toast.success("Care recipient info updated successfully");
-        }
-      })
-      .catch(() => {
-        toast.error("Something went wrong. Please try again later.");
-      })
-      .finally(() => {
-        setIsSubmitting(false);
-      });
+    try {
+      const res = await api.patch<UserData>(`/users/${userId}`, formData);
+      if (res.status === HttpStatusCode.Ok) {
+        setUserData(true, res.data);
+        toast.success("Care recipient info updated successfully");
+      }
+    } catch (e) {
+      toast.error("Something went wrong. Please try again later.");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
-  if (!careRecipientData) {
+  if (!formData) {
     return <LoadingSpinner />;
   }
 
@@ -120,12 +102,12 @@ function CareRecipientDetailsForm() {
         <FormLabel isRequired>{`I am caring for my`}</FormLabel>
         <SingleSelect
           placeholder="Select an option"
-          value={careRecipientData.care_recipient_relationship}
+          value={formData.care_recipient_relationship}
           name="carerecipient_relationship"
           items={relationshipOptions}
           onChange={(e) =>
-            setCareRecipientData({
-              ...careRecipientData,
+            setFormData({
+              ...formData,
               care_recipient_relationship: e as Relationship,
             })
           }
@@ -135,12 +117,12 @@ function CareRecipientDetailsForm() {
         <FormLabel isRequired>{`Loved one’s citizenship status`}</FormLabel>
         <SingleSelect
           placeholder="Select an option"
-          value={careRecipientData.care_recipient_citizenship}
+          value={formData.care_recipient_citizenship}
           name="carerecipient_citizenship"
           items={citizenshipOptions}
           onChange={(e) =>
-            setCareRecipientData({
-              ...careRecipientData,
+            setFormData({
+              ...formData,
               care_recipient_citizenship: e as Citizenship,
             })
           }
@@ -151,11 +133,11 @@ function CareRecipientDetailsForm() {
         <NumberInput
           min={0}
           placeholder="Age"
-          value={careRecipientData.care_recipient_age}
+          value={formData.care_recipient_age}
           name="carerecipient_age"
           onChange={(e) =>
-            setCareRecipientData({
-              ...careRecipientData,
+            setFormData({
+              ...formData,
               care_recipient_age: Number(e),
             })
           }
@@ -165,12 +147,12 @@ function CareRecipientDetailsForm() {
         <FormLabel isRequired>{`Loved one’s residential status`}</FormLabel>
         <RadioGroup
           onChange={(e) =>
-            setCareRecipientData({
-              ...careRecipientData,
+            setFormData({
+              ...formData,
               care_recipient_residence: e as Residence,
             })
           }
-          value={careRecipientData.care_recipient_residence.toString()}
+          value={formData.care_recipient_residence.toString()}
         >
           <Radio value={Residence.HOME} allowDeselect>
             My loved one stays with me

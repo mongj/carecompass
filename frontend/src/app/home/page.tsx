@@ -63,7 +63,7 @@ const cardDataList: MenuCardData[] = [
     ),
     text: "How can I monitor my loved one's mental state?",
     img: "/img/illustration_2.svg",
-    link: "https://heartbeat.fancybinary.sg/login",
+    link: "/heartbeat",
     isSignInRequired: true,
   },
   {

@@ -21,6 +21,7 @@ import { ReactNode, useEffect } from "react";
 import { UserData } from "@/types/user";
 import { formatPrice } from "@/util/priceInfo";
 import {
+  getFormattedContactNumber,
   getFormattedUserCitizenship,
   getFormattedUserRelationship,
   getFormattedUserResidence,
@@ -161,6 +162,10 @@ function UserInfoAccordian({ user }: { user: UserData }) {
     {
       label: "Citizenship",
       value: getFormattedUserCitizenship(user.citizenship),
+    },
+    {
+      label: "Contact Number",
+      value: getFormattedContactNumber(user.contact_number),
     },
   ];
 
