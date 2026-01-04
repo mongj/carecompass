@@ -84,6 +84,7 @@ function CaregiverDetailsForm() {
       <Stack gap={0} spacing={0}>
         <FormLabel isRequired>Citizenship Status</FormLabel>
         <SingleSelect
+          isClearable={false}
           placeholder="Select an option"
           value={formData.citizenship}
           name="citizenship"

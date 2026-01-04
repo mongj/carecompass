@@ -59,4 +59,5 @@ def downgrade() -> None:
     op.drop_column('users', 'contact_number')
     op.drop_table('mood')
     op.drop_table('care_receipient')
+    op.execute('DROP TYPE selectedmood')
     # ### end Alembic commands ###

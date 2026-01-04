@@ -101,6 +101,7 @@ function CareRecipientDetailsForm() {
       <Stack gap={0} spacing={0}>
         <FormLabel isRequired>{`I am caring for my`}</FormLabel>
         <SingleSelect
+          isClearable={false}
           placeholder="Select an option"
           value={formData.care_recipient_relationship}
           name="carerecipient_relationship"
@@ -116,6 +117,7 @@ function CareRecipientDetailsForm() {
       <Stack gap={0} spacing={0}>
         <FormLabel isRequired>{`Loved one’s citizenship status`}</FormLabel>
         <SingleSelect
+          isClearable={false}
           placeholder="Select an option"
           value={formData.care_recipient_citizenship}
           name="carerecipient_citizenship"
