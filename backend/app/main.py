@@ -1,5 +1,5 @@
 from dotenv import load_dotenv
-load_dotenv(override=True) # Omit file path to let dotenv search for .env files automatically
+load_dotenv() # Omit file path to let dotenv search for .env files automatically
 
 import os
 from fastapi import FastAPI, Request

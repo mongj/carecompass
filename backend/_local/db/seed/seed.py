@@ -1,7 +1,7 @@
 """
 Database seeding script for local development.
 
-Seed data is stored in CSV files in the `_local/db/seeds/` directory.
+Seed data is stored in CSV files in the `_local/db/seed/data` directory.
 """
 
 # Add backend directory to sys.path so we can import from app
@@ -26,8 +26,8 @@ from app.models.dementia_daycare import DementiaDaycare
 from app.models.review import Review, ReviewSource, ReviewableType
 from app.models.bookmark import Bookmark
 
-# Path to seeds directory
-SEEDS_DIR = Path(__file__).parent / "seeds"
+# Path to data directory
+DATA_DIR = Path(__file__).parent / "data"
 
 
 def parse_array(value: str) -> List[str]:
@@ -76,7 +76,7 @@ def seed_users(db: Session) -> list[User]:
         # Table might not exist yet, which is fine
         db.rollback()
     
-    csv_path = SEEDS_DIR / "users.csv"
+    csv_path = DATA_DIR / "users.csv"
     rows = read_csv(csv_path)
     
     users = []
@@ -111,7 +111,7 @@ def seed_threads(db: Session, users: list[User]) -> list[Thread]:
         # Table might not exist yet, which is fine
         db.rollback()
     
-    csv_path = SEEDS_DIR / "threads.csv"
+    csv_path = DATA_DIR / "threads.csv"
     rows = read_csv(csv_path)
     
     threads = []
@@ -139,7 +139,7 @@ def seed_dementia_daycare(db: Session) -> list[DementiaDaycare]:
         # Table might not exist yet, which is fine
         db.rollback()
     
-    csv_path = SEEDS_DIR / "dementia_daycare.csv"
+    csv_path = DATA_DIR / "dementia_daycare.csv"
     rows = read_csv(csv_path)
     
     daycares = []
@@ -186,7 +186,7 @@ def seed_reviews(db: Session, daycares: list[DementiaDaycare]) -> list[Review]:
     # Create a mapping of friendly_id to DementiaDaycare for quick lookup
     daycare_map = {daycare.friendly_id: daycare for daycare in daycares}
     
-    csv_path = SEEDS_DIR / "reviews.csv"
+    csv_path = DATA_DIR / "reviews.csv"
     rows = read_csv(csv_path)
     
     reviews = []
@@ -227,7 +227,7 @@ def seed_bookmarks(db: Session, users: list[User], daycares: list[DementiaDaycar
     # Create a mapping of friendly_id to DementiaDaycare for quick lookup
     daycare_map = {daycare.friendly_id: daycare for daycare in daycares}
     
-    csv_path = SEEDS_DIR / "bookmarks.csv"
+    csv_path = DATA_DIR / "bookmarks.csv"
     rows = read_csv(csv_path)
     
     bookmarks = []
