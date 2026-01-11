@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { toast } from "sonner";
 
-const HEARTBEAT_URL = "https://heartbeat.fancybinary.sg/login";
+const HEARTBEAT_URL = "https://heartbeat.carecompass.sg/login";
 
 export default function HeartbeatRedirect() {
   const router = useRouter();
