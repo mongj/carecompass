@@ -38,6 +38,7 @@ class CareReceipient(Base):
     unit = Column(String, nullable=False)
 
     consecutive_checkins = Column(Integer, nullable=False)
+    consecutive_non_checkins = Column(Integer, nullable=False)
     is_suspended = Column(Boolean, nullable=False, default=False)
 
     created_at = Column(TIMESTAMP, nullable=False)
