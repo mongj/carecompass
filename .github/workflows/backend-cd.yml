@@ -52,41 +52,39 @@ jobs:
             docker pull ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:${{ steps.image-tag.outputs.tag }}
             IMAGE_TAG="${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:${{ steps.image-tag.outputs.tag }}"
             
-            # # Stop existing container if running
-            # docker stop ${{ env.DOCKER_CONTAINER_NAME }} || true
-            # docker rm ${{ env.DOCKER_CONTAINER_NAME }} || true
+            # Stop existing container if running
+            docker stop ${{ env.DOCKER_CONTAINER_NAME }} || true
+            docker rm ${{ env.DOCKER_CONTAINER_NAME }} || true
             
-            # # Run database migrations
-            # docker run --rm \
-            #   --env-file $HOME/env/carecompass/.env \
-            #   --network host \
-            #   $IMAGE_TAG \
-            #   alembic upgrade head || echo "Migration failed or not needed"
+            # Run database migrations
+            docker run --rm \
+              --env-file $HOME/env/carecompass/.env \
+              $IMAGE_TAG \
+              alembic upgrade head || echo "Migration failed or not needed"
             
-            # # Start the new container with environment file
-            # docker run -d \
-            #   --name ${{ env.DOCKER_CONTAINER_NAME }} \
-            #   --restart unless-stopped \
-            #   --env-file $HOME/env/carecompass/.env \
-            #   -p 8000:8000 \
-            #   --network host \
-            #   $IMAGE_TAG
+            # Start the new container with environment file
+            docker run -d \
+              --name ${{ env.DOCKER_CONTAINER_NAME }} \
+              --restart unless-stopped \
+              --env-file $HOME/env/carecompass/.env \
+              -p 8000:8000 \
+              $IMAGE_TAG
             
-            # # Clean up old images
-            # docker image prune -f
+            # Clean up old images
+            docker image prune -f
 
 
-      # - name: Health check
-      #   uses: appleboy/ssh-action@v1.0.3
-      #   with:
-      #     host: ${{ secrets.DEPLOY_HOST }}
-      #     username: ${{ secrets.DEPLOY_USER }}
-      #     key: ${{ secrets.DEPLOY_SSH_KEY }}
-      #     port: ${{ secrets.DEPLOY_PORT || 22 }}
-      #     script: |
-      #       sleep 10
-      #       # Check if container is running
-      #       docker ps | grep ${{ env.DOCKER_CONTAINER_NAME }} || exit 1
-      #       # Check if the API is responding (even if it returns 418, that means it's working)
-      #       curl -f http://localhost:8000/ || curl -f http://localhost:8000/docs || exit 1
+      - name: Health check
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          port: ${{ secrets.DEPLOY_PORT || 22 }}
+          script: |
+            sleep 10
+            # Check if container is running
+            docker ps | grep ${{ env.DOCKER_CONTAINER_NAME }} || exit 1
+            # Check if the API is responding (even if it returns 418, that means it's working)
+            curl -f http://localhost:8000/ || curl -f http://localhost:8000/docs || exit 1
 
