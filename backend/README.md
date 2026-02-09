@@ -10,7 +10,7 @@
 
    **Option A: Using Docker Compose (Recommended)**
    ```
-   docker-compose -f _local/docker-compose.yml up -d
+   docker-compose -f _local/db/docker-compose.yml up -d
    ```
    
    This will start a PostgreSQL 15 container. The database credentials are:
@@ -73,32 +73,45 @@ Note: alembic does not work very well with enums. Specifically:
 ## Database seeding
 For local development, you can seed the database with sample data.
 
-Seed data is stored in CSV files located in `_local/db/seeds/`. This makes it easy to:
-- View and understand the data structure
-- Edit seed data without modifying code
-- Review changes in pull requests
+1. Start the local database (if not already running):
+   ```
+   docker-compose -f _local/db/docker-compose.yml up -d
+   ```
 
-After running migrations, seed the database:
-```
-python _local/db/seed.py
-```
+2. Run migrations:
+   ```
+   alembic upgrade head
+   ```
 
-The seed script will:
-- Verify tables exist (creates them if needed)
-- Truncate all tables (using CASCADE to handle foreign key constraints)
-- Read seed data from CSV files in `_local/db/seeds/`
-- Seed sample data for all tables (users, threads, dementia_daycare, reviews, bookmarks)
+3. Seed the database:
+   ```
+   python _local/db/seed/seed.py
+   ```
 
-**Note:** The script will truncate existing data before seeding, so all existing records will be deleted and replaced with the seed data.
+See `_local/db/seed/README.md` for details on `seed.py`.
 
-### Seed Data Files
-- `_local/db/seeds/users.csv` - User records
-- `_local/db/seeds/threads.csv` - Chat threads
-- `_local/db/seeds/dementia_daycare.csv` - Dementia daycare centres
-- `_local/db/seeds/reviews.csv` - Reviews
-- `_local/db/seeds/bookmarks.csv` - Bookmarks
+## CI/CD
 
-See `_local/db/seeds/README.md` for details on CSV format and conventions.
+The project uses GitHub Actions for continuous integration and deployment.
 
-## Deployment
-todo
+### CI Workflow
+- Triggers on pull requests and pushes to `main` branch when `backend/**` files change
+- Builds and pushes Docker images to registry
+
+### CD Workflow
+- Manual trigger via workflow_dispatch
+- Deploys Docker image to server
+- Runs database migrations before starting container
+
+### Required GitHub Secrets/Environment Variables
+
+**Environment Variables:**
+- `DOCKER_REGISTRY` - Docker registry URL (optional, leave empty for local registry)
+
+**Secrets:**
+- `DOCKER_USERNAME` - Docker registry username (if using registry)
+- `DOCKER_PASSWORD` - Docker registry password (if using registry)
+- `DEPLOY_HOST` - Deployment server hostname/IP
+- `DEPLOY_USER` - SSH username for deployment server
+- `DEPLOY_SSH_KEY` - SSH private key for deployment server
+- `DEPLOY_PORT` - SSH port (optional, defaults to 22)
