@@ -21,10 +21,6 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     
-    defaults:
-      run:
-        working-directory: ./backend
-
     steps:
       - name: Set image tag
         id: image-tag
