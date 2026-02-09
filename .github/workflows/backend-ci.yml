@@ -11,13 +11,13 @@ on:
   pull_request:
     paths:
       - 'backend/**'
-      - '.github/workflows/ci-backend.yml'
+      - '.github/workflows/backend-ci.yml'
   push:
     branches:
       - main
     paths:
       - 'backend/**'
-      - '.github/workflows/ci-backend.yml'
+      - '.github/workflows/backend-ci.yml'
 
 permissions:
   contents: read
