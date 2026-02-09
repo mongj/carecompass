@@ -13,6 +13,7 @@ permissions:
   packages: read
 
 env:
+  DOCKER_REGISTRY: ghcr.io
   DOCKER_IMAGE_NAME: carecompass-backend
   DOCKER_CONTAINER_NAME: carecompass-backend
 
@@ -39,8 +40,8 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ${{ env.DOCKER_REGISTRY }}
-          username: ${{ secrets.DOCKER_USERNAME || github.actor }}
-          password: ${{ secrets.DOCKER_PASSWORD || secrets.GITHUB_TOKEN }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy to server (with registry)
         if: env.DOCKER_REGISTRY != ''
