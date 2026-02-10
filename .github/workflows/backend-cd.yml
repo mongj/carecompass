@@ -48,21 +48,49 @@ jobs:
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           port: ${{ secrets.DEPLOY_PORT || 22 }}
           script: |
+            echo "======================================"
+            echo "Starting Deployment Process"
+            echo "======================================"
+            
             # Pull the CI-built image
+            echo ""
+            echo "=== Pulling Docker Image ==="
+            echo "Image: ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:${{ steps.image-tag.outputs.tag }}"
             docker pull ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:${{ steps.image-tag.outputs.tag }}
             IMAGE_TAG="${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:${{ steps.image-tag.outputs.tag }}"
+            echo "✓ Image pulled successfully"
             
             # Stop existing container if running
-            docker stop ${{ env.DOCKER_CONTAINER_NAME }} || true
-            docker rm ${{ env.DOCKER_CONTAINER_NAME }} || true
+            echo ""
+            echo "=== Stopping Existing Container ==="
+            if docker stop ${{ env.DOCKER_CONTAINER_NAME }} 2>/dev/null; then
+              echo "✓ Container stopped: ${{ env.DOCKER_CONTAINER_NAME }}"
+            else
+              echo "ℹ No running container found"
+            fi
+            
+            if docker rm ${{ env.DOCKER_CONTAINER_NAME }} 2>/dev/null; then
+              echo "✓ Container removed: ${{ env.DOCKER_CONTAINER_NAME }}"
+            else
+              echo "ℹ No container to remove"
+            fi
             
             # Run database migrations
+            echo ""
+            echo "=== Running Database Migrations ==="
             docker run --rm \
               --env-file $HOME/env/carecompass/.env \
+              -e PYTHONUNBUFFERED=1 \
               $IMAGE_TAG \
-              alembic upgrade head || echo "Migration failed or not needed"
+              alembic upgrade head
+            
+            echo "✓ Migrations completed successfully"
             
             # Start the new container with environment file
+            echo ""
+            echo "=== Starting New Container ==="
+            echo "Container name: ${{ env.DOCKER_CONTAINER_NAME }}"
+            echo "Port mapping: 8000:8000"
             docker run -d \
               --name ${{ env.DOCKER_CONTAINER_NAME }} \
               --restart unless-stopped \
@@ -70,11 +98,14 @@ jobs:
               -p 8000:8000 \
               $IMAGE_TAG
             
-            # Clean up old images
-            docker image prune -f
+            echo "✓ Container started successfully"
+            
+            echo ""
+            echo "======================================"
+            echo "Deployment Process Complete"
+            echo "======================================"
 
-
-      - name: Health check
+      - name: Health check and clean up
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.DEPLOY_HOST }}
@@ -82,9 +113,49 @@ jobs:
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           port: ${{ secrets.DEPLOY_PORT || 22 }}
           script: |
+            echo "==================================================="
+            echo "Running Health Checks and Cleaning Up Old Images"
+            echo "==================================================="
+            
+            echo ""
+            echo "=== Waiting for Container to Initialize ==="
+            echo "Waiting 10 seconds..."
             sleep 10
+            echo "✓ Wait complete"
+            
             # Check if container is running
-            docker ps | grep ${{ env.DOCKER_CONTAINER_NAME }} || exit 1
-            # Check if the API is responding (even if it returns 418, that means it's working)
-            curl -f http://localhost:8000/ || curl -f http://localhost:8000/docs || exit 1
+            echo ""
+            echo "=== Checking Container Status ==="
+            if docker ps | grep ${{ env.DOCKER_CONTAINER_NAME }}; then
+              echo "✓ Container is running"
+            else
+              echo "✗ Container is not running!"
+              docker logs ${{ env.DOCKER_CONTAINER_NAME }} --tail 50
+              exit 1
+            fi
+            
+            # Check if the API is responding
+            echo ""
+            echo "=== Testing API Endpoint ==="
+            if curl -f http://localhost:8000/ 2>/dev/null; then
+              echo "✓ API root endpoint is healthy"
+            elif curl -f http://localhost:8000/docs 2>/dev/null; then
+              echo "✓ API docs endpoint is healthy"
+            else
+              echo "✗ API is not responding!"
+              echo ""
+              echo "=== Container Logs (last 30 lines) ==="
+              docker logs ${{ env.DOCKER_CONTAINER_NAME }} --tail 30
+              exit 1
+            fi
 
+            # Clean up old images
+            echo ""
+            echo "=== Cleaning Up Old Images ==="
+            docker image prune -f
+            echo "✓ Cleanup complete"
+            
+            echo ""
+            echo "==================================================="
+            echo "All Health Checks Passed and Cleanup Complete ✓"
+            echo "==================================================="
