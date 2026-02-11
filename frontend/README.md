@@ -26,4 +26,4 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Deployment
 
-The frontend is deployed to vercel. New deployment is created for every change on the master branch.
+The frontend is deployed to vercel. New deployment is created for every change on the main branch.
