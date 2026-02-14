@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from typing import List, Optional
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, model_validator
@@ -6,6 +6,8 @@ from pydantic.alias_generators import to_camel
 
 from app.models.review import Review, ReviewSource, ReviewableType
 from app.core.database import db_dependency
+from app.core.dependencies import get_current_user
+from app.models import User
 
 router = APIRouter(prefix="/reviews", tags=["reviews"])
 
@@ -53,6 +55,7 @@ class ReviewResponse(ReviewBase):
     published_time: datetime
 
 
+# Public endpoint - anyone can read reviews
 @router.get("", response_model=List[ReviewResponse])
 def list_reviews(
     db: db_dependency,
@@ -63,7 +66,7 @@ def list_reviews(
     review_source: Optional[ReviewSource] = None,
 ):
     """
-    List reviews with optional filtering and pagination.
+    List reviews with optional filtering and pagination. Public endpoint.
     """
     query = db.query(Review)
     
@@ -78,12 +81,21 @@ def list_reviews(
     return reviews
 
 
+# Protected endpoint - requires authentication to create reviews
 @router.post("", response_model=ReviewResponse, status_code=201)
-def create_review(review: ReviewCreate, db: db_dependency):
+def create_review(
+    review: ReviewCreate, 
+    db: db_dependency,
+    current_user: User = Depends(get_current_user)
+):
     """
-    Create a new review.
+    Create a new review. Requires authentication.
     """
-    db_review = Review(**review.model_dump())
+    # Set the author_id to the authenticated user's ID
+    review_data = review.model_dump()
+    review_data["author_id"] = current_user.clerk_id
+    
+    db_review = Review(**review_data)
     db.add(db_review)
     try:
         db.commit()
@@ -94,21 +106,24 @@ def create_review(review: ReviewCreate, db: db_dependency):
     return db_review
 
 
+# Public endpoint - anyone can read a single review
 @router.get("/{review_id}", response_model=ReviewResponse)
 def get_review(review_id: int, db: db_dependency):
     """
-    Get a specific review by ID.
+    Get a specific review by ID. Public endpoint.
     """
     review = db.query(Review).filter(Review.id == review_id).first()
     if not review:
         raise HTTPException(status_code=404, detail="Review not found")
     return review
 
-# Upsert a google review
+
+# Public endpoint - for upserting Google reviews (used by scrapers)
 @router.put("/google-reviews/{review_id}", response_model=ReviewResponse)
 async def upsert_review(review_id: str, review: GoogleReviewCreate, db: db_dependency):
     """
     Update a specific google review by ID or create it if it does not exist.
+    This endpoint is public as it's used by data scrapers.
     """
     existing_review = db.query(Review).filter(
         Review.google_review_id == review_id
@@ -133,14 +148,24 @@ async def upsert_review(review_id: str, review: GoogleReviewCreate, db: db_depen
 
     return db_review
 
+
+# Protected endpoint - requires authentication to delete reviews
 @router.delete("/{review_id}", status_code=204)
-def delete_review(review_id: int, db: db_dependency):
+def delete_review(
+    review_id: int, 
+    db: db_dependency,
+    current_user: User = Depends(get_current_user)
+):
     """
-    Delete a specific review by ID.
+    Delete a specific review by ID. Requires authentication.
     """
     db_review = db.query(Review).filter(Review.id == review_id).first()
     if not db_review:
         raise HTTPException(status_code=404, detail="Review not found")
+    
+    # Verify ownership - users can only delete their own reviews
+    if db_review.author_id and db_review.author_id != current_user.clerk_id:
+        raise HTTPException(status_code=403, detail="Cannot delete another user's review")
     
     try:
         db.delete(db_review)

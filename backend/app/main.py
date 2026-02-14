@@ -25,6 +25,8 @@ app = FastAPI(
     title="CareCompass API",
 )
 
+# Authentication is handled via dependency injection in each route
+
 # TODO: use env variables
 origins = [
     "http://localhost:3000",
@@ -38,9 +40,14 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
-    # TODO: update this to only allow specific methods and headers
-    allow_methods=["*"],
-    allow_headers=["*"],
+    # Specific methods instead of wildcard
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    # Specific headers instead of wildcard
+    allow_headers=[
+        "Authorization",
+        "Content-Type",
+        "X-Requested-With",
+    ],
 )
 
 app.include_router(router)
@@ -55,3 +62,13 @@ async def base_exception_handler(request: Request, exc: Exception):
     )
 
 app.add_exception_handler(Exception, base_exception_handler)
+
+# Health check endpoint
+@app.get("/health")
+async def health_check():
+    return {"status": "healthy"}
+
+# Enhanced root endpoint
+@app.get("/")
+async def root():
+    return {"message": "CareCompass API", "version": "1.0.0"}

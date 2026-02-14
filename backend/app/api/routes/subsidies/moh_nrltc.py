@@ -1,8 +1,9 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel, ConfigDict
 
 from app.api.routes.users import PCHIBase
 from app.core.database import db_dependency
+from app.core.dependencies import get_current_user
 from app.models import User, Citizenship
 
 router = APIRouter(prefix="/moh-nrltc", tags=["moh-nrltc"])
@@ -19,8 +20,18 @@ class PCHIResponse(PCHIBase):
     correct_as_of: str
 
 # Routes
+
+# Protected endpoint - requires authentication to calculate PCHI
 @router.post("", response_model=PCHIResponse)
-def calculate_pchi(user_info: UserInfo, db: db_dependency):
+def calculate_pchi(
+    user_info: UserInfo, 
+    db: db_dependency,
+    current_user: User = Depends(get_current_user)
+):
+    # Verify the authenticated user is accessing their own PCHI info
+    if current_user.clerk_id != user_info.id:
+        raise HTTPException(status_code=403, detail="Cannot access another user's PCHI info")
+    
     user = db.query(User).filter(User.clerk_id == user_info.id).first()
     if not user:
         raise HTTPException(status_code=404, detail="user not found")

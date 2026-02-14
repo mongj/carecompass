@@ -1,5 +1,5 @@
 from typing import List, Optional
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from sse_starlette.sse import EventSourceResponse
 from openai import OpenAI
 from openai import NotFoundError
@@ -7,6 +7,7 @@ from pydantic import BaseModel, ConfigDict
 
 from app.util.openai import remove_citation, stream_chat_responses
 from app.core.database import db_dependency
+from app.core.dependencies import get_current_user
 from app.models import User, Thread
 
 router = APIRouter()
@@ -34,28 +35,48 @@ class ThreadReadResponse(ThreadBase):
 
 
 # Routes
+
+# Protected endpoint - requires authentication and user in database
 @router.post('/threads')
 async def create_thread(
-    req: ThreadCreateRequest, 
-    db: db_dependency
+    req: ThreadCreateRequest,
+    current_user: User = Depends(get_current_user),
+    db: db_dependency = None
 ) -> ThreadCreateResponse:
-    user = db.query(User).filter(User.clerk_id == req.user_id).first()
-
-    if not user:
-        raise HTTPException(status_code=404, detail="user not found")
+    # current_user is already verified to exist in database from the dependency
     
+    # Create thread in OpenAI
     new_thread = client.beta.threads.create()
 
-    thread = Thread(thread_id=new_thread.id, user_id=req.user_id)
+    # Store in database
+    thread = Thread(
+        thread_id=new_thread.id, 
+        user_id=current_user.clerk_id,
+    )
     db.add(thread)
     db.commit()
 
     return ThreadCreateResponse(thread_id=new_thread.id)
 
 
+# Protected endpoint - requires authentication
 @router.get('/threads/{thread_id}/messages')
-async def thread_messages(thread_id: str):
+async def thread_messages(
+    thread_id: str, 
+    current_user: User = Depends(get_current_user),
+    db: db_dependency = None
+):
     try:
+        # First check if thread exists and user has access
+        thread = db.query(Thread).filter(Thread.thread_id == thread_id).first()
+        if not thread:
+            raise HTTPException(status_code=404, detail="Thread not found")
+
+        # Check user owns this thread
+        if thread.user_id != current_user.clerk_id:
+            raise HTTPException(status_code=403, detail="Access denied")
+
+        # Get messages from OpenAI
         thread_messages = client.beta.threads.messages.list(thread_id)
         extracted_values = []
         for message in thread_messages:
@@ -74,14 +95,24 @@ async def thread_messages(thread_id: str):
         return HTTPException(status_code=500, detail="Internal server error")
 
 
+# Protected endpoint - requires authentication
 @router.post('/threads/{thread_id}/messages')
-async def create_message(thread_id: str, req: ChatCompletionRequest, db: db_dependency) -> EventSourceResponse:
-    # Add the query as the title of the thread, if it's not already set
-    thread = db.get(Thread, thread_id)
-    
+async def create_message(
+    thread_id: str, 
+    req: ChatCompletionRequest, 
+    current_user: User = Depends(get_current_user),
+    db: db_dependency = None
+) -> EventSourceResponse:
+    # Verify thread access
+    thread = db.query(Thread).filter(Thread.thread_id == thread_id).first()
     if not thread:
         raise HTTPException(status_code=404, detail="Thread not found")
 
+    # Check user owns this thread
+    if thread.user_id != current_user.clerk_id:
+        raise HTTPException(status_code=403, detail="Access denied")
+
+    # Add the query as the title of the thread, if it's not already set
     if not thread.title:
         thread.title = req.query
         db.add(thread)
@@ -90,11 +121,16 @@ async def create_message(thread_id: str, req: ChatCompletionRequest, db: db_depe
     return EventSourceResponse(stream_chat_responses(thread_id, req.query))
 
 
+# Protected endpoint - requires authentication
 @router.get('/users/{user_id}/threads', response_model=List[ThreadReadResponse])
-async def read_user_threads(user_id: str, db: db_dependency):
-    user = db.query(User).filter(User.clerk_id == user_id).first()
+async def read_user_threads(
+    user_id: str, 
+    current_user: User = Depends(get_current_user),
+    db: db_dependency = None
+):
+    # Verify user is accessing their own threads
+    if current_user.clerk_id != user_id:
+        raise HTTPException(status_code=403, detail="Access denied")
 
-    if not user:
-        raise HTTPException(status_code=404, detail="user not found")
-
-    return user.threads
+    # Get user's threads
+    return db.query(Thread).filter(Thread.user_id == user_id).all()

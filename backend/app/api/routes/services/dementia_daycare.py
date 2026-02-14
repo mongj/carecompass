@@ -1,5 +1,5 @@
 from typing import List, Optional
-from fastapi import APIRouter, HTTPException, Response, status
+from fastapi import APIRouter, HTTPException, Response, status, Depends
 from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
 from sqlalchemy import and_
@@ -8,6 +8,8 @@ from heapq import nsmallest
 from haversine import haversine
 
 from app.core.database import db_dependency
+from app.core.dependencies import get_current_user
+from app.models import User
 from app.models.dementia_daycare import DementiaDaycare
 from app.models.review import Review, ReviewableType
 from app.api.routes.reviews import ReviewBase
@@ -212,11 +214,12 @@ async def get_daycare_center(
         reviews=[ReviewBase.model_validate(review) for review in reviews]
     )
 
-# Create new dementia daycare center
+# Create new dementia daycare center (admin only)
 @router.post("", status_code=status.HTTP_201_CREATED)
 def create_daycare_center(
     center: DementiaDaycareCreate,
-    db: db_dependency
+    db: db_dependency,
+    current_user: User = Depends(get_current_user)
 ):
     try:
         db_center = DementiaDaycare(**center.model_dump())
@@ -231,12 +234,13 @@ def create_daycare_center(
             detail="A center with this friendly_id already exists"
         )
 
-# Update dementia daycare center
+# Update dementia daycare center (admin only)
 @router.patch("/{center_id}", response_model=DementiaDaycareDetailResponse)
 async def update_daycare_center(
     center_id: int,
     update_data: DementiaDaycarePatch,
     db: db_dependency,
+    current_user: User = Depends(get_current_user),
     override: bool = False
 ):
     """
@@ -300,11 +304,12 @@ async def update_daycare_center(
             detail=str(e)
         )
 
-# Upsert dementia daycare center
+# Upsert dementia daycare center (admin only)
 @router.put("", response_model=DementiaDaycareDetailResponse)
 async def upsert_daycare_center(
     center: DementiaDaycareCreate,
-    db: db_dependency
+    db: db_dependency,
+    current_user: User = Depends(get_current_user)
 ):
     # Check if center exists with the given friendly_id
     existing_center = db.query(DementiaDaycare).filter(
@@ -359,11 +364,12 @@ async def upsert_daycare_center(
             detail=str(e)
         )
 
-# DELETE dementia daycare center
+# DELETE dementia daycare center (admin only)
 @router.delete("/{center_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_daycare_center(
     center_id: int,
-    db: db_dependency
+    db: db_dependency,
+    current_user: User = Depends(get_current_user)
 ):
     center = db.query(DementiaDaycare).filter(DementiaDaycare.id == center_id).first()
     if not center:

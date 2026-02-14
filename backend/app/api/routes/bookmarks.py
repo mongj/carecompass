@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from typing import List, Optional
 from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
@@ -6,6 +6,8 @@ from pydantic.alias_generators import to_camel
 from app.models.review import ReviewableType
 from app.models.bookmark import Bookmark
 from app.core.database import db_dependency
+from app.core.dependencies import get_current_user
+from app.models import User
 
 router = APIRouter(prefix="/bookmarks", tags=["bookmarks"])
 
@@ -32,36 +34,47 @@ class BookmarkResponse(BookmarkBase):
     id: int
 
 
+# Protected endpoint - requires authentication
 @router.get("", response_model=List[BookmarkResponse])
 def list_bookmarks(
     db: db_dependency,
+    current_user: User = Depends(get_current_user),
     skip: Optional[int] = None,
     limit: Optional[int] = None,
     target_type: Optional[ReviewableType] = None,
     target_id: Optional[int] = None,
-    user_id: Optional[str] = None,
 ):
     """
-    List bookmarks with optional filtering and pagination.
+    List bookmarks for the authenticated user.
     """
     query = db.query(Bookmark)
+    
+    # Filter by authenticated user's ID
+    query = query.filter(Bookmark.user_id == current_user.clerk_id)
     
     if target_type:
         query = query.filter(Bookmark.target_type == target_type)
     if target_id:
         query = query.filter(Bookmark.target_id == target_id)
-    if user_id:
-        query = query.filter(Bookmark.user_id == user_id)
 
     bookmarks = query.offset(skip).limit(limit).all()
     return bookmarks
 
 
+# Protected endpoint - requires authentication
 @router.post("", response_model=BookmarkResponse, status_code=201)
-def create_bookmark(bookmark: BookmarkCreate, db: db_dependency):
+def create_bookmark(
+    bookmark: BookmarkCreate, 
+    db: db_dependency,
+    current_user: User = Depends(get_current_user)
+):
     """
-    Create a new bookmark.
+    Create a new bookmark for the authenticated user.
     """
+    # Verify the authenticated user is creating a bookmark for themselves
+    if current_user.clerk_id != bookmark.user_id:
+        raise HTTPException(status_code=403, detail="Cannot create bookmark for another user")
+    
     db_bookmark = Bookmark(**bookmark.model_dump())
     db.add(db_bookmark)
     try:
@@ -73,24 +86,44 @@ def create_bookmark(bookmark: BookmarkCreate, db: db_dependency):
     return db_bookmark
 
 
+# Protected endpoint - requires authentication
 @router.get("/{bookmark_id}", response_model=BookmarkResponse)
-def get_bookmark(bookmark_id: int, db: db_dependency):
+def get_bookmark(
+    bookmark_id: int, 
+    db: db_dependency,
+    current_user: User = Depends(get_current_user)
+):
     """
     Get a specific bookmark by ID.
     """
     bookmark = db.query(Bookmark).filter(Bookmark.id == bookmark_id).first()
     if not bookmark:
         raise HTTPException(status_code=404, detail="Bookmark not found")
+    
+    # Verify ownership
+    if bookmark.user_id != current_user.clerk_id:
+        raise HTTPException(status_code=403, detail="Cannot access another user's bookmark")
+    
     return bookmark
 
+
+# Protected endpoint - requires authentication
 @router.delete("/{bookmark_id}", status_code=204)
-def delete_bookmark(bookmark_id: int, db: db_dependency):
+def delete_bookmark(
+    bookmark_id: int, 
+    db: db_dependency,
+    current_user: User = Depends(get_current_user)
+):
     """
     Delete a specific bookmark by ID.
     """
     db_bookmark = db.query(Bookmark).filter(Bookmark.id == bookmark_id).first()
     if not db_bookmark:
         raise HTTPException(status_code=404, detail="Bookmark not found")
+    
+    # Verify ownership
+    if db_bookmark.user_id != current_user.clerk_id:
+        raise HTTPException(status_code=403, detail="Cannot delete another user's bookmark")
     
     try:
         db.delete(db_bookmark)

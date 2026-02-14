@@ -1,11 +1,12 @@
 from typing import List, Optional
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
 
 from app.api.routes.threads import ThreadReadResponse
 from app.core.database import db_dependency
+from app.core.dependencies import get_current_user_clerk_id, get_current_user
 from app.models import Citizenship, Relationship, Residence, User
 
 router = APIRouter()
@@ -63,10 +64,21 @@ class PCHIBase(BaseModel):
 class PCHICreate(PCHIBase):
     pass
 
+
 # Routes
+
+# Protected endpoint - requires authentication
 @router.post("/users", response_model=UserResponse)
-def create_user(userToAdd: UserCreate, db: db_dependency) -> UserResponse:
-    # check if user already exists
+def create_user(
+    userToAdd: UserCreate, 
+    db: db_dependency,
+    current_clerk_user: str = Depends(get_current_user_clerk_id)
+) -> UserResponse:
+    # Verify the authenticated user is creating their own profile
+    if current_clerk_user != userToAdd.clerk_id:
+        raise HTTPException(status_code=403, detail="Cannot create profile for another user")
+    
+    # Check if user already exists
     user = db.query(User).filter(User.clerk_id == userToAdd.clerk_id).first()
     if user:
         raise HTTPException(status_code=400, detail="user already exists")
@@ -77,29 +89,42 @@ def create_user(userToAdd: UserCreate, db: db_dependency) -> UserResponse:
     db.refresh(user)
     return user
 
+
+# Protected endpoint - requires authentication
 @router.get("/users/{user_id}", response_model=UserResponse)
-def read_user(user_id: str, db: db_dependency):
-    user = db.query(User).filter(User.clerk_id == user_id).first()
+def read_user(
+    clerk_id: str, 
+    db: db_dependency,
+    current_user: User = Depends(get_current_user)
+):
+    # Verify the authenticated user is accessing their own profile
+    if current_user.clerk_id != clerk_id:
+        raise HTTPException(status_code=403, detail="Cannot access another user's profile")
+    
+    user = db.query(User).filter(User.clerk_id == clerk_id).first()
 
     if not user:
         raise HTTPException(status_code=404, detail="user not found")
 
     return user
 
+
+# Protected endpoint - requires authentication
 @router.patch("/users/{user_id}", response_model=UserResponse)
-def update_user(user_id: str, user_info: UserUpdate, db: db_dependency):
-    # stored_item_data = items[item_id]
-    # stored_item_model = Item(**stored_item_data)
-    # update_data = item.dict(exclude_unset=True)
-    # updated_item = stored_item_model.copy(update=update_data)
-    # items[item_id] = jsonable_encoder(updated_item)
-    # return updated_item
-    user = db.query(User).filter(User.clerk_id == user_id).first()
+def update_user(
+    clerk_id: str, 
+    user_info: UserUpdate, 
+    db: db_dependency,
+    current_user: User = Depends(get_current_user)
+):
+    # Verify the authenticated user is updating their own profile
+    if current_user.clerk_id != clerk_id:
+        raise HTTPException(status_code=403, detail="Cannot update another user's profile")
+    
+    user = db.query(User).filter(User.clerk_id == clerk_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="user not found")
 
-    # update_data = user_info.model_dump(exclude_unset=True)
-    # updated_user = user.copy(update=update_data)
     data_dict = user_info.model_dump(exclude_unset=True)
 
     for key, value in data_dict.items():
@@ -108,9 +133,19 @@ def update_user(user_id: str, user_info: UserUpdate, db: db_dependency):
     db.refresh(user)
     return user
 
-# TODO: move this into the PATCH endpoint above
+
+# Protected endpoint - requires authentication
 @router.put("/users/{user_id}/pchi", response_model=UserResponse)
-def add_pchi_info(user_id: str, pchi_info: PCHICreate, db: db_dependency):
+def add_pchi_info(
+    user_id: str, 
+    pchi_info: PCHICreate, 
+    db: db_dependency,
+    current_user: User = Depends(get_current_user)
+):
+    # Verify the authenticated user is updating their own PCHI info
+    if current_user.clerk_id != user_id:
+        raise HTTPException(status_code=403, detail="Cannot update another user's PCHI info")
+    
     user = db.query(User).filter(User.clerk_id == user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="user not found")
