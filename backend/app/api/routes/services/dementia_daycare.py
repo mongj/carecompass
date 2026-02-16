@@ -7,8 +7,8 @@ from sqlalchemy.exc import IntegrityError
 from heapq import nsmallest
 from haversine import haversine
 
-from app.core.database import db_dependency
-from app.core.dependencies import get_current_user
+from app.core.database import DbDependency
+from app.core.auth import CurrentUserDependency
 from app.models import User
 from app.models.dementia_daycare import DementiaDaycare
 from app.models.review import Review, ReviewableType
@@ -100,7 +100,7 @@ class DementiaDaycareAddress(BaseModel):
 # List all dementia daycare centers
 @router.get("", response_model=List[DementiaDaycareBaseResponse])
 async def get_all_daycare_centers(
-    db: db_dependency,
+    db: DbDependency,
     skip: Optional[int] = None,
     limit: Optional[int] = None
 ):
@@ -112,7 +112,7 @@ async def get_all_daycare_centers(
 
 # List all dementia daycare centre addresses for the scraper
 @router.get("/addresses", response_model=List[DementiaDaycareAddress])
-async def get_all_daycare_addresses(db: db_dependency):
+async def get_all_daycare_addresses(db: DbDependency):
     centers = db.query(DementiaDaycare).all()
     addresses = []
     for center in centers:
@@ -128,7 +128,7 @@ async def get_all_daycare_addresses(db: db_dependency):
 @router.post("/recommendations", response_model=List[DementiaDaycareRecommendation])
 async def rank_daycare_centers(
     pref: DementiaDaycarePreference,
-    db: db_dependency,
+    db: DbDependency,
     limit: int = 3,
 ):
     # Fetch centers
@@ -186,7 +186,7 @@ async def rank_daycare_centers(
 @router.get("/{center_id}", response_model=DementiaDaycareDetailResponse)
 async def get_daycare_center(
     center_id: int,
-    db: db_dependency
+    db: DbDependency
 ):
     center = db.query(
         DementiaDaycare
@@ -218,8 +218,8 @@ async def get_daycare_center(
 @router.post("", status_code=status.HTTP_201_CREATED)
 def create_daycare_center(
     center: DementiaDaycareCreate,
-    db: db_dependency,
-    current_user: User = Depends(get_current_user)
+    db: DbDependency,
+    current_user: CurrentUserDependency
 ):
     try:
         db_center = DementiaDaycare(**center.model_dump())
@@ -239,8 +239,8 @@ def create_daycare_center(
 async def update_daycare_center(
     center_id: int,
     update_data: DementiaDaycarePatch,
-    db: db_dependency,
-    current_user: User = Depends(get_current_user),
+    db: DbDependency,
+    current_user: CurrentUserDependency,
     override: bool = False
 ):
     """
@@ -308,8 +308,8 @@ async def update_daycare_center(
 @router.put("", response_model=DementiaDaycareDetailResponse)
 async def upsert_daycare_center(
     center: DementiaDaycareCreate,
-    db: db_dependency,
-    current_user: User = Depends(get_current_user)
+    db: DbDependency,
+    current_user: CurrentUserDependency
 ):
     # Check if center exists with the given friendly_id
     existing_center = db.query(DementiaDaycare).filter(
@@ -368,8 +368,8 @@ async def upsert_daycare_center(
 @router.delete("/{center_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_daycare_center(
     center_id: int,
-    db: db_dependency,
-    current_user: User = Depends(get_current_user)
+    db: DbDependency,
+    current_user: CurrentUserDependency
 ):
     center = db.query(DementiaDaycare).filter(DementiaDaycare.id == center_id).first()
     if not center:

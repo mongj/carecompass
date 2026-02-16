@@ -6,8 +6,8 @@ from openai import NotFoundError
 from pydantic import BaseModel, ConfigDict
 
 from app.util.openai import remove_citation, stream_chat_responses
-from app.core.database import db_dependency
-from app.core.dependencies import get_current_user
+from app.core.database import DbDependency
+from app.core.auth import CurrentUserDependency
 from app.models import User, Thread
 
 router = APIRouter()
@@ -19,7 +19,7 @@ class ChatCompletionRequest(BaseModel):
     query: str
 
 class ThreadCreateRequest(BaseModel):
-    user_id: str
+    pass
 
 class ThreadCreateResponse(BaseModel):
     thread_id: str
@@ -39,9 +39,8 @@ class ThreadReadResponse(ThreadBase):
 # Protected endpoint - requires authentication and user in database
 @router.post('/threads')
 async def create_thread(
-    req: ThreadCreateRequest,
-    current_user: User = Depends(get_current_user),
-    db: db_dependency = None
+    current_user: CurrentUserDependency,
+    db: DbDependency = None
 ) -> ThreadCreateResponse:
     # current_user is already verified to exist in database from the dependency
     
@@ -63,8 +62,8 @@ async def create_thread(
 @router.get('/threads/{thread_id}/messages')
 async def thread_messages(
     thread_id: str, 
-    current_user: User = Depends(get_current_user),
-    db: db_dependency = None
+    current_user: CurrentUserDependency,
+    db: DbDependency = None
 ):
     try:
         # First check if thread exists and user has access
@@ -100,8 +99,8 @@ async def thread_messages(
 async def create_message(
     thread_id: str, 
     req: ChatCompletionRequest, 
-    current_user: User = Depends(get_current_user),
-    db: db_dependency = None
+    current_user: CurrentUserDependency,
+    db: DbDependency = None
 ) -> EventSourceResponse:
     # Verify thread access
     thread = db.query(Thread).filter(Thread.thread_id == thread_id).first()
@@ -122,15 +121,9 @@ async def create_message(
 
 
 # Protected endpoint - requires authentication
-@router.get('/users/{user_id}/threads', response_model=List[ThreadReadResponse])
+@router.get('/threads', response_model=List[ThreadReadResponse])
 async def read_user_threads(
-    user_id: str, 
-    current_user: User = Depends(get_current_user),
-    db: db_dependency = None
+    current_user: CurrentUserDependency,
+    db: DbDependency = None
 ):
-    # Verify user is accessing their own threads
-    if current_user.clerk_id != user_id:
-        raise HTTPException(status_code=403, detail="Access denied")
-
-    # Get user's threads
-    return db.query(Thread).filter(Thread.user_id == user_id).all()
+    return db.query(Thread).filter(Thread.user_id == current_user.clerk_id).all()

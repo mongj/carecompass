@@ -1,12 +1,12 @@
-from fastapi import APIRouter, HTTPException, Depends
 from typing import List, Optional
+from fastapi import APIRouter, HTTPException, Depends
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 from pydantic.alias_generators import to_camel
 
 from app.models.review import Review, ReviewSource, ReviewableType
-from app.core.database import db_dependency
-from app.core.dependencies import get_current_user
+from app.core.database import DbDependency
+from app.core.auth import CurrentUserDependency
 from app.models import User
 
 router = APIRouter(prefix="/reviews", tags=["reviews"])
@@ -58,7 +58,7 @@ class ReviewResponse(ReviewBase):
 # Public endpoint - anyone can read reviews
 @router.get("", response_model=List[ReviewResponse])
 def list_reviews(
-    db: db_dependency,
+    db: DbDependency,
     skip: Optional[int] = None,
     limit: Optional[int] = None,
     target_type: Optional[ReviewableType] = None,
@@ -85,8 +85,8 @@ def list_reviews(
 @router.post("", response_model=ReviewResponse, status_code=201)
 def create_review(
     review: ReviewCreate, 
-    db: db_dependency,
-    current_user: User = Depends(get_current_user)
+    db: DbDependency,
+    current_user: CurrentUserDependency
 ):
     """
     Create a new review. Requires authentication.
@@ -108,7 +108,7 @@ def create_review(
 
 # Public endpoint - anyone can read a single review
 @router.get("/{review_id}", response_model=ReviewResponse)
-def get_review(review_id: int, db: db_dependency):
+def get_review(review_id: int, db: DbDependency):
     """
     Get a specific review by ID. Public endpoint.
     """
@@ -120,7 +120,7 @@ def get_review(review_id: int, db: db_dependency):
 
 # Public endpoint - for upserting Google reviews (used by scrapers)
 @router.put("/google-reviews/{review_id}", response_model=ReviewResponse)
-async def upsert_review(review_id: str, review: GoogleReviewCreate, db: db_dependency):
+async def upsert_review(review_id: str, review: GoogleReviewCreate, db: DbDependency):
     """
     Update a specific google review by ID or create it if it does not exist.
     This endpoint is public as it's used by data scrapers.
@@ -153,8 +153,8 @@ async def upsert_review(review_id: str, review: GoogleReviewCreate, db: db_depen
 @router.delete("/{review_id}", status_code=204)
 def delete_review(
     review_id: int, 
-    db: db_dependency,
-    current_user: User = Depends(get_current_user)
+    db: DbDependency,
+    current_user: CurrentUserDependency
 ):
     """
     Delete a specific review by ID. Requires authentication.

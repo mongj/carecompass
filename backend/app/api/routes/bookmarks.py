@@ -1,12 +1,12 @@
-from fastapi import APIRouter, HTTPException, Depends
 from typing import List, Optional
+from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
 
 from app.models.review import ReviewableType
 from app.models.bookmark import Bookmark
-from app.core.database import db_dependency
-from app.core.dependencies import get_current_user
+from app.core.database import DbDependency
+from app.core.auth import CurrentUserDependency
 from app.models import User
 
 router = APIRouter(prefix="/bookmarks", tags=["bookmarks"])
@@ -19,7 +19,6 @@ class BookmarkBase(BaseModel):
         from_attributes=True
     )
 
-    user_id: str
     target_id: int
     target_type: ReviewableType
     title: str
@@ -37,8 +36,8 @@ class BookmarkResponse(BookmarkBase):
 # Protected endpoint - requires authentication
 @router.get("", response_model=List[BookmarkResponse])
 def list_bookmarks(
-    db: db_dependency,
-    current_user: User = Depends(get_current_user),
+    db: DbDependency,
+    current_user: CurrentUserDependency,
     skip: Optional[int] = None,
     limit: Optional[int] = None,
     target_type: Optional[ReviewableType] = None,
@@ -65,17 +64,13 @@ def list_bookmarks(
 @router.post("", response_model=BookmarkResponse, status_code=201)
 def create_bookmark(
     bookmark: BookmarkCreate, 
-    db: db_dependency,
-    current_user: User = Depends(get_current_user)
+    db: DbDependency,
+    current_user: CurrentUserDependency
 ):
     """
     Create a new bookmark for the authenticated user.
     """
-    # Verify the authenticated user is creating a bookmark for themselves
-    if current_user.clerk_id != bookmark.user_id:
-        raise HTTPException(status_code=403, detail="Cannot create bookmark for another user")
-    
-    db_bookmark = Bookmark(**bookmark.model_dump())
+    db_bookmark = Bookmark(**bookmark.model_dump(), user_id=current_user.clerk_id)
     db.add(db_bookmark)
     try:
         db.commit()
@@ -90,8 +85,8 @@ def create_bookmark(
 @router.get("/{bookmark_id}", response_model=BookmarkResponse)
 def get_bookmark(
     bookmark_id: int, 
-    db: db_dependency,
-    current_user: User = Depends(get_current_user)
+    db: DbDependency,
+    current_user: CurrentUserDependency
 ):
     """
     Get a specific bookmark by ID.
@@ -111,8 +106,8 @@ def get_bookmark(
 @router.delete("/{bookmark_id}", status_code=204)
 def delete_bookmark(
     bookmark_id: int, 
-    db: db_dependency,
-    current_user: User = Depends(get_current_user)
+    db: DbDependency,
+    current_user: CurrentUserDependency
 ):
     """
     Delete a specific bookmark by ID.
