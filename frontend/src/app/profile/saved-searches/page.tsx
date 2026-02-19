@@ -6,7 +6,6 @@ import {
   ReviewTargetTypeToColorScheme,
   ReviewTargetTypeToName,
 } from "@/util/review";
-import { useAuthStore } from "@/stores/auth";
 import { Tag } from "@chakra-ui/react";
 import { ChevronRightIcon, ListFilterIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -17,7 +16,6 @@ import React, { useEffect, useState } from "react";
 import BackButton from "@/ui/button/BackButton";
 
 export default function SavedSearchesPage() {
-  const userId = useAuthStore((state) => state.userId);
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(true);
@@ -27,13 +25,11 @@ export default function SavedSearchesPage() {
   );
 
   useEffect(() => {
-    if (!userId) return;
-
-    api.get(`/bookmarks?user_id=${userId}`).then((res) => {
-      setBookmarks(res.data);
-      setIsLoading(false);
-    });
-  }, [userId]);
+    api
+      .get<Bookmark[]>("/bookmarks")
+      .then((res) => setBookmarks(res.data ?? []))
+      .finally(() => setIsLoading(false));
+  }, []);
 
   useEffect(() => {
     router.prefetch("/careservice/homecare/[homecareId]");

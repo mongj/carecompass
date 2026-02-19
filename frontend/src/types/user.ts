@@ -32,7 +32,7 @@ export interface CareRecipientData {
 }
 
 export interface UserDataBase extends CaregiverData, CareRecipientData {
-  clerk_id: string;
+  clerk_id?: string;
 }
 
 export interface UserDataFull extends UserDataBase {

@@ -21,7 +21,6 @@ import { FormEvent, useState } from "react";
 import { toast } from "sonner";
 import { BackButton } from "@/ui/button";
 import { useAuthStore } from "@/stores/auth";
-import { HttpStatusCode } from "axios";
 import { api } from "@/api";
 import useInitialUserData from "@/util/hooks/useInitialUserData";
 
@@ -60,7 +59,6 @@ const relationshipOptions = [
 ];
 
 function CareRecipientDetailsForm() {
-  const userId = useAuthStore((state) => state.userId);
   const setUserData = useAuthStore((state) => state.setUserData);
   const [formData, setFormData] = useInitialUserData<CareRecipientData>(
     (userData) => ({
@@ -80,11 +78,9 @@ function CareRecipientDetailsForm() {
 
     setIsSubmitting(true);
     try {
-      const res = await api.patch<UserData>(`/users/${userId}`, formData);
-      if (res.status === HttpStatusCode.Ok) {
-        setUserData(true, res.data);
-        toast.success("Care recipient info updated successfully");
-      }
+      const res = await api.patch<UserData>("/users/me", formData);
+      setUserData(true, res.data);
+      toast.success("Care recipient info updated successfully");
     } catch (e) {
       toast.error("Something went wrong. Please try again later.");
     } finally {

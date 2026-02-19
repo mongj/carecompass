@@ -43,7 +43,6 @@ import PhotoCarousel from "@/ui/carousel/PhotoCarousel";
 import { formatPriceRange } from "@/util/priceInfo";
 import { UserData } from "@/types/user";
 import { MohNrLtcSubsidy } from "@/types/scheme";
-import { HttpStatusCode } from "axios";
 import { toast } from "sonner";
 import { PCHIDrawer } from "@/components/PCHIDrawer";
 
@@ -62,16 +61,10 @@ export default function DaycareCentreDetails({
 
   useEffect(() => {
     api
-      .get(`/services/dementia-daycare/${params.centreId}`)
-      .then((response) => {
-        setCentre(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+      .get<DDCDetail>(`/services/dementia-daycare/${params.centreId}`)
+      .then((response) => setCentre(response.data))
+      .catch((error) => console.error(error))
+      .finally(() => setIsLoading(false));
   }, [params.centreId]);
 
   // We fetch from backend instead of store for now because store
@@ -79,16 +72,11 @@ export default function DaycareCentreDetails({
   useEffect(() => {
     if (isSignedIn && !user && userId) {
       api
-        .get(`/users/${userId}`)
-        .then((response) => {
-          if (response.status === HttpStatusCode.Ok) {
-            setUser(response.data);
-          } else {
-            toast.error("Failed to fetch user data");
-          }
-        })
+        .get<UserData>("/users/me")
+        .then((response) => setUser(response.data))
         .catch((error) => {
           console.error(error);
+          toast.error("Failed to fetch user data");
         });
     }
   }, [isSignedIn, userId, user]);
@@ -97,18 +85,11 @@ export default function DaycareCentreDetails({
   useEffect(() => {
     if (isSignedIn && !subsidyInfo && userId) {
       api
-        .post("subsidies/moh-nrltc", {
-          id: userId,
-        })
-        .then((response) => {
-          if (response.status === HttpStatusCode.Ok) {
-            setSubsidyInfo(response.data);
-          } else if (response.status !== HttpStatusCode.BadRequest) {
-            toast.error("Failed to fetch subsidy info");
-          }
-        })
+        .post<MohNrLtcSubsidy>("/subsidies/moh-nrltc", { id: userId })
+        .then((response) => setSubsidyInfo(response.data))
         .catch((error) => {
           console.error(error);
+          toast.error("Failed to fetch subsidy info");
         });
     }
   }, [isSignedIn, userId, subsidyInfo]);
@@ -354,11 +335,9 @@ function NewReviewDrawer({ centreId }: { centreId: number }) {
   const canSubmit = review.overall_rating === 0 || !isDeclarationChecked;
 
   const submitReview = () => {
-    api.post("/reviews", review).then((response) => {
-      if (response.status === 201) {
-        setIsOpen(false);
-        location.reload();
-      }
+    api.post("/reviews", review).then(() => {
+      setIsOpen(false);
+      location.reload();
     });
   };
 

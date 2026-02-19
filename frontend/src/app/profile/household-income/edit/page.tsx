@@ -7,7 +7,6 @@ import React, { useEffect, useState } from "react";
 import BackButton from "@/ui/button/BackButton";
 import { PCHIForm } from "@/components/PCHIForm";
 import { toast } from "sonner";
-import { HttpStatusCode } from "axios";
 import { UserData } from "@/types/user";
 import { PCHIFormData } from "@/types/pchi";
 
@@ -24,14 +23,9 @@ export default function EditHouseholdIncomePage() {
   useEffect(() => {
     if (isSignedIn && !user && userId) {
       api
-        .get(`/users/${userId}`)
-        .then((response) => {
-          if (response.status === HttpStatusCode.Ok) {
-            setUser(response.data);
-          } else {
-            toast.error("Failed to fetch user data");
-          }
-        })
+        .get<UserData>("/users/me")
+        .then((response) => setUser(response.data))
+        .catch(() => toast.error("Failed to fetch user data"))
         .catch((error) => {
           console.error(error);
         });

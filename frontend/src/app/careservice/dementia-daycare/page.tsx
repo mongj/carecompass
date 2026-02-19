@@ -26,10 +26,8 @@ export default function DementiaDaycarePage() {
   useEffect(() => {
     setIsLoading(true);
     api
-      .get("/services/dementia-daycare")
-      .then((response) => {
-        setCentres(response.data);
-      })
+      .get<DDCBase[]>("/services/dementia-daycare")
+      .then((response) => setCentres(response.data ?? []))
       .catch((error) => {
         console.error(error);
       })

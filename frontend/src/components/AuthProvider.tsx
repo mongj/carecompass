@@ -1,14 +1,12 @@
 "use client";
 
 import { ClerkProvider, useAuth, useUser } from "@clerk/nextjs";
-import { PropsWithChildren, useEffect } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 import { useAuthStore } from "@/stores/auth";
+import { UserData } from "@/types/user";
 import { useRouter } from "next/navigation";
+import { api, ApiError, setClerkToken } from "@/api";
 
-/**
- * Component that wraps ClerkProvider and syncs Clerk auth state to the useAuthStore.
- * Also fetches and sets user data from the backend when authenticated.
- */
 function ClerkProviderAdapter({ children }: PropsWithChildren<unknown>) {
   const router = useRouter();
   const auth = useAuth();
@@ -17,8 +15,27 @@ function ClerkProviderAdapter({ children }: PropsWithChildren<unknown>) {
   const signOut = useAuthStore((state) => state.signOut);
   const setUserData = useAuthStore((state) => state.setUserData);
   const userData = useAuthStore((state) => state.userData);
+  const [isFetchingToken, setIsFetchingToken] = useState(false);
 
-  // Sync Clerk auth state to auth store
+  useEffect(() => {
+    const getToken = async () => {
+      if (auth.isSignedIn && !isFetchingToken) {
+        setIsFetchingToken(true);
+        try {
+          const token = await auth.getToken();
+          setClerkToken(token);
+        } catch (error) {
+          console.error("Failed to get Clerk token:", error);
+        } finally {
+          setIsFetchingToken(false);
+        }
+      } else if (!auth.isSignedIn) {
+        setClerkToken(null);
+      }
+    };
+    getToken();
+  }, [auth.isSignedIn, auth.getToken, isFetchingToken]);
+
   useEffect(() => {
     if (auth.isLoaded) {
       if (auth.isSignedIn) {
@@ -34,25 +51,23 @@ function ClerkProviderAdapter({ children }: PropsWithChildren<unknown>) {
     }
   }, [auth.isLoaded, auth.isSignedIn, auth.userId, user, signIn, signOut]);
 
-  // Fetch user data from backend when authenticated
   useEffect(() => {
-    if (auth.isSignedIn && auth.userId && !userData) {
-      fetch(`${process.env.NEXT_PUBLIC_APP_BACKEND_URL}/users/${auth.userId}`)
+    if (auth.isSignedIn && !userData) {
+      api
+        .get<UserData>("/users/me")
         .then((res) => {
-          if (res.ok) {
-            res.json().then((data) => {
-              setUserData(true, data);
-            });
-          } else if (res.status === 404) {
-            setUserData(false, undefined);
-            router.push(`/onboarding?id=${auth.userId}`);
-          }
+          setUserData(true, res.data);
         })
         .catch((error) => {
-          console.error("Failed to fetch user data:", error);
+          if (error instanceof ApiError && error.status === 404) {
+            setUserData(false, undefined);
+            router.push("/onboarding");
+          } else {
+            console.error("Failed to fetch user data:", error);
+          }
         });
     }
-  }, [auth.isSignedIn, auth.userId, userData, setUserData, router]);
+  }, [auth.isSignedIn, userData, setUserData, router]);
 
   return <>{children}</>;
 }

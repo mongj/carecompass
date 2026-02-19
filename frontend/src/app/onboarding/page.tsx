@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  Citizenship,
-  Relationship,
-  Residence,
-  UserData,
-  UserDataBase,
-} from "@/types/user";
+import { Citizenship, Relationship, Residence, UserData } from "@/types/user";
 import LoadingSpinner from "@/ui/loading";
 import { Stack } from "@chakra-ui/react";
 import {
@@ -18,11 +12,19 @@ import {
   SingleSelect,
 } from "@opengovsg/design-system-react";
 import { RadioGroup } from "@chakra-ui/react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { FormEvent, Suspense, useState } from "react";
 import { toast } from "sonner";
-import { OptionalEnumFields } from "@/types/util";
 import { useAuthStore } from "@/stores/auth";
+import { api } from "@/api";
+
+type PersonalDetails = {
+  citizenship: string;
+  care_recipient_age: number;
+  care_recipient_citizenship: string;
+  care_recipient_residence: Residence;
+  care_recipient_relationship: string;
+};
 
 const citizenshipOptions = [
   {
@@ -60,18 +62,14 @@ const relationshipOptions = [
 
 function PersonalDetailsForm() {
   const router = useRouter();
-  const params = useSearchParams();
   const setUserData = useAuthStore((state) => state.setUserData);
 
-  const [personalDetails, setPersonalDetails] = useState<
-    OptionalEnumFields<UserDataBase>
-  >({
+  const [personalDetails, setPersonalDetails] = useState<PersonalDetails>({
     citizenship: "",
     care_recipient_age: 0,
     care_recipient_citizenship: "",
     care_recipient_residence: Residence.HOME,
     care_recipient_relationship: "",
-    clerk_id: params.get("id") || "",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -81,24 +79,9 @@ function PersonalDetailsForm() {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_APP_BACKEND_URL}/users`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(personalDetails),
-        },
-      );
-
-      if (res.ok) {
-        const data: UserData = await res.json();
-        setUserData(true, data);
-        router.push("/home");
-      } else {
-        toast.error("Something went wrong. Please try again later.");
-      }
+      const res = await api.post<UserData>("/users", personalDetails);
+      setUserData(true, res.data);
+      router.push("/home");
     } catch (error) {
       toast.error("Something went wrong. Please try again later.");
     } finally {

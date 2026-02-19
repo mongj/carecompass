@@ -4,6 +4,7 @@ import { useCurrentThreadStore } from "@/stores/currentThread";
 import { CreateThreadResponse, MessageRole } from "@/types/chat";
 import { useAuthStore } from "@/stores/auth";
 import useSignInOnlyFeaturePrompt from "./useSignInOnlyFeaturePrompt";
+import { api, fetchApi } from "@/api";
 
 export function useChatQuery(currentChatId?: string) {
   const router = useRouter();
@@ -88,23 +89,9 @@ async function createThread(userId: string | null) {
     if (!userId) {
       throw new Error("User ID is missing");
     }
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_APP_BACKEND_URL}/threads`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          user_id: userId,
-        }),
-      },
-    );
-    if (!response.ok) {
-      throw new Error("Failed to create thread");
-    }
-    const data: CreateThreadResponse = await response.json();
-    return data.thread_id;
+    const response = await api.post<CreateThreadResponse>("/threads", {});
+    if (!response.data?.thread_id) throw new Error("No thread_id in response");
+    return response.data.thread_id;
   } catch (error) {
     throw error; // Re-throw the error so that the calling function can handle it
   }
@@ -125,18 +112,11 @@ async function getResponse({
 }) {
   setIsWaitingForResponse(true);
 
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_APP_BACKEND_URL}/threads/${threadId}/messages`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        query,
-      }),
-    },
-  );
+  const response = await fetchApi(`/threads/${threadId}/messages`, {
+    method: "POST",
+    body: JSON.stringify({ query }),
+    _noTimeout: true,
+  });
   let combined = "";
 
   if (response.body) {

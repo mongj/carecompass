@@ -5,6 +5,7 @@ import { useAuthStore } from "@/stores/auth";
 import { Skeleton, Stack } from "@chakra-ui/react";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useEffect, useState } from "react";
+import { api } from "@/api";
 
 export default function ChatHistory({
   router,
@@ -20,20 +21,9 @@ export default function ChatHistory({
   useEffect(() => {
     if (userId) {
       setIsLoading(true);
-      fetch(
-        `${process.env.NEXT_PUBLIC_APP_BACKEND_URL}/users/${userId}/threads`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        },
-      )
-        .then((res) => {
-          if (res.ok) {
-            res.json().then((data) => setChats(data));
-          }
-        })
+      api
+        .get<GetUserThreadResponse[]>("/threads")
+        .then((res) => setChats(res.data ?? []))
         .finally(() => setIsLoading(false));
     }
   }, [userId]);

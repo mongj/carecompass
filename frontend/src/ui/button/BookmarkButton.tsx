@@ -1,7 +1,6 @@
 import { api } from "@/api";
 import { Bookmark } from "@/types/bookmark";
 import { ReviewTargetType } from "@/types/review";
-import { useAuthStore } from "@/stores/auth";
 import {
   Button,
   ButtonProps,
@@ -31,7 +30,6 @@ export default function BookmarkButton({
   mini = false,
   ...props
 }: BookmarkButtonProps) {
-  const userId = useAuthStore((state) => state.userId);
   const { promptIfNotSignedIn } = useSignInOnlyFeaturePrompt();
   const pathname = usePathname();
 
@@ -42,37 +40,31 @@ export default function BookmarkButton({
   const [bookmarkId, setBookmarkId] = useState(UNCREATED_BOOKMARK_ID);
 
   useEffect(() => {
-    if (userId) {
-      api
-        .get(
-          `/bookmarks?user_id=${userId}&target_id=${targetId}&target_type=${targetType}`,
-        )
-        .then((res) => {
-          const data = res.data as Bookmark[];
-          if (data.length > 0) {
-            setBookmarkId(data[0].id);
-          }
-        });
-    }
-  }, [userId, targetId, targetType]);
+    api
+      .get<
+        Bookmark[]
+      >(`/bookmarks?target_id=${targetId}&target_type=${targetType}`)
+      .then((res) => {
+        if (res.data && res.data.length > 0) setBookmarkId(res.data[0].id);
+      });
+  }, [targetId, targetType]);
 
   const isMarked = bookmarkId !== UNCREATED_BOOKMARK_ID;
 
   const handleMark = () => {
-    if (promptIfNotSignedIn() || !userId) {
+    if (promptIfNotSignedIn()) {
       return;
     }
 
-    const bookmarkToCreate: Omit<Bookmark, "id"> = {
-      userId: userId,
+    const bookmarkToCreate: Omit<Bookmark, "id" | "userId"> = {
       targetId,
       targetType,
       title,
       link,
     };
 
-    api.post("/bookmarks", bookmarkToCreate).then((res) => {
-      setBookmarkId(res.data.id);
+    api.post<{ id: number }>("/bookmarks", bookmarkToCreate).then((res) => {
+      if (res.data?.id !== undefined) setBookmarkId(res.data.id);
       toast.success("Added to saved searches");
     });
   };
