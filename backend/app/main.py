@@ -41,7 +41,7 @@ app.add_middleware(
     allow_origins=origins,
     allow_credentials=True,
     # Specific methods instead of wildcard
-    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     # Specific headers instead of wildcard
     allow_headers=[
         "Authorization",

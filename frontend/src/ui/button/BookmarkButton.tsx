@@ -30,7 +30,7 @@ export default function BookmarkButton({
   mini = false,
   ...props
 }: BookmarkButtonProps) {
-  const { promptIfNotSignedIn } = useSignInOnlyFeaturePrompt();
+  const { isSignedIn, promptIfNotSignedIn } = useSignInOnlyFeaturePrompt();
   const pathname = usePathname();
 
   if (!link) {
@@ -40,14 +40,16 @@ export default function BookmarkButton({
   const [bookmarkId, setBookmarkId] = useState(UNCREATED_BOOKMARK_ID);
 
   useEffect(() => {
-    api
-      .get<
-        Bookmark[]
-      >(`/bookmarks?target_id=${targetId}&target_type=${targetType}`)
-      .then((res) => {
-        if (res.data && res.data.length > 0) setBookmarkId(res.data[0].id);
-      });
-  }, [targetId, targetType]);
+    if (isSignedIn) {
+      api
+        .get<
+          Bookmark[]
+        >(`/bookmarks?target_id=${targetId}&target_type=${targetType}`)
+        .then((res) => {
+          if (res.data && res.data.length > 0) setBookmarkId(res.data[0].id);
+        });
+    }
+  }, [targetId, targetType, isSignedIn]);
 
   const isMarked = bookmarkId !== UNCREATED_BOOKMARK_ID;
 

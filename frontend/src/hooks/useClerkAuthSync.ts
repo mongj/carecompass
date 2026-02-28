@@ -7,21 +7,19 @@ import { useRouter } from "next/navigation";
 import { api, ApiError, setClerkToken } from "@/api";
 import { useAuthStore } from "@/stores/auth";
 import { UserData } from "@/types/user";
+import { UserResource } from "@clerk/types";
 
 type ClerkUserInfo = {
-  userId: string | undefined;
-  userFullName: string | undefined;
-  emailAddresses: string[] | undefined;
+  userId: string;
+  userFullName: string | null;
+  emailAddresses: string[];
 };
 
-function getClerkUserInfo(
-  user: ReturnType<typeof useUser>["user"],
-): ClerkUserInfo {
+function getClerkUserInfo(user: UserResource): ClerkUserInfo {
   return {
-    userId: user?.id ?? undefined,
-    userFullName: user?.fullName ?? undefined,
-    emailAddresses:
-      user?.emailAddresses?.map((email) => email.emailAddress) ?? undefined,
+    userId: user.id,
+    userFullName: user.fullName,
+    emailAddresses: user.emailAddresses.map((email) => email.emailAddress),
   };
 }
 
@@ -82,7 +80,7 @@ export function useClerkAuthSync(): void {
     const sync = async () => {
       if (!isLoaded) return;
 
-      if (!isSignedIn) {
+      if (!isSignedIn || !user) {
         handleSignedOut();
         return;
       }
