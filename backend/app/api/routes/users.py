@@ -32,7 +32,7 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     pass
 
-class UserUpdate(BaseModel):    
+class UserUpdate(UserBase):    
     model_config = ConfigDict(from_attributes=True)
 
     citizenship: Optional[Citizenship] = None
@@ -40,10 +40,6 @@ class UserUpdate(BaseModel):
     care_recipient_citizenship: Optional[Citizenship] = None
     care_recipient_residence: Optional[Residence] = None
     care_recipient_relationship: Optional[Relationship] = None
-    household_size: Optional[int] = None
-    total_monthly_household_income: Optional[int] = None
-    annual_property_value: Optional[int] = None
-    monthly_pchi: Optional[int] = None
 
 class UserResponse(UserBase):
     id: int # primary key in db
