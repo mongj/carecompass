@@ -71,7 +71,13 @@ async function parseJsonResponse<T>(res: Response): Promise<T | undefined> {
 
 async function toApiResponse<T>(res: Response): Promise<ApiResponse<T>> {
   if (!res.ok) {
-    throw new ApiError(`Request failed: ${res.status}`, res.status);
+    let errMsg = "";
+    try {
+      errMsg = await res.text();
+    } catch (e) {
+      errMsg = `Unable to extract error response body; ${(e as Error).message}`;
+    }
+    throw new ApiError(`Request failed [${res.status}]: ${errMsg}`, res.status);
   }
   const data = await parseJsonResponse<T>(res);
   return { data, status: res.status };

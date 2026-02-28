@@ -12,7 +12,7 @@ function useInitialUserData<T>(selector: UserDataSelector<T>) {
     if (userData) {
       setData(selector(userData));
     }
-  }, [userData]);
+  }, [userData, selector]);
 
   return [data, setData] as const;
 }

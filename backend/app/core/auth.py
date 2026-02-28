@@ -1,7 +1,9 @@
+from cachetools import cached, TTLCache
 from typing import Annotated
 
 from fastapi import Depends, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+import httpx
 from jose import jwt, JWTError
 import os
 
@@ -10,23 +12,28 @@ from app.models import User
 
 security = HTTPBearer()
 
-CLERK_PUBLIC_KEY = os.getenv("CLERK_PEM_PUBLIC_KEY")
+CLERK_JWKS_URL = os.getenv("CLERK_JWKS_URL")
 CLERK_ISSUER = os.getenv("CLERK_JWT_ISSUER")
 
+@cached(cache=TTLCache(maxsize=1, ttl=3600))  # refresh every hour
+def get_jwks():
+    response = httpx.get(CLERK_JWKS_URL)
+    return response.json()
 
 async def get_current_user_clerk_id(
     credentials: Annotated[HTTPAuthorizationCredentials, Depends(security)]
 ) -> str:
-    if not CLERK_PUBLIC_KEY or not CLERK_ISSUER:
+    if not CLERK_JWKS_URL or not CLERK_ISSUER:
         raise HTTPException(
             status_code=500,
             detail="Server configuration error"
         )
     
     try:
+        jwks = get_jwks()
         payload = jwt.decode(
             credentials.credentials,
-            CLERK_PUBLIC_KEY,
+            jwks,
             algorithms=["RS256"],
             issuer=CLERK_ISSUER,
             options={"verify_aud": False}

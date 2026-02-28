@@ -58,15 +58,17 @@ const relationshipOptions = [
   },
 ];
 
+const selectCareRecipientData = (userData: UserData): CareRecipientData => ({
+  care_recipient_age: userData.care_recipient_age,
+  care_recipient_citizenship: userData.care_recipient_citizenship,
+  care_recipient_residence: userData.care_recipient_residence,
+  care_recipient_relationship: userData.care_recipient_relationship,
+});
+
 function CareRecipientDetailsForm() {
   const setUserData = useAuthStore((state) => state.setUserData);
   const [formData, setFormData] = useInitialUserData<CareRecipientData>(
-    (userData) => ({
-      care_recipient_age: userData.care_recipient_age,
-      care_recipient_citizenship: userData.care_recipient_citizenship,
-      care_recipient_residence: userData.care_recipient_residence,
-      care_recipient_relationship: userData.care_recipient_relationship,
-    }),
+    selectCareRecipientData,
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
 

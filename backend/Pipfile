@@ -19,6 +19,7 @@ sqlalchemy-utils = "*"
 cryptography = "*"
 python-jose = {extras = ["cryptography"], version = "*"}
 python-multipart = "*"
+cachetools = "*"
 
 [dev-packages]
 pytest = "*"

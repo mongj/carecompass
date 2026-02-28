@@ -6,7 +6,7 @@ from pydantic.alias_generators import to_camel
 
 from app.api.routes.threads import ThreadReadResponse
 from app.core.database import DbDependency
-from app.core.auth import CurrentUserClerkIdDependency, CurrentUserDependency
+from app.core.auth import CurrentUserClerkIdDependency, CurrentUserDependency, get_current_user
 from app.models import Citizenship, Relationship, Residence, User
 
 router = APIRouter()
@@ -88,12 +88,17 @@ def create_user(
 
 # Protected endpoint - requires authentication
 @router.get("/users/me", response_model=UserResponse)
-def read_user(
+async def read_user(
     db: DbDependency,
-    current_user: CurrentUserDependency
+    current_user_clerk_id: CurrentUserClerkIdDependency
 ):
-    return current_user
-
+    try:
+        current_user = await get_current_user(current_user_clerk_id, db)
+        return current_user
+    except HTTPException as e:
+        if e.status_code == 401: # Frontend uses this to direct user to onboarding page
+            raise HTTPException(status_code=404, detail="user not found")
+        raise e
 
 # Protected endpoint - requires authentication
 @router.patch("/users/me", response_model=UserResponse)

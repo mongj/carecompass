@@ -32,14 +32,15 @@ function isInvalidCaregiverContactNumber(caregiverData: CaregiverData) {
   return false;
 }
 
+const selectCaregiverData = (userData: UserData): CaregiverData => ({
+  citizenship: userData.citizenship,
+  contact_number: userData.contact_number,
+});
+
 function CaregiverDetailsForm() {
   const setUserData = useAuthStore((state) => state.setUserData);
-  const [formData, setFormData] = useInitialUserData<CaregiverData>(
-    (userData) => ({
-      citizenship: userData.citizenship,
-      contact_number: userData.contact_number,
-    }),
-  );
+  const [formData, setFormData] =
+    useInitialUserData<CaregiverData>(selectCaregiverData);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   function handleContactNumberChange(e: string) {
