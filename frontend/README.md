@@ -1,28 +1,31 @@
-# CareCompass Frontend
+# React Frontend
 
-## Getting Started
+## Setup
 
-Install dependencies
-
-```bash
-npm install
-```
-
-Add the environment variables
+### Environment variables
 
 ```bash
 cp .env.template .env.local
 ```
 
-Add the `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY` from AWS Secrets Manager. API keys for analytics can be left empety for local development
+Configure `.env.local`. In particular:
 
-Run the development server:
+- `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY`: Get from Clerk dashboard. Production configs are stored in AWS Secrets Manager.
+- `NEXT_PUBLIC_APP_BACKEND_URL`: Set to `http://127.0.0.1:8000` for local dev.
+- `NEXT_PUBLIC_POSTHOG_KEY`: Optional, can be left empty.
+- `NEXT_PUBLIC_SENTRY_DSN`: Optional, can be left empty.
+
+### Dependencies
+
+```bash
+npm install
+```
+
+## Run
 
 ```bash
 npm run dev
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## Deployment
 

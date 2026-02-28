@@ -2,18 +2,20 @@
 
 This directory contains CSV files with sample data for database seeding.
 
-The seed script (`../seed.py`) will:
+The seed script (`seed.py`) will:
 1. Truncate each table (using CASCADE to handle foreign key constraints)
 2. Reset auto-increment sequences
 3. Load data from these CSV files
 
 ## File Structure
 
-- `users.csv` - Sample user records
-- `threads.csv` - Sample chat threads (references users by `user_clerk_id`)
-- `dementia_daycare.csv` - Sample dementia daycare centres
-- `reviews.csv` - Sample reviews (references daycares by `target_friendly_id`)
-- `bookmarks.csv` - Sample bookmarks (references users and daycares)
+All CSV files are located in the `data/` subdirectory:
+
+- `data/users.csv` - Sample user records
+- `data/threads.csv` - Sample chat threads (references users by `user_clerk_id`)
+- `data/dementia_daycare.csv` - Sample dementia daycare centres
+- `data/reviews.csv` - Sample reviews (references daycares by `target_friendly_id`)
+- `data/bookmarks.csv` - Sample bookmarks (references users and daycares)
 
 ## CSV Format Notes
 
