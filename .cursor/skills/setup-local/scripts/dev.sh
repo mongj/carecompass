@@ -88,7 +88,7 @@ trap cleanup INT TERM EXIT
 
 if [[ "$SKIP_BACKEND" -eq 0 ]]; then
   log "Starting backend in background"
-  (cd "$BACKEND_DIR" && pipenv run fastapi dev app/main.py) &
+  start_backend_dev &
   BACKEND_PID="$!"
 else
   log "Skipping backend (--skip-backend)"
@@ -97,7 +97,7 @@ fi
 if [[ "$SKIP_FRONTEND" -eq 0 ]]; then
   if [[ "$DETACH" -eq 1 ]]; then
     log "Starting frontend in background (--detach)"
-    (cd "$FRONTEND_DIR" && npm run dev) &
+    start_frontend_dev &
     FRONTEND_PID="$!"
     log "Detached. Backend pid=${BACKEND_PID:-n/a}, Frontend pid=${FRONTEND_PID:-n/a}"
     exit 0
