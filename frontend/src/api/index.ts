@@ -2,10 +2,10 @@ import { GetReviewsParams } from "@/types/api";
 import { Review } from "@/types/review";
 
 const baseUrl = process.env.NEXT_PUBLIC_APP_BACKEND_URL;
-let clerkToken: string | null = null;
+let getToken: (() => Promise<string | null>) | null = null;
 
-export const setClerkToken = (token: string | null) => {
-  clerkToken = token;
+export const setTokenGetter = (fn: (() => Promise<string | null>) | null) => {
+  getToken = fn;
 };
 
 export const HTTP_OK = 200;
@@ -29,11 +29,12 @@ export class ApiError extends Error {
   }
 }
 
-function buildHeaders(init?: HeadersInit): Headers {
+async function buildHeaders(init?: HeadersInit): Promise<Headers> {
   const headers = new Headers(init);
   headers.set("Content-Type", "application/json");
-  if (clerkToken) {
-    headers.set("Authorization", `Bearer ${clerkToken}`);
+  const token = (await getToken?.()) ?? null;
+  if (token) {
+    headers.set("Authorization", `Bearer ${token}`);
   }
   return headers;
 }
@@ -51,7 +52,7 @@ export async function fetchApi(
   try {
     const res = await fetch(url, {
       ...fetchInit,
-      headers: buildHeaders(fetchInit.headers),
+      headers: await buildHeaders(fetchInit.headers),
       signal: fetchInit.signal ?? controller.signal,
     });
     return res;

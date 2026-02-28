@@ -4,7 +4,7 @@ import { useAuth, useUser } from "@clerk/nextjs";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-import { api, ApiError, setClerkToken } from "@/api";
+import { api, ApiError, setTokenGetter } from "@/api";
 import { useAuthStore } from "@/stores/auth";
 import { UserData } from "@/types/user";
 import { UserResource } from "@clerk/types";
@@ -50,7 +50,7 @@ export function useClerkAuthSync(): void {
     let cancelled = false;
 
     const handleSignedOut = () => {
-      setClerkToken(null);
+      setTokenGetter(null);
       signOut();
     };
 
@@ -86,15 +86,7 @@ export function useClerkAuthSync(): void {
       }
 
       try {
-        const token = await getToken();
-        if (cancelled) return;
-
-        if (!token) {
-          handleSignedOut();
-          return;
-        }
-
-        setClerkToken(token);
+        setTokenGetter(getToken);
 
         const clerkUserInfo = getClerkUserInfo(user);
         let shouldFetchProfile = false;
