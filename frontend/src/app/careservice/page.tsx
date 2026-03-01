@@ -376,13 +376,11 @@ export default function CareServiceRecommender() {
 
     useEffect(() => {
       api
-        .post("/services/dementia-daycare/recommendations", {
-          // API handles the case where homePostalCode is null
-          location: homePostalCode,
-        })
-        .then((response) => {
-          setRecommendations(response.data);
-        })
+        .post<DDCRecommendation[]>(
+          "/services/dementia-daycare/recommendations",
+          { location: homePostalCode },
+        )
+        .then((response) => setRecommendations(response.data ?? []))
         .catch((error) => {
           console.error(error);
         })

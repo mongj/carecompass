@@ -35,11 +35,9 @@ export function NewReviewDrawer({
   const canSubmit = review.overall_rating === 0 || !isDeclarationChecked;
 
   const submitReview = () => {
-    api.post("/reviews", review).then((response) => {
-      if (response.status === 201) {
-        setIsOpen(false);
-        location.reload();
-      }
+    api.post("/reviews", review).then(() => {
+      setIsOpen(false);
+      location.reload();
     });
   };
 

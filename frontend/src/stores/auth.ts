@@ -9,7 +9,7 @@ interface AuthState {
   isSignedIn: boolean;
   isGuest: boolean;
   userId?: string;
-  userFullName?: string;
+  userFullName?: string | null;
   emailAddresses?: string[];
   // User onboarding state
   isOnboarded?: boolean; // undefined indicates that the app has not checked if user is onboarded
@@ -19,9 +19,9 @@ interface AuthState {
 interface AuthActions {
   signIn: (
     isSignedIn: boolean,
-    userId?: string,
-    userFullName?: string,
-    emailAddresses?: string[],
+    userId: string,
+    userFullName: string | null,
+    emailAddresses: string[],
   ) => void;
   setUserData: (isOnboarded: boolean, userData?: UserData) => void;
   signInAsGuest: () => void;
@@ -51,9 +51,9 @@ export const useAuthStore = create<AuthState & AuthActions>()(
       ...initialState,
       signIn: (
         isSignedIn: boolean,
-        userId?: string,
-        userFullName?: string,
-        emailAddresses?: string[],
+        userId: string,
+        userFullName: string | null,
+        emailAddresses: string[],
       ) => {
         reset();
         set((state) => {

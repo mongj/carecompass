@@ -9,7 +9,9 @@ import sys
 from pathlib import Path
 
 # Add the backend directory (parent of _local) to Python path
-BACKEND_DIR = Path(__file__).parent.parent.parent
+# seed.py lives at: backend/_local/db/seed/seed.py
+# parents:         [0]=seed, [1]=db, [2]=_local, [3]=backend
+BACKEND_DIR = Path(__file__).resolve().parents[3]
 if str(BACKEND_DIR) not in sys.path:
     sys.path.insert(0, str(BACKEND_DIR))
 

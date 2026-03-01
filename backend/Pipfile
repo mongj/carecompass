@@ -17,8 +17,14 @@ googlemaps = "*"
 sentry-sdk = {extras = ["fastapi"], version = "*"}
 sqlalchemy-utils = "*"
 cryptography = "*"
+python-jose = {extras = ["cryptography"], version = "*"}
+python-multipart = "*"
+cachetools = "*"
 
 [dev-packages]
+pytest = "*"
+pytest-asyncio = "*"
+httpx = "*"
 
 [requires]
 python_version = "3.9"

@@ -9,7 +9,6 @@ import CustomMarkdown from "@/ui/CustomMarkdown";
 import LoadingSpinner from "@/ui/loading";
 import { checkAllSchemesEligibility } from "@/util/eligibilityChecker";
 import { useAuthStore } from "@/stores/auth";
-import { HttpStatusCode } from "axios";
 import { useSearchParams } from "next/navigation";
 import { useState, useEffect, Suspense } from "react";
 import { toast } from "sonner";
@@ -35,16 +34,11 @@ function SupportDetails() {
   useEffect(() => {
     if (isSignedIn && !user && userId) {
       api
-        .get(`/users/${userId}`)
-        .then((response) => {
-          if (response.status === HttpStatusCode.Ok) {
-            setUser(response.data);
-          } else {
-            toast.error("Failed to fetch user data");
-          }
-        })
+        .get<UserData>("/users/me")
+        .then((response) => setUser(response.data))
         .catch((error) => {
           console.error(error);
+          toast.error("Failed to fetch user data");
         });
     }
   }, [isSignedIn, userId, user]);
@@ -59,18 +53,11 @@ function SupportDetails() {
       userId
     ) {
       api
-        .post("subsidies/moh-nrltc", {
-          id: userId,
-        })
-        .then((response) => {
-          if (response.status === HttpStatusCode.Ok) {
-            setSubsidyInfo(response.data);
-          } else if (response.status !== HttpStatusCode.BadRequest) {
-            toast.error("Failed to fetch subsidy info");
-          }
-        })
+        .post<SubsidyInfo>("/subsidies/moh-nrltc", { id: userId })
+        .then((response) => setSubsidyInfo(response.data))
         .catch((error) => {
           console.error(error);
+          toast.error("Failed to fetch subsidy info");
         });
     }
   }, [isSignedIn, userId, scheme, subsidyInfo]);

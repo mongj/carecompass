@@ -1,5 +1,7 @@
 "use client";
 
+import { api } from "@/api";
+import { Message } from "@/types/chat";
 import ChatMessage from "@/ui/chat/ChatMessage";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
@@ -32,22 +34,14 @@ export default function Chat({ params }: { params: { chatId: string } }) {
       return;
     }
 
-    fetch(
-      `${process.env.NEXT_PUBLIC_APP_BACKEND_URL}/threads/${params.chatId}/messages`,
-    )
-      .then((response) => {
-        if (response.ok) {
-          response.json().then((data) => {
-            setMessages(data);
-          });
-        } else {
-          reset();
-          router.replace("/chat");
-        }
-      })
+    api
+      .get<Message[]>(`/threads/${params.chatId}/messages`)
+      .then((res) => setMessages(res.data ?? []))
       .catch((error) => {
         // TODO: Handle error
         console.error(error);
+        reset();
+        router.replace("/chat");
       })
       .finally(() => {
         setIsLoading(false);

@@ -1,32 +1,27 @@
-# FastAPI server
+# FastAPI Backend
 
----
+## Setup
 
-## Local development
-
-### 1. Environment variables
+### Environment variables
 
 ```bash
 cp .env.template .env
 ```
 
-Then fill in your `.env`. In particular:
+Configure `.env`. In particular:
+- `OPENAI_API_KEY` and `OPENAI_ASSISTANT_ID`: Production configs are stored in AWS Secrets Manager (boto3 automation not set up yet).
+- **Database:** See `Database` section for the values to use for local dev.
 
-- **OpenAI:** Get `OPENAI_API_KEY` and `OPENAI_ASSISTANT_ID` from AWS Secrets Manager (boto3 automation not set up yet) and add them to `.env`.
-- **Database:** Add the DB variables from step 3 (or your own Postgres values) after starting the database.
-
-### 2. Dependencies and virtual environment
+### Dependencies
 
 ```bash
 pipenv install
 pipenv shell
 ```
 
-### 3. Database
+### Database
 
-#### 3.1. Hosting
-
-##### Option A: Docker Compose (recommended)
+#### Docker Compose (recommended)
 
 ```bash
 docker-compose -f _local/db/docker-compose.yml up -d
@@ -43,11 +38,7 @@ This starts a PostgreSQL 15 container. Add these to your `.env`:
 | `DB_NAME`    | `postgres`   |
 | `DB_SSLMODE` | `disable`    |
 
-##### Option B: Your own PostgreSQL
-
-Use your own method to run a Postgres instance and set the same variables in `.env`.
-
-#### 3.2. Migrations
+#### Migrations
 
 The project uses Alembic; migration files live in `app/migrations/versions`. After the DB is running:
 
@@ -57,17 +48,15 @@ The project uses Alembic; migration files live in `app/migrations/versions`. Aft
 
 Alembic does not handle enums well: it does not drop enum types on downgrade and does not update enums when new values are added.
 
-#### 3.3. Seeding (optional)
+#### Seeding (optional)
 
-To load sample data locally: run `alembic upgrade head` (if needed), then `python _local/db/seed/seed.py`. See `_local/db/seed/README.md` for details.
+To seed sample data locally, run `python _local/db/seed/seed.py`. See `_local/db/seed/README.md` for details.
 
-### 4. Run the server
+## Run
 
 ```bash
 fastapi dev app/main.py
 ```
-
----
 
 ## Deployment
 
@@ -89,7 +78,7 @@ The project uses GitHub Actions for CI/CD.
 ### Required GitHub configuration
 
 **Secrets**
-- `DEPLOY_HOST` – Deployment server hostname or IP.
-- `DEPLOY_USER` – SSH username on the deployment server.
-- `DEPLOY_SSH_KEY` – SSH private key for the deployment server.
-- `DEPLOY_PORT` – SSH port (optional; default 22).
+- `DEPLOY_HOST`: Deployment server hostname or IP.
+- `DEPLOY_USER`: SSH username on the deployment server.
+- `DEPLOY_SSH_KEY`: SSH private key for the deployment server.
+- `DEPLOY_PORT`: SSH port (optional; default 22).
