@@ -13,8 +13,6 @@ export default function HeartbeatRedirect() {
   const userData = useAuthStore((state) => state.userData);
   const hasRun = useRef<boolean>(false);
 
-  console.log("render");
-
   useEffect(() => {
     // hasRun is used to ensure single attempt despite double rendering due to React.StrictMode in dev mode
     // https://react.dev/reference/react/StrictMode#fixing-bugs-found-by-double-rendering-in-development
@@ -27,8 +25,9 @@ export default function HeartbeatRedirect() {
       router.replace(HEARTBEAT_URL);
     } else {
       hasRun.current = true;
+      // Using router.replace instead of router.push to allow user to navigate back to the page user was at before /heartbeat from Caregiver Profile Edit page
+      router.replace("/profile/caregiver-info/edit");
       toast.error("Phone number is required for this function");
-      router.push("/profile/caregiver-info/edit");
     }
   }, [router, userData]);
 
